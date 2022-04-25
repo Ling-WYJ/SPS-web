@@ -1,13 +1,13 @@
 <template>
   <div class="list-container">
-    <div class="header-bar">
+    <!-- <div class="header-bar">
       <button title="刷新列表" @click="handleRefresh">
         <i class="tim-icon-refresh"></i>
       </button>
       <button title="创建会话" @click="handleAddButtonClick">
         <i class="tim-icon-add"></i>
       </button>
-    </div>
+    </div> -->
     <div class="scroll-container">
       <conversation-item
         :conversation="item"

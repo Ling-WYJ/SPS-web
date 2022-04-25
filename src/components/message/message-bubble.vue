@@ -90,12 +90,12 @@
       if (this.message.status !== 'success') {
         return false
       }
-      if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && this.message.isPeerRead) {
-        return '已读'
-      }
-      if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && !this.message.isPeerRead) {
-        return '未读'
-      }
+      // if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && this.message.isPeerRead) {
+      //   return '已读'
+      // }
+      // if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && !this.message.isPeerRead) {
+      //   return '未读'
+      // }
       return ''
     },
     isEdit() {

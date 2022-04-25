@@ -1,6 +1,22 @@
 <template>
   <div class="side-bar-wrapper">
-    <div class="bar-left">
+    <div class="bar-top">
+      <div class="left-avatar">
+        <my-profile />
+      </div>
+      <div class="counselor-information">
+        <div class="coun_name">咨询师：xxx</div>
+        <div class="coun_tel">123****8910</div>
+      </div>
+    </div>
+    <div class="bar-middle">
+      <conversation-list v-show="showConversationList" />
+    </div>
+    <div class="bar-down">
+      <button class="stop-btn">结束咨询</button>
+      <button class="help-btn">请求督导</button>
+    </div>
+    <!-- <div class="bar-left">
       <my-profile />
       <div class="tab-items" @click="handleClick">
         <div
@@ -47,7 +63,7 @@
       <group-list v-show="showGroupList" />
       <friend-list v-show="showFriendList" />
       <black-list v-show="showBlackList" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -55,25 +71,25 @@
 import { mapGetters, mapState } from 'vuex'
 import MyProfile from '../my-profile'
 import ConversationList from '../conversation/conversation-list'
-import GroupList from '../group/group-list'
-import FriendList from '../friend/friend-list'
-import BlackList from '../blacklist/blacklist'
+// import GroupList from '../group/group-list'
+// import FriendList from '../friend/friend-list'
+// import BlackList from '../blacklist/blacklist'
 
 const activeName = {
   CONVERSATION_LIST: 'conversation-list',
   GROUP_LIST: 'group-list',
-  FRIEND_LIST: 'friend-list',
-  BLACK_LIST: 'black-list',
-  GROUP_LIVE: 'group-live',
+  // FRIEND_LIST: 'friend-list',
+  // BLACK_LIST: 'black-list',
+  // GROUP_LIVE: 'group-live',
 }
 export default {
   name: 'SideBar',
   components: {
     MyProfile,
     ConversationList,
-    GroupList,
-    FriendList,
-    BlackList
+    // GroupList,
+    // FriendList,
+    // BlackList
   },
   data() {
     return {
@@ -90,15 +106,15 @@ export default {
     showConversationList() {
       return this.active === activeName.CONVERSATION_LIST
     },
-    showGroupList() {
-      return this.active === activeName.GROUP_LIST
-    },
-    showFriendList() {
-      return this.active === activeName.FRIEND_LIST
-    },
-    showBlackList() {
-      return this.active === activeName.BLACK_LIST
-    },
+    // showGroupList() {
+    //   return this.active === activeName.GROUP_LIST
+    // },
+    // showFriendList() {
+    //   return this.active === activeName.FRIEND_LIST
+    // },
+    // showBlackList() {
+    //   return this.active === activeName.BLACK_LIST
+    // },
     showAddButton() {
       return [activeName.CONVERSATION_LIST, activeName.GROUP_LIST].includes(
         this.active
@@ -127,18 +143,18 @@ export default {
         case activeName.CONVERSATION_LIST:
           this.checkoutActive(activeName.CONVERSATION_LIST)
           break
-        case activeName.GROUP_LIST:
-          this.checkoutActive(activeName.GROUP_LIST)
-          break
-        case activeName.FRIEND_LIST:
-          this.checkoutActive(activeName.FRIEND_LIST)
-          break
-        case activeName.BLACK_LIST:
-          this.checkoutActive(activeName.BLACK_LIST)
-          break
-        case activeName.GROUP_LIVE:
-          this.groupLive()
-          break
+        // case activeName.GROUP_LIST:
+        //   this.checkoutActive(activeName.GROUP_LIST)
+        //   break
+        // case activeName.FRIEND_LIST:
+        //   this.checkoutActive(activeName.FRIEND_LIST)
+        //   break
+        // case activeName.BLACK_LIST:
+        //   this.checkoutActive(activeName.BLACK_LIST)
+        //   break
+        // case activeName.GROUP_LIVE:
+        //   this.groupLive()
+        //   break
       }
     },
     handleRefresh() {
@@ -151,56 +167,56 @@ export default {
             })
           })
           break
-        case activeName.GROUP_LIST:
-          this.getGroupList()
-          break
-        case activeName.FRIEND_LIST:
-          this.getFriendList()
-          break
-        case activeName.BLACK_LIST:
-          this.$store.dispatch('getBlacklist')
-          break
+        // case activeName.GROUP_LIST:
+        //   this.getGroupList()
+        //   break
+        // case activeName.FRIEND_LIST:
+        //   this.getFriendList()
+        //   break
+        // case activeName.BLACK_LIST:
+        //   this.$store.dispatch('getBlacklist')
+        //   break
       }
     },
-    getGroupList() {
-      this.tim
-        .getGroupList()
-        .then(({ data: groupList }) => {
-          this.$store.dispatch('updateGroupList', groupList)
-        })
-        .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
-          })
-        })
-    },
-    getFriendList() {
-      this.tim
-        .getFriendList()
-        .then(({ data: friendList }) => {
-          this.$store.commit('upadteFriendList', friendList)
-        })
-        .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
-          })
-        })
-        .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
-          })
-        })
-    },
-    groupLive() {
-      this.$store.commit('updateGroupLiveInfo', {
-        groupID: 0,
-        anchorID: this.userID,
-      })
-      this.$bus.$emit('open-group-live', { channel: 2 })
-    },
+    // getGroupList() {
+    //   this.tim
+    //     .getGroupList()
+    //     .then(({ data: groupList }) => {
+    //       this.$store.dispatch('updateGroupList', groupList)
+    //     })
+    //     .catch(error => {
+    //       this.$store.commit('showMessage', {
+    //         type: 'error',
+    //         message: error.message
+    //       })
+    //     })
+    // },
+    // getFriendList() {
+    //   this.tim
+    //     .getFriendList()
+    //     .then(({ data: friendList }) => {
+    //       this.$store.commit('upadteFriendList', friendList)
+    //     })
+    //     .catch(error => {
+    //       this.$store.commit('showMessage', {
+    //         type: 'error',
+    //         message: error.message
+    //       })
+    //     })
+    //     .catch(error => {
+    //       this.$store.commit('showMessage', {
+    //         type: 'error',
+    //         message: error.message
+    //       })
+    //     })
+    // },
+    // groupLive() {
+    //   this.$store.commit('updateGroupLiveInfo', {
+    //     groupID: 0,
+    //     anchorID: this.userID,
+    //   })
+    //   this.$bus.$emit('open-group-live', { channel: 2 })
+    // },
   }
 }
 </script>
@@ -212,6 +228,60 @@ export default {
   display: flex;
   width: 100%;
   overflow: hidden;
+  flex-direction: column;
+
+  .bar-top {
+    display flex;
+    background-color: $background-deep-dark;
+    height: 120px;
+    align-items: center;
+    border-bottom: 0.5px solid #ccc
+
+    .left-avatar {
+      display: flex;
+      padding: 20px;
+      width: 40%;
+    }
+
+    .counselor-information {
+      color: #fff;
+      font-size: 16px;
+
+      .coun_name {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .bar-middle {
+    background-color: $background-deep-dark;
+    height: calc(80vh - 420px);
+  }
+
+  .bar-down {
+    background-color: $background-deep-dark;
+    height: 300px;
+    // border-top: 0.5px solid #ccc;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+
+    .stop-btn {
+      width: 80%;
+      margin-bottom: 24px;
+      font-size: 32px;
+      border-radius: 12px;
+    }
+
+    .help-btn {
+      width: 80%;
+      font-size: 32px;
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+  }
 
   .bar-left {
     display: flex;
