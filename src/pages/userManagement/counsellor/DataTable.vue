@@ -221,7 +221,7 @@ export default{
     },
     addBindAjax() {
       //curentBind = {coun_id:id,sup:id_array}
-      this.$ajax.post('/counsellor/bind', this.currentBind).then((res) => {
+      this.$ajax.put('/counsellor/bind', this.currentBind).then((res) => {
         if (res.data) this.data.push(res.data)
         this.$store.commit('showMessage', {
           type: 'success',

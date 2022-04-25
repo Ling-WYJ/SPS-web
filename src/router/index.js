@@ -70,10 +70,21 @@ const routes = [
 			},
 			{
 				//聊天室
-				path: '/chat',
+				path: '/chat-coun',
 				name: 'chat',
-				role:'counsellor,supervisor',
+				role:'counsellor',
 				component: ()=>import('@/pages/chat/chat'),
+				meta: {
+					type: 'chat',
+					title: '咨询会话'
+				},
+			},
+			{
+				//聊天室
+				path: '/chat-sup',
+				name: 'chat-sup',
+				role:'supervisor',
+				component: ()=>import('@/pages/chat/chat-sup'),
 				meta: {
 					type: 'chat',
 					title: '咨询会话'

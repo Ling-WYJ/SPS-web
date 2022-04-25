@@ -2,7 +2,7 @@
   <view-page>
     <!-- 搜索框 -->
     <template slot="search-field">
-      <el-input suffix-icon="el-icon-search" placeholder="请输入姓名" ></el-input>
+      <el-input v-model="searchStr" suffix-icon="el-icon-search" placeholder="请输入搜索内容" ></el-input>
     </template>
     <!-- 表格区 -->
       <el-table :data="filtedData">
@@ -51,21 +51,14 @@ export default {
     return{
       data: [],
       filterType: '',
+      filterDates: null,
       searchStr:'',
-      currentPage: 3,
-      currentPageSize: 8
     }
   },
   mounted() {
     this.update()
   },
   methods: {
-    pageSizeChange(size) {
-      this.currentPageSize = size
-    },
-    pageChange(page) {
-      this.currentPage = page
-    },
     update() {
       this.$ajax.get('/record/all').then((res) => {
         console.log(res)
