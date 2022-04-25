@@ -72,7 +72,7 @@ export default {
         if (res.data) {
           this.data = res.data.RecordList
           for(var i = 0;i <this.data.length ; i++) {
-            this.data[i].begin_time = this.data[i].begin_time.substring(0,10)
+            this.data[i].begin_time = this.data[i].begin_time?this.data[i].begin_time.substring(0,10):''
             this.data[i].period = Math.floor(this.data[i].period /60)
             if(this.data[i].help_or_not == '0')
             {

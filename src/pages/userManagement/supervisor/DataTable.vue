@@ -40,8 +40,10 @@
     <!-- 对话框 -->
     <edit-dialog :show="editShow" title="添加督导" @close="closeEditDialog" @save="saveTodo">
       <!-- 学习内容表单 -->
-      <el-form :model="currentTodo" ref="todoEditForm">
-        <el-form-item label="姓名" prop="sup_name" required>
+      <el-form :model="currentTodo" ref="todoEditForm" inline label-width="100px">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="个人信息" name="first">
+            <el-form-item label="姓名" prop="sup_name" required>
           <el-input v-model="currentTodo.sup_name"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="sup_gender" required>
@@ -54,12 +56,14 @@
           <el-input v-model="currentTodo.sup_identity"></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="sup_phone" required>
-          <el-input v-model="currentTodo.sup_phone" type="textarea"></el-input>
+          <el-input v-model="currentTodo.sup_phone" ></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="sup_email" required>
-          <el-input v-model="currentTodo.sup_email" type="textarea"></el-input>
+          <el-input v-model="currentTodo.sup_email"></el-input>
         </el-form-item>
-        <el-form-item label="用户名" prop="user_name" required>
+          </el-tab-pane>
+           <el-tab-pane label="工作信息" name="second">
+              <el-form-item label="用户名" prop="user_name" required>
           <el-input v-model="currentTodo.user_name"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="user_password" required>
@@ -80,6 +84,10 @@
         <el-form-item label="资质编号" prop="sup_quaNumber" required>
           <el-input v-model="currentTodo.sup_quaNumber"></el-input>
         </el-form-item>
+           </el-tab-pane>
+        </el-tabs>
+        
+       
       </el-form>
     </edit-dialog>
   </view-page>
@@ -96,6 +104,7 @@ export default{
   },
   data() {
     return{
+      activeName:'first',
       data: [],
       filterType: '',
       editShow: false,
@@ -103,6 +112,7 @@ export default{
       currentSups: [],
       searchStr: '',
       sup_id: [],
+      user_id:sessionStorage.getItem('user_id')
     }
   },
   mounted () {
@@ -110,7 +120,7 @@ export default{
   },
   methods: {
     update() {
-      this.$ajax.get('/admin/supervisorList', {params: {user_id: '7'}}).then((res) => {
+      this.$ajax.get('/admin/supervisorList', {params: {user_id: this.user_id}}).then((res) => {
         console.log(res)
         if (res.data) {
           this.data = res.data
@@ -129,6 +139,7 @@ export default{
     },
     closeEditDialog() {
       this.editShow = false
+      this.activeName='first'
     },
     addAjax () {
       this.$ajax.post('/users/supervisor', this.currentTodo).then((res) => {

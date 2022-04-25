@@ -102,11 +102,11 @@
         for (let item of this.selectedConversation) {
           if(item.indexOf(this.TIM.TYPES.CONV_C2C) !== -1) {
             _type = this.TIM.TYPES.CONV_C2C
-            _to = item.substring(3, item.length)
+            _to = item?item.substring(3, item.length):''
           }
           if(item.indexOf(this.TIM.TYPES.CONV_GROUP) !== -1) {
             _type = this.TIM.TYPES.CONV_GROUP
-            _to = item.substring(5, item.length)
+            _to = item?item.substring(5, item.length):''
           }
           // 排序
           this.mergerSort()

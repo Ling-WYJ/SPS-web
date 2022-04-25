@@ -163,7 +163,7 @@
       },
       getSource() {
         return function (source) {
-          return source.substring(15)
+          return source?source.substring(15):''
         }
       },
     },

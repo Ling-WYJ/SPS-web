@@ -4,19 +4,29 @@
   <el-row class="card" :gutter="20" type="flex">
 
     <el-col :span="5" class="user_card">
-      <el-card :body-style="{ padding: '0px' }">
-        <div class="name" style="height:240px">督导</div>
+      <el-card :body-style="{ padding: '0px' }" >
+        <div class="name" style="height:240px;padding:20px">
+          <div class="name" style="margin:12px 0">督导：{{user_name}}</div>
+        <div class="title" style="margin-bottom:15px">我的综合评价</div>
+        <el-rate
+          v-model="rate"
+          disabled
+          show-score
+          text-color="#ff9900"
+          score-template="{value}">
+</el-rate>
+        </div>
       </el-card>
       </el-col>
       <el-col :span="10" >
       <div class="home-time">
        <div class="div">
          <p class="p1">今日咨询数</p>
-         <p class="p2">35</p>
+         <p class="p2">{{today_num}}</p>
        </div>
        <div class="div">
          <p class="p1">今日咨询时长</p>
-         <p class="p2">6:12:30</p>
+         <p class="p2">{{today_time}}</p>
        </div>
       </div>
     </el-col >
@@ -40,7 +50,9 @@
         <el-col style="background: #304156;height:100%;position:absolute;top:260px;left:39%;height:400px" :span="3" class="user_card" >
         <div class="sun-static">
           <div class="title">累计完成咨询</div>
-          <div class="num">33</div>
+          <div class="num">{{all_num}}</div>
+          <div class="title" style="margin-top:20px">累计完成时长</div>
+          <div class="num">{{all_minitus?all_minitus:0}}</div>
         </div>
     </el-col>
     <el-col :span="14" >
@@ -95,13 +107,22 @@ export default {
     data() {
         return {
           countList:[],
-          scheduleData:[]
+          scheduleData:[],
+          user_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID, 
+          rate:'',
+          data:[],
+          user_id:sessionStorage.getItem('user_id'),
+          today_num:0,
+          today_time:0,
+          all_num:0,
+          all_minitus:0
         }
     },
     mounted() {
 
       this.getCounList()
       this.getSchedule()
+      this.update()
 
     },
     components:{
@@ -122,7 +143,7 @@ const item=this.scheduleData.find(item=>this.processDate(item.date)===day)
 return item?'值班':''
       },
        getCounList() {
-        this.$ajax.get('/supervisor/bindOnlineCounsellorList',{params: {user_id: '27'}}).then(res=>{
+        this.$ajax.get('/supervisor/bindOnlineCounsellorList',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
           if(res.data) {
             this.countList=res.data
@@ -130,11 +151,60 @@ return item?'值班':''
         })
       },
       getSchedule() {
-        this.$ajax.get('/schedule/list',{params: {user_id:'29'}}).then((res) => {
+        this.$ajax.get('/schedule/list',{params: {user_id: this.user_id}}).then((res) => {
           console.log(res)
           if (res.data) {
             this.scheduleData = res.data
             console.log( res.data)
+          }
+        })
+      },
+      update() {
+        this.$ajax.get('/auth/getInfo',{params: {user_name:this.user_name}}).then((res) => {
+          console.log(res)
+          if (res.data) {
+            this.data = res.data
+            // this.user_id=this.data.user_id
+            // this.user_name=this.data.user_name
+            this.getScore(this.user_id)
+            this.getTodayNum(this.user_id)
+            this.getTodayTime(this.user_id)
+            this.getSum(this.user_id)
+          }
+        })
+      },
+      getScore(user_id) {
+        console.log(this.user_id)
+        this.$ajax.get('/feedback/score',{params: {coun_id:user_id}}).then((res) => {
+          console.log(res)
+          if (res.data) {
+            this.score = res.data.score
+          }
+        })
+      },
+      // 获取今日咨询数
+      getTodayNum(user_id) {
+        this.$ajax.get('/record/todayNum',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.today_num = res.data[0].today_num
+                      console.log(this.today_num,111)
+          }
+        })
+      },
+      // 获取今日咨询时长
+      getTodayTime(user_id) {
+        this.$ajax.get('/record/todayTime',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.today_time = res.data[0].today_time
+          }
+        })
+      },
+      // 获取累计完成时长和累计数
+      getSum(user_id) {
+        this.$ajax.get('/record/allNumandTime',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.all_num = res.data[0].all_num
+            this.all_minitus = res.data[0].all_minitus
           }
         })
       },

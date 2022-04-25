@@ -15,6 +15,7 @@
         </el-calendar>
 
         <el-aside width="200px" style="background-color: rgb(256, 256, 256)">
+          <h3 style="text-align:center">{{choseDay.toISOString().split('T')[0]}}</h3>
         <el-menu  default-active="1"  class="el-menu-demo" mode="horizontal" >
           <el-menu-item index="1" style="width: 100px" @click="changeType(1)">&nbsp;咨询师</el-menu-item>
           <el-menu-item index="2" style="width: 100px" @click="changeType(2)">&nbsp;&nbsp;&nbsp;督导</el-menu-item>
@@ -38,12 +39,13 @@
               label="操作"
               width="60">
               <template slot-scope="scope" style="color:#F56C6C; font-color:#F56C6C">
-                <el-button
+                <el-button type="danger" icon="el-icon-delete" size="mini" circle  @click.native.prevent="handelDel(scope.row)"> </el-button>
+                <!-- <el-button
                   @click.native.prevent="handelDel(scope.row)"
                   type="text"
                   size="small">
                   移除
-                </el-button>
+                </el-button> -->
               </template>
             </el-table-column>
           </el-table>
@@ -84,7 +86,8 @@ export default {
         supervisorList:[],//督导列表
         counsellorList:[],//咨询师列表
         counNumData:[],
-        superNumData:[]
+        superNumData:[],
+        user_id:sessionStorage.getItem('user_id')
       }
     },
     watch:{
@@ -235,7 +238,7 @@ export default {
       },
       // 获取督导列表
       getSupervisorList() {
-        this.$ajax.get('/admin/supervisorList', {params: {user_id: '7'}}).then((res) => {
+        this.$ajax.get('/admin/supervisorList', {params: {user_id: this.user_id}}).then((res) => {
           if (res.data) {
             this.supervisorList = res.data
           }
@@ -246,7 +249,7 @@ export default {
       },
       // 获取咨询师列表
       getCounsellorList() {
-        this.$ajax.get('/admin/counsellorList', {params: {user_id: '7'}}).then((res) => {
+        this.$ajax.get('/admin/counsellorList', {params: {user_id: this.user_id}}).then((res) => {
         if (res.data) {
           this.counsellorList = res.data
         }
@@ -257,13 +260,13 @@ export default {
       },
       // 获取排班咨询师人数
       getCounNum() {
-        this.$ajax.get('/admin/TodayCounOnDuty',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/TodayCounOnDuty',{params: {user_id: this.user_id}}).then(res=>{
           this.counNumData=res.data
           console.log(this.counNumData,'counNumData')
         })
       },
       getSupNum() {
-        this.$ajax.get('/admin/TodaySupOnDuty',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/TodaySupOnDuty',{params: {user_id: this.user_id}}).then(res=>{
           this.superNumData=res.data
           console.log(this.superNumData,'this.sssss')
         })
