@@ -5,8 +5,8 @@
         <my-profile />
       </div>
       <div class="counselor-information">
-        <div class="coun_name">咨询师：xxx</div>
-        <div class="coun_tel">123****8910</div>
+        <div class="coun_name">咨询师：{{userName}}</div>
+        <div class="coun_tel">电话：{{userTel.slice(0,3)}}****{{userTel.slice(7,11)}}</div>
       </div>
     </div>
     <div class="bar-middle">
@@ -94,12 +94,15 @@ export default {
   data() {
     return {
       active: activeName.CONVERSATION_LIST,
-      activeName: activeName
+      activeName: activeName,
+      userName: null,
+      userTel: null,
     }
   },
   computed: {
     ...mapGetters(['totalUnreadCount']),
     ...mapState({
+      currentUserProfile: state => state.user.currentUserProfile,
       userID: state => state.user.userID,
       applicationUnreadCount: state => state.friend.unreadCount,
     }),
@@ -125,11 +128,25 @@ export default {
     this.$bus.$on('checkoutConversation',()=>{
       this.checkoutActive(activeName.CONVERSATION_LIST)
     })
-
+    this.getUserInfo();
   },
+
   methods: {
     checkoutActive(name) {
       this.active = name
+    },
+    getUserInfo() {
+      const userID = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
+        console.log(res)
+        if (res.data) {
+          this.userName = res.data.coun_name;
+          this.userTel = res.data.coun_phone;
+        }
+      }).catch(err => this.$notify({
+        type: 'error',
+        message: err
+      }))
     },
     logout() {
       this.$store.dispatch('logout')
@@ -137,7 +154,6 @@ export default {
       window.localStorage.clear()
       this.$router.push('/login')
     },
-
     handleClick(event) {
       switch (event.target.id) {
         case activeName.CONVERSATION_LIST:
