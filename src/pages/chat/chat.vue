@@ -242,7 +242,7 @@ export default {
       try{
         JSON.parse(str)
         return true
-      }catch {
+      } catch(err) {
         return false
       }
     },

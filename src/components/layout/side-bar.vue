@@ -9,8 +9,12 @@
         <div class="coun_tel">123****8910</div>
       </div>
     </div>
-    <div class="bar-down">
+    <div class="bar-middle">
       <conversation-list v-show="showConversationList" />
+    </div>
+    <div class="bar-down">
+      <button class="stop-btn">结束咨询</button>
+      <button class="help-btn">请求督导</button>
     </div>
     <!-- <div class="bar-left">
       <my-profile />
@@ -249,9 +253,34 @@ export default {
     }
   }
 
+  .bar-middle {
+    background-color: $background-deep-dark;
+    height: calc(80vh - 420px);
+  }
+
   .bar-down {
     background-color: $background-deep-dark;
-    height: calc(80vh - 120px);
+    height: 300px;
+    // border-top: 0.5px solid #ccc;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+
+    .stop-btn {
+      width: 80%;
+      margin-bottom: 24px;
+      font-size: 32px;
+      border-radius: 12px;
+    }
+
+    .help-btn {
+      width: 80%;
+      font-size: 32px;
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
   }
 
   .bar-left {
