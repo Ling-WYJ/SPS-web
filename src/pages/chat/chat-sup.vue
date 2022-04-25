@@ -8,7 +8,7 @@
       <div class="chat-wrapper">
         <el-row>
           <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
-            <side-bar />
+            <side-bar-sup />
           </el-col>
           <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="17">
             <current-conversation />
@@ -25,7 +25,7 @@
 import { Notification } from 'element-ui'
 import { mapState } from 'vuex'
 import CurrentConversation from '@/components/conversation/current-conversation'
-import SideBar from '@/components/layout/side-bar'
+import SideBarSup from '@/components/layout/side-bar-sup'
 // import Login from '@/components/user/login'
 import ImagePreviewer from '@/components/message/image-previewer.vue'
 // import QrCodeList from '@/components/qr-code-list'
@@ -40,7 +40,7 @@ export default {
         }
     },
     components: {
-    SideBar,
+    SideBarSup,
     CurrentConversation,
     ImagePreviewer,
     GroupLive,

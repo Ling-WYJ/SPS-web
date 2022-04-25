@@ -5,7 +5,7 @@
         <my-profile />
       </div>
       <div class="counselor-information">
-        <div class="coun_name">咨询师：{{userName}}</div>
+        <div class="coun_name">督导：{{userName}}</div>
         <div class="coun_tel">电话：{{userTel.slice(0,3)}}****{{userTel.slice(7,11)}}</div>
       </div>
     </div>
@@ -14,7 +14,6 @@
     </div>
     <div class="bar-down">
       <button class="stop-btn">结束咨询</button>
-      <button class="help-btn">请求督导</button>
     </div>
     <!-- <div class="bar-left">
       <my-profile />
@@ -83,7 +82,7 @@ const activeName = {
   // GROUP_LIVE: 'group-live',
 }
 export default {
-  name: 'SideBar',
+  name: 'SideBarSup',
   components: {
     MyProfile,
     ConversationList,
@@ -140,8 +139,8 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
-          this.userName = res.data.coun_name;
-          this.userTel = res.data.coun_phone;
+          this.userName = res.data.sup_name;
+          this.userTel = res.data.sup_phone;
         }
       }).catch(err => this.$notify({
         type: 'error',
