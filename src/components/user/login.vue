@@ -149,6 +149,11 @@ export default {
               sdkAppID: window.genTestUserSig('').SDKAppID,
               role: data.role
             }))
+            await this.$ajax.get('/auth/getInfo',{params: {user_name:this.form.user_name}}).then((res) => {
+          if (res.data) {
+            sessionStorage.setItem('user_id',res.data.user_id)
+          }
+        })
             console.warn(this.$store)
             this.$store.commit('showMessage', {
               type: 'success',

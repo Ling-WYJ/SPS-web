@@ -1,6 +1,5 @@
 <template>
-  <div>
-    
+  <div>   
     <div id="myChart1" :style="{  height: '240px' }"></div>
   </div>
 </template>
@@ -9,21 +8,22 @@
 import echarts from 'echarts'
 export default {
   data() {
-    return {}
+    return {
+      user_id:sessionStorage.getItem('user_id'),
+    }
   },
   mounted() {
     this.getRecordNum()
   },
   methods: {
-    // 最近7天的咨询量
       getRecordNum() {
-        this.$ajax.get('/admin/recordNumRecent',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/recordNumToday',{params: {user_id: this.user_id}}).then(res=>{
           if(res.data) {
-            const xData=[]
+            console.log(res.data,111122)
+            const xData=['00:00','04:00','08:00','12:00','16:00','20:00']
             const valData=[]
             res.data.forEach(item=>{
-              xData.push(item.days)
-              valData.push(item.record_num)
+              valData.push(item.count)
             })
             this.drawLine(xData,valData)
           }

@@ -5,11 +5,11 @@
       <div class="home-time">
        <div class="div">
          <p class="p1">今日咨询数</p>
-         <p class="p2">35</p>
+         <p class="p2">{{todayNum}}</p>
        </div>
        <div class="div">
          <p class="p1">今日咨询时长</p>
-         <p class="p2">6:12:30</p>
+         <p class="p2">{{todayTime}}</p>
        </div>
       </div>
 
@@ -70,7 +70,7 @@
 </el-row>
 <el-row style="margin-top:20px" :gutter="20">
   <el-col style="background: #fff;" :span="10" >
-    <div style="padding:10px 20px;line-height:28px">4月数量统计
+    <div style="padding:10px 20px;line-height:28px">7日咨询数量统计
     </div>
     <div >
       <MonthSumChart/>
@@ -126,6 +126,10 @@ MonthSumChart
 },
     data() {
         return {
+          todayNum:0,
+          todayTime:0,
+          user_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
+          user_id:sessionStorage.getItem('user_id'),
            userImg:require('../../../assets/image/user.png'),
 
         tableData0: [{
@@ -300,17 +304,19 @@ MonthSumChart
       this.getCounThisMonthRank()
       this.getCounList()
       this.getSupList()
+      this.getTodayNum()
+      this.getTodayTime()
     },
     methods: {
       // 获取个人信息
       getInfo() {
-        this.$ajax.get('/auth/getInfo',{params: {user_name: 'bbb'}}).then(res=>{
+        this.$ajax.get('/auth/getInfo',{params: {user_name: this.user_name}}).then(res=>{
           console.log(res,123)
         })
       },
       // 获取所有咨询师评分排行
       getCounRank() {
-        this.$ajax.get('/admin/counsellorScoreRank',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/counsellorScoreRank',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
           if(res.data) {
             this.counRankData=res.data
@@ -319,7 +325,7 @@ MonthSumChart
       },
       // 获取所有咨询师评分排行
       getCounRecordNum() {
-        this.$ajax.get('/admin/counsellorScoreRank',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/counsellorScoreRank',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
           if(res.data) {
             this.counRankData=res.data
@@ -328,7 +334,7 @@ MonthSumChart
       },
       // 获取咨询师排行榜
       getCounThisMonthRank() {
-        this.$ajax.get('/admin/numThisMonthRank',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/numThisMonthRank',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
           if(res.data) {
             this.MonthRankData=res.data
@@ -337,7 +343,7 @@ MonthSumChart
       },
       // 获取当前在线咨询师列表
       getCounList() {
-        this.$ajax.get('/admin/onlineCounsellorList',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/onlineCounsellorList',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
           if(res.data) {
             this.countList=res.data
@@ -346,13 +352,29 @@ MonthSumChart
       },
       // 获取当前督导在线列表
       getSupList() {
-        this.$ajax.get('/admin/onlineSupervisorList',{params: {user_id: '7'}}).then(res=>{
+        this.$ajax.get('/admin/onlineSupervisorList',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
           if(res.data) {
             this.superList=res.data
           }
         })
       },
+      // 获取今日咨询数
+      getTodayNum() {
+        this.$ajax.get('/admin/todayNum',{params: {user_id: this.user_id}}).then(res=>{
+          if(res.data) {
+            this.todayNum=res.data[0].today_num
+          }
+        })
+      },
+      // 获取今日时长
+      getTodayTime() {
+        this.$ajax.get('/admin/todayTime',{params: {user_id: this.user_id}}).then(res=>{
+          if(res.data) {
+            this.todayTime=res.data[0].today_time
+          }
+        })
+      }
 
     }
 }
