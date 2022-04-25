@@ -13,7 +13,7 @@
       <conversation-list v-show="showConversationList" />
     </div>
     <div class="bar-down">
-      <button class="stop-btn">结束咨询</button>
+      <button class="stop-btn" @click="handleEndChat">结束咨询</button>
       <button class="help-btn" @click="handleSelectSupBtn">请求督导</button>
     </div>
     <el-dialog title="选择督导" :visible.sync="showDialog" width="20%">
@@ -164,6 +164,19 @@ export default {
         if (res.data) {
           this.options = res.data
         }
+      })
+    },
+    handleEndChat() {
+      const record_id = 82;
+      const isHelp = this.selectSupID === '' ? 0 : 1;
+      const sup_id = this.selectSupID === '' ? -1 : this.selectSupID;
+      var times = Date.now();
+      var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
+      this.$ajax.post('/record/complete', {
+        record_id: record_id,
+        help_or_not: isHelp,
+        sup_id: sup_id,
+        end_time,
       })
     },
     checkoutActive(name) {
