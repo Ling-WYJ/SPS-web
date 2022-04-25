@@ -13,9 +13,27 @@
       <conversation-list v-show="showConversationList" />
     </div>
     <div class="bar-down">
-      <button class="stop-btn">结束咨询</button>
-      <button class="help-btn">请求督导</button>
+      <button class="stop-btn" @click="handleEndChat">结束咨询</button>
+      <button class="help-btn" @click="handleSelectSupBtn">请求督导</button>
     </div>
+    <el-dialog title="选择督导" :visible.sync="showDialog" width="20%">
+      <div class="select-sup">
+        <div class="select-sup-text">选择已绑定的督导：</div>
+        <el-select v-model="selectSupID" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.user_name"
+            :label="item.sup_name"
+            :value="item.user_name"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showDialog = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- <div class="bar-left">
       <my-profile />
       <div class="tab-items" @click="handleClick">
@@ -95,8 +113,12 @@ export default {
     return {
       active: activeName.CONVERSATION_LIST,
       activeName: activeName,
+      user_id: null,
       userName: null,
       userTel: null,
+      showDialog: false,
+      options: null,
+      selectSupID: ''
     }
   },
   computed: {
@@ -132,6 +154,31 @@ export default {
   },
 
   methods: {
+    getBindSupList() {
+      this.$ajax.get('/counsellor/bindSupervisorList', {
+        params: {
+          user_id: this.user_id
+        }
+      }).then((res) => {
+        console.log(res)
+        if (res.data) {
+          this.options = res.data
+        }
+      })
+    },
+    handleEndChat() {
+      const record_id = 82;
+      const isHelp = this.selectSupID === '' ? 0 : 1;
+      const sup_id = this.selectSupID === '' ? -1 : this.selectSupID;
+      var times = Date.now();
+      var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
+      this.$ajax.post('/record/complete', {
+        record_id: record_id,
+        help_or_not: isHelp,
+        sup_id: sup_id,
+        end_time,
+      })
+    },
     checkoutActive(name) {
       this.active = name
     },
@@ -140,13 +187,38 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
+          this.user_id = res.data.user_id;
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
+          this.getBindSupList();
         }
       }).catch(err => this.$notify({
         type: 'error',
         message: err
       }))
+    },
+    handleSelectSupBtn() {
+      this.showDialog = true
+    },
+    handleConfirm() {
+      if (this.selectSupID !== '@TIM#SYSTEM') {
+        this.$store
+          .dispatch('checkoutConversation', `C2C${this.selectSupID}`)
+          .then(() => {
+            this.showDialog = false
+          }).catch(() => {
+          this.$store.commit('showMessage', {
+            message: '没有找到该用户',
+            type: 'warning'
+          })
+        })
+      } else {
+        this.$store.commit('showMessage', {
+          message: '没有找到该用户',
+          type: 'warning'
+        })
+      }
+      this.selectSupID = ''
     },
     logout() {
       this.$store.dispatch('logout')
@@ -296,6 +368,15 @@ export default {
       font-size: 32px;
       border-radius: 12px;
       margin-bottom: 48px;
+    }
+  }
+
+  .select-sup {
+    display: flex !important;
+    align-items: center;
+
+    .select-sup-text {
+      margin-right: 32px;
     }
   }
 
