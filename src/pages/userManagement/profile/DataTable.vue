@@ -110,7 +110,7 @@ export default{
   },
   methods: {
     update() {
-      this.$ajax.get('/admin/supervisorList', {params: {user_id: '7'}}).then((res) => {
+      this.$ajax.get('/admin/supervisorList', {params: {user_id: this.user_id}}).then((res) => {
         console.log(res)
         if (res.data) {
           this.data = res.data

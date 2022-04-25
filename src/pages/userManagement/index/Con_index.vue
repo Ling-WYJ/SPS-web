@@ -4,31 +4,41 @@
   <el-row class="card" :gutter="20" type="flex">
 
     <el-col :span="7" class="user_card">
-      <el-card :body-style="{ padding: '0px' }" style="height:300px">
-        <div class="name">咨询师</div>
-        <div class="title">我的综合评价</div>
-        <ul class="star">
+      <el-card :body-style="{ padding: '0px' }" style="height:300px;padding:30px">
+        <div class="name" style="margin:12px 0">咨询师：{{user_name}}</div>
+        <div class="title" style="margin-bottom:15px">我的综合评价</div>
+        <!-- <ul class="star" style="padding:0;margin:12px 0"> -->
           <!-- eslint-disable-next-line -->
-          <span v-for="(itemClass,index) in itemClasses" :class="itemClass" class="star-item" track-by="index"></span>
+          <!-- <span v-for="(itemClass,index) in itemClasses" :class="itemClass" class="star-item" track-by="index"></span> -->
           <!--性能优化 track-by 数据不改变时不会重新渲染-->
-        </ul>
+        <!-- </ul> -->
+        <!-- <el-rate value="rate"></el-rate> -->
+        <el-rate
+          v-model="rate"
+          disabled
+          show-score
+          text-color="#ff9900"
+          score-template="{value}">
+</el-rate>
       </el-card>
       </el-col>
     <el-col style="background: #304156;height:100%" :span="3" class="user_card" >
         <div class="sun-static" style="height:300px">
           <div class="title">累计完成咨询</div>
-          <div class="num">33</div>
+          <div class="num">{{all_num}}</div>
+          <div class="title" style="margin-top:20px">累计完成时长</div>
+          <div class="num">{{all_minitus}}</div>
         </div>
     </el-col>
     <el-col :span="10" style="position:absolute;left:0;top:320px;height:">
       <div class="home-time" style="height:340px">
        <div class="div">
          <p class="p1">今日咨询数</p>
-         <p class="p2">35</p>
+         <p class="p2">{{today_num}}</p>
        </div>
        <div class="div">
          <p class="p1">今日咨询时长</p>
-         <p class="p2">6:12:30</p>
+         <p class="p2">{{today_time}}</p>
        </div>
       </div>
     </el-col >
@@ -83,9 +93,15 @@ export default {
 
     data() {
         return {
-          user_id:[],
+          user_id:sessionStorage.getItem('user_id'),
+          user_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
           score: [],
-          scheduleData:[]
+          scheduleData:[],
+          today_num:0,
+          today_time:0,
+          all_num:0,
+          all_minitus:0
+          // rate:0
         }
     },
     components:{
@@ -100,6 +116,33 @@ export default {
 
     },
     methods: {
+      // 获取今日咨询数
+      getTodayNum(user_id) {
+        this.$ajax.get('/record/todayNum',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.today_num = res.data[0].today_num
+                      console.log(this.today_num,111)
+          }
+        })
+      },
+      // 获取今日咨询时长
+      getTodayTime(user_id) {
+        this.$ajax.get('/record/todayTime',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.today_time = res.data[0].today_time
+          }
+        })
+      },
+      // 获取累计完成时长和累计数
+      getSum(user_id) {
+        this.$ajax.get('/record/allNumandTime',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.all_num = res.data[0].all_num
+            this.all_minitus = res.data[0].all_minitus
+          }
+        })
+      },
+
        // 日期转换
       processDate(date) {
         console.log(new Date(new Date(date).getTime()-86400000).toISOString().split('T')[0])
@@ -116,11 +159,14 @@ export default {
         })
       },
       update() {
-        this.$ajax.get('/auth/getInfo',{params: {user_name:'ss'}}).then((res) => {
+        this.$ajax.get('/auth/getInfo',{params: {user_name:this.user_name}}).then((res) => {
           console.log(res)
           if (res.data) {
             this.data = res.data
-            this.getScore(this.data.user_id)
+            this.getScore(this.user_id)
+            this.getTodayNum(this.user_id)
+            this.getTodayTime(this.user_id)
+            this.getSum(this.user_id)
           }
         })
       },
@@ -139,23 +185,27 @@ return item?'值班':''
         })
       },
     },
-
     computed:{ //计算属性
-      itemClasses() {
-      let result = []
+      rate() {
+      let result = 0
       let score = Math.floor(this.score * 2 ) / 2
       let hasDecimal = score % 1 !== 0
       let integer = Math.floor(score)
       for(let i=0;i<integer;i++) {
-        result.push('on')
+        // result.push('on')
+        result++
       }
       if(hasDecimal) {
-        result.push('half')
+        // result.push('half')
+        result=result+0.5
       }
       while(result.length < 5) {
-        result.push('off')
+        // result.push('off')
       }
       return result
+    },
+    userName() {
+      return this.$store.state.user.userID
     }
   }
 
