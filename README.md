@@ -13,6 +13,6 @@ Web前端：周恬慧、吴宜珈、张灏琪、陈怡翃
 Web后端：刘思琪、王睿珺
 
 ### Test Account:
-Admin: {username: "bbb", pwd: "123456"}  
-Coun: {username: "ss", pwd: "123456"}  
-Sup: {username: "ttt", pwd: "123456"}
+Admin: {username: "admin", pwd: "123456"}  
+Coun: {username: "coun", pwd: "123456"}  
+Sup: {username: "sup", pwd: "123456"}
