@@ -96,8 +96,7 @@ export default {
     }
 .right {
   display: inline-block;
- width: 100%;
- 
+  width: 100%;
   margin-left: 200px;
 }
 .app-mian{

@@ -36,7 +36,8 @@ import { ACTION } from '@/utils/trtcCustomMessageMap'
 export default {
     name: 'chat',
     data() {
-        return {}
+        return {
+        }
     },
     components: {
     SideBar,
@@ -64,6 +65,7 @@ export default {
   },
   mounted() {
     this.reLogin()
+    // window.location.reload()
     // // 初始化监听器
     // this.initListener()
   },
@@ -358,5 +360,8 @@ export default {
 </script>
 
 <style >
-
+.loading {
+  width: calc(100vw - 240px);
+  height: calc(100vh - 90px);
+}
 </style>
