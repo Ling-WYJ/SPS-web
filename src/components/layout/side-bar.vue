@@ -94,8 +94,6 @@ export default {
   },
 
   methods: {
-<<<<<<< HEAD
-=======
     getBindSupList() {
       this.$ajax.get('/counsellor/bindSupervisorList', {
         params: {
@@ -130,7 +128,6 @@ export default {
         }
       })
     },
->>>>>>> Dev_wyj
     checkoutActive(name) {
       this.active = name
     },
@@ -139,10 +136,7 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
-<<<<<<< HEAD
-=======
           this.coun_id = res.data.user_id;
->>>>>>> Dev_wyj
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
         }
@@ -151,8 +145,6 @@ export default {
         message: err
       }))
     },
-<<<<<<< HEAD
-=======
     handleSelectSupBtn() {
       this.showDialog = true
     },
@@ -184,7 +176,6 @@ export default {
       this.selectSupID = ''
       this.showBottonBtn = false
     },
->>>>>>> Dev_wyj
     logout() {
       this.$store.dispatch('logout')
       window.sessionStorage.clear()
