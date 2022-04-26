@@ -13,7 +13,7 @@
       <conversation-list v-show="showConversationList" />
     </div>
     <div class="bar-down">
-      <button class="stop-btn" @click="handleEndChat" v-show="showBottonBtn">结束咨询</button>
+      <button class="stop-btn" @click="handleEndChat" v-show="showBottonBtn">结束会话</button>
       <button class="help-btn" @click="handleSelectSupBtn" v-show="showBottonBtn">请求督导</button>
     </div>
     <el-dialog title="选择督导" :visible.sync="showDialog" width="20%">
@@ -75,7 +75,10 @@ export default {
       return this.active === activeName.CONVERSATION_LIST
     },
     showBottonBtn() {
-      return this.currentConversation.conversationID != undefined;
+      if (this.currentConversation.conversationID != undefined
+        && this.currentConversation.userProfile.role === 1
+      ) return false;
+      else return this.currentConversation.conversationID != undefined;
     },
     showAddButton() {
       return [activeName.CONVERSATION_LIST].includes(
@@ -172,6 +175,7 @@ export default {
         sup: this.selectSupID,
       })
       this.selectSupID = ''
+      this.showBottonBtn = false
     },
     logout() {
       this.$store.dispatch('logout')
