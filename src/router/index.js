@@ -204,9 +204,9 @@ router.beforeEach((to,form,next)=>{
 	if(to.path !== '/login') {
 		let user_info = JSON.parse(sessionStorage.getItem('GET_USER_INFO'))
 		if(user_info && user_info.role) {
-		  next()
+			next()
 		}else{
-		  next({path:'/login'})
+			next({path:'/login'})
 		}
 	}else{
 		next()

@@ -75,9 +75,6 @@
         <el-form-item label="职称" prop="sup_title" required>
           <el-input v-model="currentTodo.sup_title"></el-input>
         </el-form-item>
-        <el-form-item label="角色" prop="role" required>
-          <el-input v-model="currentTodo.role"></el-input>
-        </el-form-item>
         <el-form-item label="督导资质" prop="sup_qualification" required>
           <el-input v-model="currentTodo.sup_qualification"></el-input>
         </el-form-item>
@@ -86,8 +83,8 @@
         </el-form-item>
            </el-tab-pane>
         </el-tabs>
-        
-       
+
+
       </el-form>
     </edit-dialog>
   </view-page>
@@ -142,6 +139,7 @@ export default{
       this.activeName='first'
     },
     addAjax () {
+      this.currentTodo['role'] = 'supervisor'
       this.$ajax.post('/users/supervisor', this.currentTodo).then((res) => {
         console.log(res)
 
