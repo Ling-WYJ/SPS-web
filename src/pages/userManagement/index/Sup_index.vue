@@ -41,8 +41,8 @@
   </el-col>
         <el-col style="background: #304156;height:100%;position:absolute;top:260px;left:39%;height:400px" :span="3" class="user_card" >
         <div class="sun-static">
-          <div class="title">累计完成咨询</div>
-          <div class="num">{{all_num}}</div>
+          <div class="title">当前会话数</div>
+          <div class="num">{{conversation_num}}</div>
           <div class="title" style="margin-top:20px">累计完成时长</div>
           <div class="num">{{all_minitus?all_minitus:0}}</div>
         </div>
@@ -107,7 +107,8 @@ export default {
           today_num:0,
           today_time:0,
           all_num:0,
-          all_minitus:0
+          all_minitus:0,
+          conversation_num:0
         }
     },
     mounted() {
@@ -165,21 +166,31 @@ return item?'值班':''
           }
         })
       },
-      getScore(user_id) {
-        console.log(this.user_id)
-        this.$ajax.get('/feedback/score',{params: {coun_id:user_id}}).then((res) => {
-          console.log(res)
-          if (res.data) {
-            this.score = res.data.score
-          }
-        })
-      },
+
+      // getScore(user_id) {
+      //   console.log(this.user_id)
+      //   this.$ajax.get('/feedback/score',{params: {coun_id:user_id}}).then((res) => {
+      //     console.log(res)
+      //     if (res.data) {
+      //       this.score = res.data.score
+      //     }
+      //   })
+      // },
       // 获取今日咨询数
       getTodayNum(user_id) {
         this.$ajax.get('/record/todayNum',{params: {user_id}}).then((res) => {
           if (res.data) {
             this.today_num = res.data[0].today_num
                       console.log(this.today_num,111)
+          }
+        })
+      },
+       // 获取当前会话数
+      getConversationNum(user_id) {
+        this.$ajax.get('/supervisor/getConversationNum',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.conversation_num = res.data[0].conversation_num
+                      console.log(this.conversation_num)
           }
         })
       },
@@ -192,14 +203,14 @@ return item?'值班':''
         })
       },
       // 获取累计完成时长和累计数
-      getSum(user_id) {
-        this.$ajax.get('/record/allNumandTime',{params: {user_id}}).then((res) => {
-          if (res.data) {
-            this.all_num = res.data[0].all_num
-            this.all_minitus = res.data[0].all_minitus
-          }
-        })
-      },
+      // getSum(user_id) {
+      //   this.$ajax.get('/record/allNumandTime',{params: {user_id}}).then((res) => {
+      //     if (res.data) {
+      //       this.all_num = res.data[0].all_num
+      //       this.all_minitus = res.data[0].all_minitus
+      //     }
+      //   })
+      // },
      }
 
 }
