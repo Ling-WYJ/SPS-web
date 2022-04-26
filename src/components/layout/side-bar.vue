@@ -13,59 +13,6 @@
       <conversation-list v-show="showConversationList" />
     </div>
     <div class="bar-down">
-<<<<<<< HEAD
-      <button class="stop-btn">结束咨询</button>
-      <button class="help-btn">请求督导</button>
-    </div>
-    <!-- <div class="bar-left">
-      <my-profile />
-      <div class="tab-items" @click="handleClick">
-        <div
-          id="conversation-list"
-          class="iconfont icon-conversation"
-          :class="{ active: showConversationList }"
-          title="会话列表"
-        >
-          <sup class="unread" v-if="totalUnreadCount !== 0">
-            <template v-if="totalUnreadCount > 99">99+</template>
-            <template v-else>{{totalUnreadCount}}</template>
-          </sup>
-        </div>
-        <div
-          id="group-list"
-          class="iconfont icon-group"
-          :class="{ active: showGroupList }"
-          title="群组列表"
-        ></div>
-        <div
-          id="friend-list"
-          class="iconfont icon-contact"
-          :class="{ active: showFriendList }"
-          title="好友列表"
-        >
-          <sup class="unread" v-if="applicationUnreadCount !== 0">
-            <template v-if="applicationUnreadCount > 99">99+</template>
-            <template v-else>{{applicationUnreadCount}}</template>
-          </sup>
-        </div>
-        <div
-          id="black-list"
-          class="iconfont icon-blacklist"
-          :class="{ active: showBlackList }"
-          title="黑名单列表"
-        ></div>
-      </div>
-      <div class="bottom">
-        <div class="iconfont icon-tuichu" @click="logout" title="退出"></div>
-      </div>
-    </div>
-    <div class="bar-right">
-      <conversation-list v-show="showConversationList" />
-      <group-list v-show="showGroupList" />
-      <friend-list v-show="showFriendList" />
-      <black-list v-show="showBlackList" />
-    </div> -->
-=======
       <button class="stop-btn" @click="handleEndChat" v-show="showBottonBtn">结束会话</button>
       <button class="help-btn" @click="handleSelectSupBtn" v-show="showBottonBtn">请求督导</button>
     </div>
@@ -87,7 +34,6 @@
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </span>
     </el-dialog>
->>>>>>> main
   </div>
 </template>
 
@@ -109,17 +55,12 @@ export default {
     return {
       active: activeName.CONVERSATION_LIST,
       activeName: activeName,
-<<<<<<< HEAD
-      userName: null,
-      userTel: null,
-=======
       coun_id: null,
       userName: null,
       userTel: null,
       showDialog: false,
       options: null,
       selectSupID: '',
->>>>>>> main
     }
   },
   computed: {
@@ -153,43 +94,6 @@ export default {
   },
 
   methods: {
-<<<<<<< HEAD
-=======
-    getBindSupList() {
-      this.$ajax.get('/counsellor/bindSupervisorList', {
-        params: {
-          user_id: this.coun_id
-        }
-      }).then((res) => {
-        console.log(res)
-        if (res.data) {
-          this.options = res.data
-        }
-      })
-    },
-    handleEndChat() {
-      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
-      var visitor = this.currentConversation.userProfile.userID;
-      var isHelp = this.selectSupID === '' ? 0 : 1;
-      var sup = this.selectSupID === '' ? '无' : this.selectSupID;
-      var times = Date.now();
-      var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
-      this.$ajax.post('/record/complete', {
-        visitor,
-        coun: coun,
-        help_or_not: isHelp,
-        sup: sup,
-        end_time,
-      }).then((res) => {
-        if (res.status === 200) {
-          this.$notify({
-            type: 'success',
-            message: '已结束与该访客的对话。'
-          })
-        }
-      })
-    },
->>>>>>> main
     checkoutActive(name) {
       this.active = name
     },
@@ -198,10 +102,6 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
-<<<<<<< HEAD
-=======
-          this.coun_id = res.data.user_id;
->>>>>>> main
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
         }
@@ -210,40 +110,6 @@ export default {
         message: err
       }))
     },
-<<<<<<< HEAD
-=======
-    handleSelectSupBtn() {
-      this.showDialog = true
-    },
-    handleConfirm() {
-      if (this.selectSupID !== '@TIM#SYSTEM') {
-        this.$store
-          .dispatch('checkoutConversation', `C2C${this.selectSupID}`)
-          .then(() => {
-            this.showDialog = false
-          }).catch(() => {
-          this.$store.commit('showMessage', {
-            message: '该督导当前无法提供服务，请重新绑定督导',
-            type: 'warning'
-          })
-        })
-      } else {
-        this.$store.commit('showMessage', {
-          message: '该督导当前无法提供服务，请重新绑定督导',
-          type: 'warning'
-        })
-      }
-      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
-      var visitor = this.currentConversation.userProfile.userID;
-      this.$ajax.post('/record/help', {
-        visitor: visitor,
-        coun: coun,
-        sup: this.selectSupID,
-      })
-      this.selectSupID = ''
-      this.showBottonBtn = false
-    },
->>>>>>> main
     logout() {
       this.$store.dispatch('logout')
       window.sessionStorage.clear()
