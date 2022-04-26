@@ -13,6 +13,7 @@
       <conversation-list v-show="showConversationList" />
     </div>
     <div class="bar-down">
+<<<<<<< HEAD
       <button class="stop-btn">结束咨询</button>
       <button class="help-btn">请求督导</button>
     </div>
@@ -64,6 +65,29 @@
       <friend-list v-show="showFriendList" />
       <black-list v-show="showBlackList" />
     </div> -->
+=======
+      <button class="stop-btn" @click="handleEndChat" v-show="showBottonBtn">结束会话</button>
+      <button class="help-btn" @click="handleSelectSupBtn" v-show="showBottonBtn">请求督导</button>
+    </div>
+    <el-dialog title="选择督导" :visible.sync="showDialog" width="20%">
+      <div class="select-sup">
+        <div class="select-sup-text">选择已绑定的督导：</div>
+        <el-select v-model="selectSupID" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.user_name"
+            :label="item.sup_name"
+            :value="item.user_name"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showDialog = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
+>>>>>>> main
   </div>
 </template>
 
@@ -71,32 +95,31 @@
 import { mapGetters, mapState } from 'vuex'
 import MyProfile from '../my-profile'
 import ConversationList from '../conversation/conversation-list'
-// import GroupList from '../group/group-list'
-// import FriendList from '../friend/friend-list'
-// import BlackList from '../blacklist/blacklist'
 
 const activeName = {
   CONVERSATION_LIST: 'conversation-list',
-  GROUP_LIST: 'group-list',
-  // FRIEND_LIST: 'friend-list',
-  // BLACK_LIST: 'black-list',
-  // GROUP_LIVE: 'group-live',
 }
 export default {
   name: 'SideBar',
   components: {
     MyProfile,
     ConversationList,
-    // GroupList,
-    // FriendList,
-    // BlackList
   },
   data() {
     return {
       active: activeName.CONVERSATION_LIST,
       activeName: activeName,
+<<<<<<< HEAD
       userName: null,
       userTel: null,
+=======
+      coun_id: null,
+      userName: null,
+      userTel: null,
+      showDialog: false,
+      options: null,
+      selectSupID: '',
+>>>>>>> main
     }
   },
   computed: {
@@ -105,24 +128,22 @@ export default {
       currentUserProfile: state => state.user.currentUserProfile,
       userID: state => state.user.userID,
       applicationUnreadCount: state => state.friend.unreadCount,
+      currentConversation: state => state.conversation.currentConversation,
     }),
     showConversationList() {
       return this.active === activeName.CONVERSATION_LIST
     },
-    // showGroupList() {
-    //   return this.active === activeName.GROUP_LIST
-    // },
-    // showFriendList() {
-    //   return this.active === activeName.FRIEND_LIST
-    // },
-    // showBlackList() {
-    //   return this.active === activeName.BLACK_LIST
-    // },
+    showBottonBtn() {
+      if (this.currentConversation.conversationID != undefined
+        && this.currentConversation.userProfile.role === 1
+      ) return false;
+      else return this.currentConversation.conversationID != undefined;
+    },
     showAddButton() {
-      return [activeName.CONVERSATION_LIST, activeName.GROUP_LIST].includes(
+      return [activeName.CONVERSATION_LIST].includes(
         this.active
       )
-    }
+    },
   },
   mounted() {
     this.$bus.$on('checkoutConversation',()=>{
@@ -132,6 +153,43 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    getBindSupList() {
+      this.$ajax.get('/counsellor/bindSupervisorList', {
+        params: {
+          user_id: this.coun_id
+        }
+      }).then((res) => {
+        console.log(res)
+        if (res.data) {
+          this.options = res.data
+        }
+      })
+    },
+    handleEndChat() {
+      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      var visitor = this.currentConversation.userProfile.userID;
+      var isHelp = this.selectSupID === '' ? 0 : 1;
+      var sup = this.selectSupID === '' ? '无' : this.selectSupID;
+      var times = Date.now();
+      var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
+      this.$ajax.post('/record/complete', {
+        visitor,
+        coun: coun,
+        help_or_not: isHelp,
+        sup: sup,
+        end_time,
+      }).then((res) => {
+        if (res.status === 200) {
+          this.$notify({
+            type: 'success',
+            message: '已结束与该访客的对话。'
+          })
+        }
+      })
+    },
+>>>>>>> main
     checkoutActive(name) {
       this.active = name
     },
@@ -140,6 +198,10 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
+<<<<<<< HEAD
+=======
+          this.coun_id = res.data.user_id;
+>>>>>>> main
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
         }
@@ -148,6 +210,40 @@ export default {
         message: err
       }))
     },
+<<<<<<< HEAD
+=======
+    handleSelectSupBtn() {
+      this.showDialog = true
+    },
+    handleConfirm() {
+      if (this.selectSupID !== '@TIM#SYSTEM') {
+        this.$store
+          .dispatch('checkoutConversation', `C2C${this.selectSupID}`)
+          .then(() => {
+            this.showDialog = false
+          }).catch(() => {
+          this.$store.commit('showMessage', {
+            message: '该督导当前无法提供服务，请重新绑定督导',
+            type: 'warning'
+          })
+        })
+      } else {
+        this.$store.commit('showMessage', {
+          message: '该督导当前无法提供服务，请重新绑定督导',
+          type: 'warning'
+        })
+      }
+      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      var visitor = this.currentConversation.userProfile.userID;
+      this.$ajax.post('/record/help', {
+        visitor: visitor,
+        coun: coun,
+        sup: this.selectSupID,
+      })
+      this.selectSupID = ''
+      this.showBottonBtn = false
+    },
+>>>>>>> main
     logout() {
       this.$store.dispatch('logout')
       window.sessionStorage.clear()
@@ -159,18 +255,6 @@ export default {
         case activeName.CONVERSATION_LIST:
           this.checkoutActive(activeName.CONVERSATION_LIST)
           break
-        // case activeName.GROUP_LIST:
-        //   this.checkoutActive(activeName.GROUP_LIST)
-        //   break
-        // case activeName.FRIEND_LIST:
-        //   this.checkoutActive(activeName.FRIEND_LIST)
-        //   break
-        // case activeName.BLACK_LIST:
-        //   this.checkoutActive(activeName.BLACK_LIST)
-        //   break
-        // case activeName.GROUP_LIVE:
-        //   this.groupLive()
-        //   break
       }
     },
     handleRefresh() {
@@ -183,56 +267,8 @@ export default {
             })
           })
           break
-        // case activeName.GROUP_LIST:
-        //   this.getGroupList()
-        //   break
-        // case activeName.FRIEND_LIST:
-        //   this.getFriendList()
-        //   break
-        // case activeName.BLACK_LIST:
-        //   this.$store.dispatch('getBlacklist')
-        //   break
       }
     },
-    // getGroupList() {
-    //   this.tim
-    //     .getGroupList()
-    //     .then(({ data: groupList }) => {
-    //       this.$store.dispatch('updateGroupList', groupList)
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message
-    //       })
-    //     })
-    // },
-    // getFriendList() {
-    //   this.tim
-    //     .getFriendList()
-    //     .then(({ data: friendList }) => {
-    //       this.$store.commit('upadteFriendList', friendList)
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message
-    //       })
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message
-    //       })
-    //     })
-    // },
-    // groupLive() {
-    //   this.$store.commit('updateGroupLiveInfo', {
-    //     groupID: 0,
-    //     anchorID: this.userID,
-    //   })
-    //   this.$bus.$emit('open-group-live', { channel: 2 })
-    // },
   }
 }
 </script>
