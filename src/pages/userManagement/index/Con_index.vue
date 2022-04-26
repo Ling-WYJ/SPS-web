@@ -24,11 +24,7 @@
           </el-rate>
         </el-card>
       </el-col>
-      <el-col
-        style="background: #304156; height: 100%"
-        :span="3"
-        class="user_card"
-      >
+      <el-col style="background: #304156; height: 100%" :span="3" class="user_card">
         <div class="sun-static" style="height: 300px">
           <div class="title">累计完成咨询</div>
           <div class="num">{{ all_num }}</div>
@@ -36,10 +32,7 @@
           <div class="num">{{ all_minitus }}</div>
         </div>
       </el-col>
-      <el-col
-        :span="10"
-        style="position: absolute; left: 0; top: 320px; height: "
-      >
+      <el-col :span="10" style="position: absolute; left: 0; top: 320px;">
         <div class="home-time" style="height: 340px">
           <div class="div">
             <p class="p1">今日咨询数</p>
@@ -116,71 +109,71 @@ export default {
     created() {
       console.warn('record')
     },
+  methods: {
     // 获取今日咨询数
     getTodayNum(user_id) {
       this.$ajax
-        .get("/record/todayNum", { params: { user_id } })
-        .then((res) => {
-          if (res.data) {
-            this.today_num = res.data[0].today_num;
-            console.log(this.today_num, 111);
-          }
-        });
+          .get("/record/todayNum", {params: {user_id}})
+          .then((res) => {
+            if (res.data) {
+              this.today_num = res.data[0].today_num;
+              console.log(this.today_num, 111);
+            }
+          });
     },
     // 获取当前会话数
     getConversationNum(user_id) {
       this.$ajax
-        .get("/counsellor/getConversationNum", { params: { user_id } })
-        .then((res) => {
-          if (res.data) {
-            this.conversation_num = res.data[0].conversation_num;
-            console.log(this.conversation_num);
-          }
-        },
-       // 获取当前会话数
-      getConversationNum(user_id) {
-        this.$ajax.get('/counsellor/getConversationNum',{params: {user_id}}).then((res) => {
-          if (res.data) {
-            this.conversation_num = res.data[0].conversation_num
-                      console.log(this.conversation_num)
-          }
-        })
-      };
+          .get("/counsellor/getConversationNum", {params: {user_id}})
+          .then((res) => {
+            if (res.data) {
+              this.conversation_num = res.data[0].conversation_num;
+              console.log(this.conversation_num);
+            }
+          })},
       // 获取今日咨询时长
-      getTodayTime(user_id) {
-        this.$ajax.get('/record/todayTime',{params: {user_id}}).then((res) => {
+      getTodayTime(user_id)
+      {
+        this.$ajax.get('/record/todayTime', {params: {user_id}}).then((res) => {
           if (res.data) {
             this.today_time = res.data[0].today_time;
           }
         })
-      },
+      }
+    ,
       // 获取累计完成时长和累计数
-      getSum(user_id) {
-        this.$ajax.get('/record/allNumandTime',{params: {user_id}}).then((res) => {
+      getSum(user_id)
+      {
+        this.$ajax.get('/record/allNumandTime', {params: {user_id}}).then((res) => {
           if (res.data) {
             this.all_num = res.data[0].all_num
             this.all_minitus = res.data[0].all_minitus
           }
         })
-      },
-
-       // 日期转换
-      processDate(date) {
-        console.log(new Date(new Date(date).getTime()-86400000).toISOString().split('T')[0])
+      }
+    ,
+      // 日期转换
+      processDate(date)
+      {
+        console.log(new Date(new Date(date).getTime() - 86400000).toISOString().split('T')[0])
         // return new Date(date).toISOString().split('T')[0]
-        return new Date(new Date(date).getTime()+86400000).toISOString().split('T')[0]
-      },
-      getScore(user_id) {
+        return new Date(new Date(date).getTime() + 86400000).toISOString().split('T')[0]
+      }
+    ,
+      getScore(user_id)
+      {
         console.log(this.data.user_id)
-        this.$ajax.get('/feedback/score',{params: {coun_id:user_id}}).then((res) => {
+        this.$ajax.get('/feedback/score', {params: {coun_id: user_id}}).then((res) => {
           console.log(res)
           if (res.data) {
             this.score = res.data.score
           }
         })
-      },
-      update() {
-        this.$ajax.get('/auth/getInfo',{params: {user_name:this.user_name}}).then((res) => {
+      }
+    ,
+      update()
+      {
+        this.$ajax.get('/auth/getInfo', {params: {user_name: this.user_name}}).then((res) => {
           if (res.data) {
             this.data = res.data
             this.getScore(this.user_id)
@@ -189,20 +182,25 @@ export default {
             this.getSum(this.user_id)
           }
         })
-      },
+      }
+    ,
 
-      setSch(day) {
-        const item=this.scheduleData.find(item=>this.processDate(item.date)===day)
-        return item?'值班':''
-      },
-      getSchedule() {
-        this.$ajax.get('/schedule/list',{params: {user_id:this.user_id}}).then((res) => {
+      setSch(day)
+      {
+        const item = this.scheduleData.find(item => this.processDate(item.date) === day)
+        return item ? '值班' : ''
+      }
+    ,
+      getSchedule()
+      {
+        this.$ajax.get('/schedule/list', {params: {user_id: this.user_id}}).then((res) => {
           console.log(res)
           if (res.data) {
             this.scheduleData = res.data
           }
         })
-      },
+      }
+    ,
     },
     computed:{ //计算属性
       rate() {
