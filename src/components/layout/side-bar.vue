@@ -94,6 +94,43 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    getBindSupList() {
+      this.$ajax.get('/counsellor/bindSupervisorList', {
+        params: {
+          user_id: this.coun_id
+        }
+      }).then((res) => {
+        console.log(res)
+        if (res.data) {
+          this.options = res.data
+        }
+      })
+    },
+    handleEndChat() {
+      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      var visitor = this.currentConversation.userProfile.userID;
+      var isHelp = this.selectSupID === '' ? 0 : 1;
+      var sup = this.selectSupID === '' ? '无' : this.selectSupID;
+      var times = Date.now();
+      var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
+      this.$ajax.post('/record/complete', {
+        visitor,
+        coun: coun,
+        help_or_not: isHelp,
+        sup: sup,
+        end_time,
+      }).then((res) => {
+        if (res.status === 200) {
+          this.$notify({
+            type: 'success',
+            message: '已结束与该访客的对话。'
+          })
+        }
+      })
+    },
+>>>>>>> Dev_wyj
     checkoutActive(name) {
       this.active = name
     },
@@ -102,6 +139,10 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
+<<<<<<< HEAD
+=======
+          this.coun_id = res.data.user_id;
+>>>>>>> Dev_wyj
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
         }
@@ -110,6 +151,40 @@ export default {
         message: err
       }))
     },
+<<<<<<< HEAD
+=======
+    handleSelectSupBtn() {
+      this.showDialog = true
+    },
+    handleConfirm() {
+      if (this.selectSupID !== '@TIM#SYSTEM') {
+        this.$store
+          .dispatch('checkoutConversation', `C2C${this.selectSupID}`)
+          .then(() => {
+            this.showDialog = false
+          }).catch(() => {
+          this.$store.commit('showMessage', {
+            message: '该督导当前无法提供服务，请重新绑定督导',
+            type: 'warning'
+          })
+        })
+      } else {
+        this.$store.commit('showMessage', {
+          message: '该督导当前无法提供服务，请重新绑定督导',
+          type: 'warning'
+        })
+      }
+      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      var visitor = this.currentConversation.userProfile.userID;
+      this.$ajax.post('/record/help', {
+        visitor: visitor,
+        coun: coun,
+        sup: this.selectSupID,
+      })
+      this.selectSupID = ''
+      this.showBottonBtn = false
+    },
+>>>>>>> Dev_wyj
     logout() {
       this.$store.dispatch('logout')
       window.sessionStorage.clear()
