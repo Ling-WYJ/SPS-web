@@ -58,10 +58,12 @@
 
       },
       sendSingleMessage(to, type, message) {
+        const record_id = window.sessionStorage.getItem('record_id');
         const _message = this.tim.createForwardMessage({
           to: to,
           conversationType: type,
           payload: message,
+          cloudCustomData: `${record_id}`,
           priority: this.TIM.TYPES.MSG_PRIORITY_NORMAL
         })
         this.$store.commit('pushCurrentMessageList', _message)   // ??
@@ -84,6 +86,7 @@
           _abstractList.push(this.setAbstractList(this.selectedMessageList[i]))
         }
         _title = this.selectedMessageList[0].conversationType === 'GROUP' ? '群聊的聊天记录' : `${this.selectedMessageList[0].nick || this.selectedMessageList[0].from} 和 ${this.selectedMessageList[0].to} 的聊天记录`
+        const record_id = window.sessionStorage.getItem('record_id');
         let message = this.tim.createMergerMessage({
           to: to,
           conversationType: type,
@@ -92,7 +95,8 @@
             title: _title,
             abstractList: _abstractList,
             compatibleText: '请升级IMSDK到v2.10.1或更高版本查看此消息'
-          }
+          },
+          cloudCustomData: `${record_id}`,
         })
         this.$store.commit('pushCurrentMessageList', message)   // ??
         return message

@@ -293,13 +293,15 @@ export default {
     },
     chooseBigEmoji(item) {
       this.popoverVisible = false
+      const record_id = window.sessionStorage.getItem('record_id');
       let message = this.tim.createFaceMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
         payload: {
           index: this.curItemIndex + 1,
           data: `${item}@2x`
-        }
+        },
+        cloudCustomData: `${record_id}`,
       })
       this.$store.commit('pushCurrentMessageList', message)
       this.$bus.$emit('scroll-bottom')
@@ -363,6 +365,7 @@ export default {
       if (typeof file === 'undefined') {
         return
       }
+      const record_id = window.sessionStorage.getItem('record_id');
       // 1. 创建消息实例，接口返回的实例可以上屏
       let message = this.tim.createImageMessage({
         to: this.toAccount,
@@ -370,6 +373,7 @@ export default {
         payload: {
           file: file
         },
+        cloudCustomData: `${record_id}`,
         onProgress: percent => {
           this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
         }
@@ -390,23 +394,27 @@ export default {
       let file = e.dataTransfer.files[0]
       let message = {}
       if (file.type === 'video/mp4') {
+        const record_id = window.sessionStorage.getItem('record_id');
         message = this.tim.createVideoMessage({
           to: this.toAccount,
           conversationType: this.currentConversationType,
           payload: {
             file: file
           },
+          cloudCustomData: `${record_id}`,
           onProgress: percent => {
             this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
           }
         })
       } else {
+        const record_id = window.sessionStorage.getItem('record_id');
         message = this.tim.createFileMessage({
           to: this.toAccount,
           conversationType: this.currentConversationType,
           payload: {
             file: file
           },
+          cloudCustomData: `${record_id}`,
           onProgress: percent => {
             this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
           }
@@ -438,13 +446,15 @@ export default {
         return
       }
       if (this.currentConversationType === this.TIM.TYPES.CONV_GROUP && this.groupAt) {
+        const record_id = window.sessionStorage.getItem('record_id');
         let message = this.tim.createTextAtMessage({
           to: this.toAccount,
           conversationType: this.TIM.TYPES.CONV_GROUP,
           payload: {
             text: this.messageContent,
             atUserList: this.callingList // 'denny' 'lucy' 都是 userID，而非昵称
-          }
+          },
+          cloudCustomData: `${record_id}`,
         })
         this.$store.commit('pushCurrentMessageList', message)
         this.$bus.$emit('scroll-bottom')
@@ -458,10 +468,12 @@ export default {
         this.groupAt = false
         return
       }
+      const record_id = window.sessionStorage.getItem('record_id');
       const message = this.tim.createTextMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
-        payload: { text: this.messageContent }
+        payload: { text: this.messageContent },
+        cloudCustomData: `${record_id}`,
       })
       this.$store.commit('pushCurrentMessageList', message)
       this.$bus.$emit('scroll-bottom')
@@ -485,6 +497,7 @@ export default {
         })
         return
       }
+      const record_id = window.sessionStorage.getItem('record_id');
       const message = this.tim.createCustomMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -492,7 +505,8 @@ export default {
           data: this.form.data,
           description: this.form.description,
           extension: this.form.extension
-        }
+        },
+        cloudCustomData: `${record_id}`,
       })
       this.$store.commit('pushCurrentMessageList', message)
       this.tim.sendMessage(message).catch(error => {
@@ -512,6 +526,7 @@ export default {
       return Math.floor(Math.random() * (max - min + 1) + min)
     },
     sendSurvey() {
+      const record_id = window.sessionStorage.getItem('record_id');
       const message = this.tim.createCustomMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -519,7 +534,8 @@ export default {
           data: 'survey',
           description: String(this.rate),
           extension: this.suggestion
-        }
+        },
+        cloudCustomData: `${record_id}`,
       })
       this.$store.commit('pushCurrentMessageList', message)
       Object.assign(this.form, {
@@ -563,12 +579,14 @@ export default {
       this.$bus.$emit('open-group-live', { channel: 1 })
     },
     sendImage() {
+      const record_id = window.sessionStorage.getItem('record_id');
       const message = this.tim.createImageMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
         payload: {
           file: document.getElementById('imagePicker') // 或者用event.target
         },
+        cloudCustomData: `${record_id}`,
         onProgress: percent => {
           this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
         }
@@ -587,12 +605,14 @@ export default {
         })
     },
     sendFile() {
+      const record_id = window.sessionStorage.getItem('record_id');
       const message = this.tim.createFileMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
         payload: {
           file: document.getElementById('filePicker') // 或者用event.target
         },
+        cloudCustomData: `${record_id}`,
         onProgress: percent => {
           this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
         }
@@ -611,12 +631,14 @@ export default {
         })
     },
     sendVideo() {
+      const record_id = window.sessionStorage.getItem('record_id');
       const message = this.tim.createVideoMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
         payload: {
           file: document.getElementById('videoPicker') // 或者用event.target
         },
+        cloudCustomData: `${record_id}`,
         onProgress: percent => {
           this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
         }
