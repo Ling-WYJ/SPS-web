@@ -1,25 +1,12 @@
 <template>
-<<<<<<< HEAD
 <div>
-
   <el-row class="card" :gutter="20" type="flex">
-
     <el-col :span="5" class="user_card">
       <el-card :body-style="{ padding: '0px' }" >
         <div class="name" style="height:240px;padding:20px">
           <div class="name" style="margin:12px 0">督导：{{user_name}}</div>
         </div>
       </el-card>
-=======
-  <div>
-    <el-row class="card" :gutter="20" type="flex">
-      <el-col :span="5" class="user_card">
-        <el-card :body-style="{ padding: '0px' }">
-          <div class="name" style="height: 240px; padding: 20px">
-            <div class="name" style="margin: 12px 0">督导：{{ user_name }}</div>
-          </div>
-        </el-card>
->>>>>>> main
       </el-col>
       <el-col
         style="
