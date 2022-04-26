@@ -118,7 +118,7 @@ export default {
       userTel: null,
       showDialog: false,
       options: null,
-      selectSupID: ''
+      selectSupID: '',
     }
   },
   computed: {
@@ -127,6 +127,7 @@ export default {
       currentUserProfile: state => state.user.currentUserProfile,
       userID: state => state.user.userID,
       applicationUnreadCount: state => state.friend.unreadCount,
+      currentConversation: state => state.conversation.currentConversation,
     }),
     showConversationList() {
       return this.active === activeName.CONVERSATION_LIST
@@ -167,16 +168,18 @@ export default {
       })
     },
     handleEndChat() {
-      const record_id = 82;
+      const visitor_id = this.currentConversation.userProfile.userID;
       const isHelp = this.selectSupID === '' ? 0 : 1;
       const sup_id = this.selectSupID === '' ? -1 : this.selectSupID;
       var times = Date.now();
       var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
       this.$ajax.post('/record/complete', {
-        record_id: record_id,
+        visitor_id,
+        coun_id: this.user_id,
         help_or_not: isHelp,
         sup_id: sup_id,
         end_time,
+      }).then(() => {
       })
     },
     checkoutActive(name) {
@@ -208,13 +211,13 @@ export default {
             this.showDialog = false
           }).catch(() => {
           this.$store.commit('showMessage', {
-            message: '没有找到该用户',
+            message: '该督导当前无法提供服务，请重新绑定督导',
             type: 'warning'
           })
         })
       } else {
         this.$store.commit('showMessage', {
-          message: '没有找到该用户',
+          message: '该督导当前无法提供服务，请重新绑定督导',
           type: 'warning'
         })
       }
