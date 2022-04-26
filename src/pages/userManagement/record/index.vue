@@ -8,20 +8,25 @@
     <!-- 主区域 -->
     <el-main>
       <data-table></data-table>
+      <data-table2></data-table2>
+      <data-table3></data-table3>
     </el-main>
   </el-container>
 </template>
 
 <script>
-import DataTable from './DataTable'
-
+import DataTable from './Adm_dataTable'
+import DataTable2 from './Con_dataTable'
+import DataTable3 from './Sup_dataTable'
 export default {
   name: 'record',
   data() {
     return {}
   },
   components: {
-    DataTable
+    DataTable,
+    DataTable2,
+    DataTable3
   },
   created() {
     console.warn('record')

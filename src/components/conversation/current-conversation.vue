@@ -4,12 +4,12 @@
     <div class="current-conversation" @scroll="onScroll" v-if="showCurrentConversation">
       <div class="header">
         <div class="name">{{ name }}</div>
-        <!-- <div class="btn-more-info"
+        <div class="btn-more-info"
           :class="showConversationProfile ? '' : 'left-arrow'"
           @click="showMore"
           v-show="!currentConversation.conversationID.includes('SYSTEM')"
           title="查看详细信息">
-        </div> -->
+        </div>
       </div>
       <div class="content">
         <div class="message-list" ref="message-list" @scroll="this.onScroll">

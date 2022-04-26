@@ -36,7 +36,7 @@ const routes = [
 		component: ()=>import('@/pages/userManagement/index'),
 		children:[
 			{
-				//首页
+				//管理员首页
 				path: '/userManagement/Adm_index',
 				name: 'userManagementIndex',
 				role:'admin',
@@ -47,7 +47,7 @@ const routes = [
 				},
 			},
 			{
-				//首页
+				//咨询师首页
 				path: '/userManagement/Con_index',
 				name: 'userManagementIndex',
 				role:'counsellor',
@@ -58,8 +58,8 @@ const routes = [
 				},
 			},
 			{
-				//首页
-				path: '/userManagement/sup_index',
+				//督导首页
+				path: '/userManagement/Sup_index',
 				name: 'userManagementIndex',
 				role:'supervisor',
 				component: ()=>import('@/pages/userManagement/index/Sup_index'),
@@ -146,11 +146,33 @@ const routes = [
 				},
 			},
 			{
-				//咨询记录
-				path: '/userManagement/record',
+				//管理员咨询记录
+				path: '/userManagement/Adm_record',
 				name: 'record',
-				role:'all',
-				component: ()=>import('@/pages/userManagement/record/index'),
+				role:'admin',
+				component: ()=>import('@/pages/userManagement/record/Adm_dataTable'),
+				meta: {
+					type: 'record',
+					title:'咨询记录'
+				},
+			},
+			{
+				//咨询师咨询记录
+				path: '/userManagement/Coun_record',
+				name: 'record',
+				role:'counsellor',
+				component: ()=>import('@/pages/userManagement/record/Con_dataTable'),
+				meta: {
+					type: 'record',
+					title:'咨询记录'
+				},
+			},
+			{
+				//督导咨询记录
+				path: '/userManagement/Sup_record',
+				name: 'record',
+				role:'supervisor',
+				component: ()=>import('@/pages/userManagement/record/Sup_dataTable'),
 				meta: {
 					type: 'record',
 					title:'咨询记录'

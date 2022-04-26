@@ -158,7 +158,7 @@ import axios from 'axios'
                 if (!res.data.errorcode) {
                     console.log(res.data)
                     res.data.result.paiban.forEach(d => {
-                        d.start = d.pbDate.substring(0,10) 
+                        d.start = d.pbDate?d.pbDate.substring(0,10) :''
                         d.color = '#ddd'
                         d.background = '#ddd'
                         d.title = d.title
@@ -221,7 +221,7 @@ import axios from 'axios'
             this.form.id = data._def.extendedProps.pId,
             this.form.doctorId = data._def.extendedProps.doctorId,
             this.form.title = data.title,
-            this.form.ctime = data._def.extendedProps.pbDate.substring(0,10),
+            this.form.ctime = data._def.extendedProps.pbDate?data._def.extendedProps.pbDate.substring(0,10):'',
             this.form.doctorName = data._def.extendedProps.doctorName,
             this.form.ksName = data._def.extendedProps.ksName,
             this.form.phone = data._def.extendedProps.phone
