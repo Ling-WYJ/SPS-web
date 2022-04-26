@@ -7,7 +7,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img src="http://vue.ruoyi.vip/static/img/profile.473f5971.jpg" class="user-avatar">
+          <img src="https://imgcache.qq.com/open/qcloud/video/act/webim-avatar/avatar-2.png" class="user-avatar">
           <!-- <i class="el-icon-user"></i> -->
           <i class="el-icon-caret-bottom" />
         </div>
