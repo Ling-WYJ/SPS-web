@@ -7,10 +7,13 @@
     >
       <div class="chat-wrapper">
         <el-row>
-          <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
+          <el-col :xs="8" :sm="8" :md="6" :lg="6" :xl="6">
             <side-bar-sup />
           </el-col>
-          <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="17">
+          <el-col :xs="8" :sm="8" :md="9" :lg="9" :xl="9">
+            <current-conversation />
+          </el-col>
+          <el-col :xs="8" :sm="8" :md="9" :lg="9" :xl="9">
             <current-conversation />
           </el-col>
         </el-row>
