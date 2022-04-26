@@ -272,10 +272,12 @@
             type = this.TIM.TYPES.CONV_GROUP
             toUserId = item?item.substring(5,item.length):''
           }
+          const record_id = window.sessionStorage.getItem('record_id');
           const message = this.tim.createForwardMessage({
             to: toUserId,
             conversationType: type,
             payload: this.relayMessage,
+            cloudCustomData: `${record_id}`,
             priority: this.TIM.TYPES.MSG_PRIORITY_NORMAL
           })
           this.tim.sendMessage(message).catch(imError => {
