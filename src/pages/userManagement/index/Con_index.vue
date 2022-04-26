@@ -109,7 +109,33 @@ export default {
     created() {
       console.warn('record')
     },
+    mounted() {
+      this.reLogin();
+      this.update();
+      this.getSchedule();
+  },
   methods: {
+    reLogin() {
+      const user_name =
+        JSON.parse(window.sessionStorage.GET_USER_INFO).userID || "";
+      const userSig =
+        JSON.parse(window.sessionStorage.GET_USER_INFO).userSig || "";
+      if (user_name != "" && userSig != "") {
+        this.tim.login({
+          userID: user_name,
+          userSig,
+        });
+        this.loading = false;
+        let promise = this.tim.updateMyProfile({
+          role: 0,
+        });
+        promise.then(function () {
+          console.log("身份信息已更新");
+        });
+      } else {
+        this.$router.push({ path: "/login" });
+      }
+    },
     // 获取今日咨询数
     getTodayNum(user_id) {
       this.$ajax
