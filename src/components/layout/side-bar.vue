@@ -116,6 +116,13 @@ export default {
         help_or_not: isHelp,
         sup: sup,
         end_time,
+      }).then((res) => {
+        if (res.status === 200) {
+          this.$notify({
+            type: 'success',
+            message: '已结束与该访客的对话。'
+          })
+        }
       })
     },
     checkoutActive(name) {
