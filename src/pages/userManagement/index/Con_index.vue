@@ -174,7 +174,6 @@ export default {
       },
       update() {
         this.$ajax.get('/auth/getInfo',{params: {user_name:this.user_name}}).then((res) => {
-          console.log(res)
           if (res.data) {
             this.data = res.data
             this.getScore(this.user_id)
@@ -186,15 +185,14 @@ export default {
       },
 
       setSch(day) {
-const item=this.scheduleData.find(item=>this.processDate(item.date)===day)
-return item?'值班':''
+        const item=this.scheduleData.find(item=>this.processDate(item.date)===day)
+        return item?'值班':''
       },
       getSchedule() {
-        this.$ajax.get('/schedule/list',{params: {user_id:'32'}}).then((res) => {
+        this.$ajax.get('/schedule/list',{params: {user_id:this.user_id}}).then((res) => {
           console.log(res)
           if (res.data) {
             this.scheduleData = res.data
-            console.log( res.data)
           }
         })
       },
@@ -204,18 +202,21 @@ return item?'值班':''
       let result = 0
       let score = Math.floor(this.score * 2 ) / 2
       let hasDecimal = score % 1 !== 0
+        console.log(score)
       let integer = Math.floor(score)
+        console.log(integer)
       for(let i=0;i<integer;i++) {
         // result.push('on')
         result++
       }
+      console.log(result)
       if(hasDecimal) {
         // result.push('half')
         result=result+0.5
       }
-      while(result.length < 5) {
+     /* while(result.length < 5) {
         // result.push('off')
-      }
+      }*/
       return result
     },
     userName() {

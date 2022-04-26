@@ -80,12 +80,9 @@
         <el-form-item label="职称" prop="coun_title" required>
           <el-input v-model="currentTodo.coun_title"></el-input>
         </el-form-item>
-        <el-form-item label="角色" prop="role" required>
-          <el-input v-model="currentTodo.role"></el-input>
-        </el-form-item>
           </el-tab-pane>
         </el-tabs>
-        
+
 
       </el-form>
     </edit-dialog>
@@ -161,6 +158,7 @@ export default{
       this.activeName='first'
     },
     addAjax () {
+      this.currentTodo['role'] = 'counsellor'
       this.$ajax.post('/users/counsellor', this.currentTodo).then((res) => {
         console.log(res)
         if (res.data) this.data.push(res.data)
@@ -241,6 +239,7 @@ export default{
       this.currentSup = ''
       this.$refs.todoBindForm.resetFields()
       this.bindShow = false
+      this.update()
     },
     addSup() {
       this.currentSups.push(this.currentSup)
