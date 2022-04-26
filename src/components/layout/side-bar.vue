@@ -13,8 +13,8 @@
       <conversation-list v-show="showConversationList" />
     </div>
     <div class="bar-down">
-      <button class="stop-btn" @click="handleEndChat">结束咨询</button>
-      <button class="help-btn" @click="handleSelectSupBtn">请求督导</button>
+      <button class="stop-btn" @click="handleEndChat" v-show="showBottonBtn">结束咨询</button>
+      <button class="help-btn" @click="handleSelectSupBtn" v-show="showBottonBtn">请求督导</button>
     </div>
     <el-dialog title="选择督导" :visible.sync="showDialog" width="20%">
       <div class="select-sup">
@@ -34,54 +34,6 @@
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- <div class="bar-left">
-      <my-profile />
-      <div class="tab-items" @click="handleClick">
-        <div
-          id="conversation-list"
-          class="iconfont icon-conversation"
-          :class="{ active: showConversationList }"
-          title="会话列表"
-        >
-          <sup class="unread" v-if="totalUnreadCount !== 0">
-            <template v-if="totalUnreadCount > 99">99+</template>
-            <template v-else>{{totalUnreadCount}}</template>
-          </sup>
-        </div>
-        <div
-          id="group-list"
-          class="iconfont icon-group"
-          :class="{ active: showGroupList }"
-          title="群组列表"
-        ></div>
-        <div
-          id="friend-list"
-          class="iconfont icon-contact"
-          :class="{ active: showFriendList }"
-          title="好友列表"
-        >
-          <sup class="unread" v-if="applicationUnreadCount !== 0">
-            <template v-if="applicationUnreadCount > 99">99+</template>
-            <template v-else>{{applicationUnreadCount}}</template>
-          </sup>
-        </div>
-        <div
-          id="black-list"
-          class="iconfont icon-blacklist"
-          :class="{ active: showBlackList }"
-          title="黑名单列表"
-        ></div>
-      </div>
-      <div class="bottom">
-        <div class="iconfont icon-tuichu" @click="logout" title="退出"></div>
-      </div>
-    </div>
-    <div class="bar-right">
-      <conversation-list v-show="showConversationList" />
-      <group-list v-show="showGroupList" />
-      <friend-list v-show="showFriendList" />
-      <black-list v-show="showBlackList" />
-    </div> -->
   </div>
 </template>
 
@@ -89,31 +41,21 @@
 import { mapGetters, mapState } from 'vuex'
 import MyProfile from '../my-profile'
 import ConversationList from '../conversation/conversation-list'
-// import GroupList from '../group/group-list'
-// import FriendList from '../friend/friend-list'
-// import BlackList from '../blacklist/blacklist'
 
 const activeName = {
   CONVERSATION_LIST: 'conversation-list',
-  GROUP_LIST: 'group-list',
-  // FRIEND_LIST: 'friend-list',
-  // BLACK_LIST: 'black-list',
-  // GROUP_LIVE: 'group-live',
 }
 export default {
   name: 'SideBar',
   components: {
     MyProfile,
     ConversationList,
-    // GroupList,
-    // FriendList,
-    // BlackList
   },
   data() {
     return {
       active: activeName.CONVERSATION_LIST,
       activeName: activeName,
-      user_id: null,
+      coun_id: null,
       userName: null,
       userTel: null,
       showDialog: false,
@@ -132,20 +74,14 @@ export default {
     showConversationList() {
       return this.active === activeName.CONVERSATION_LIST
     },
-    // showGroupList() {
-    //   return this.active === activeName.GROUP_LIST
-    // },
-    // showFriendList() {
-    //   return this.active === activeName.FRIEND_LIST
-    // },
-    // showBlackList() {
-    //   return this.active === activeName.BLACK_LIST
-    // },
+    showBottonBtn() {
+      return this.currentConversation.conversationID != undefined;
+    },
     showAddButton() {
-      return [activeName.CONVERSATION_LIST, activeName.GROUP_LIST].includes(
+      return [activeName.CONVERSATION_LIST].includes(
         this.active
       )
-    }
+    },
   },
   mounted() {
     this.$bus.$on('checkoutConversation',()=>{
@@ -158,7 +94,7 @@ export default {
     getBindSupList() {
       this.$ajax.get('/counsellor/bindSupervisorList', {
         params: {
-          user_id: this.user_id
+          user_id: this.coun_id
         }
       }).then((res) => {
         console.log(res)
@@ -168,18 +104,18 @@ export default {
       })
     },
     handleEndChat() {
-      const visitor_id = this.currentConversation.userProfile.userID;
-      const isHelp = this.selectSupID === '' ? 0 : 1;
-      const sup_id = this.selectSupID === '' ? -1 : this.selectSupID;
+      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      var visitor = this.currentConversation.userProfile.userID;
+      var isHelp = this.selectSupID === '' ? 0 : 1;
+      var sup = this.selectSupID === '' ? '无' : this.selectSupID;
       var times = Date.now();
       var end_time = new Date(times).toLocaleString('chinese', {hour12: false}).replaceAll('/', '-');
       this.$ajax.post('/record/complete', {
-        visitor_id,
-        coun_id: this.user_id,
+        visitor,
+        coun: coun,
         help_or_not: isHelp,
-        sup_id: sup_id,
+        sup: sup,
         end_time,
-      }).then(() => {
       })
     },
     checkoutActive(name) {
@@ -190,7 +126,7 @@ export default {
       this.$ajax.get('/auth/getInfo', {params: {user_name: userID}}).then((res) => {
         console.log(res)
         if (res.data) {
-          this.user_id = res.data.user_id;
+          this.coun_id = res.data.user_id;
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
           this.getBindSupList();
@@ -221,6 +157,13 @@ export default {
           type: 'warning'
         })
       }
+      const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+      var visitor = this.currentConversation.userProfile.userID;
+      this.$ajax.post('/record/help', {
+        visitor: visitor,
+        coun: coun,
+        sup: this.selectSupID,
+      })
       this.selectSupID = ''
     },
     logout() {
@@ -234,18 +177,6 @@ export default {
         case activeName.CONVERSATION_LIST:
           this.checkoutActive(activeName.CONVERSATION_LIST)
           break
-        // case activeName.GROUP_LIST:
-        //   this.checkoutActive(activeName.GROUP_LIST)
-        //   break
-        // case activeName.FRIEND_LIST:
-        //   this.checkoutActive(activeName.FRIEND_LIST)
-        //   break
-        // case activeName.BLACK_LIST:
-        //   this.checkoutActive(activeName.BLACK_LIST)
-        //   break
-        // case activeName.GROUP_LIVE:
-        //   this.groupLive()
-        //   break
       }
     },
     handleRefresh() {
@@ -258,56 +189,8 @@ export default {
             })
           })
           break
-        // case activeName.GROUP_LIST:
-        //   this.getGroupList()
-        //   break
-        // case activeName.FRIEND_LIST:
-        //   this.getFriendList()
-        //   break
-        // case activeName.BLACK_LIST:
-        //   this.$store.dispatch('getBlacklist')
-        //   break
       }
     },
-    // getGroupList() {
-    //   this.tim
-    //     .getGroupList()
-    //     .then(({ data: groupList }) => {
-    //       this.$store.dispatch('updateGroupList', groupList)
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message
-    //       })
-    //     })
-    // },
-    // getFriendList() {
-    //   this.tim
-    //     .getFriendList()
-    //     .then(({ data: friendList }) => {
-    //       this.$store.commit('upadteFriendList', friendList)
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message
-    //       })
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message
-    //       })
-    //     })
-    // },
-    // groupLive() {
-    //   this.$store.commit('updateGroupLiveInfo', {
-    //     groupID: 0,
-    //     anchorID: this.userID,
-    //   })
-    //   this.$bus.$emit('open-group-live', { channel: 2 })
-    // },
   }
 }
 </script>
