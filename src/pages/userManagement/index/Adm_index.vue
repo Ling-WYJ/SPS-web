@@ -131,7 +131,7 @@ MonthSumChart
           user_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
           user_id:sessionStorage.getItem('user_id'),
            userImg:require('../../../assets/image/user.png'),
-
+//之前测试数据
         tableData0: [{
             name: '咨询师A',
             state: '忙碌'
