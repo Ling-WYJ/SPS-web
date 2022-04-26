@@ -266,11 +266,11 @@
         this.selectedConversation.forEach((item) => {
           if(item.indexOf(this.TIM.TYPES.CONV_C2C) !== -1) {
             type = this.TIM.TYPES.CONV_C2C
-            toUserId = item.substring(3,item.length)
+            toUserId =item?item.substring(3,item.length):''
           }
           if(item.indexOf(this.TIM.TYPES.CONV_GROUP) !== -1) {
             type = this.TIM.TYPES.CONV_GROUP
-            toUserId = item.substring(5,item.length)
+            toUserId = item?item.substring(5,item.length):''
           }
           const message = this.tim.createForwardMessage({
             to: toUserId,

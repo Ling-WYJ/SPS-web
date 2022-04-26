@@ -58,7 +58,8 @@ export default {
       visitorList: [],
       searchStr: '',
       filterType: '',
-      status:''
+      status:'',
+      user_id:sessionStorage.getItem('user_id')
     }
   },
   mounted() {

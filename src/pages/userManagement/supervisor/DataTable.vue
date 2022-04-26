@@ -112,6 +112,7 @@ export default{
       currentSups: [],
       searchStr: '',
       sup_id: [],
+      user_id:sessionStorage.getItem('user_id')
     }
   },
   mounted () {

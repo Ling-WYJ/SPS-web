@@ -86,7 +86,8 @@ export default {
         supervisorList:[],//督导列表
         counsellorList:[],//咨询师列表
         counNumData:[],
-        superNumData:[]
+        superNumData:[],
+        user_id:sessionStorage.getItem('user_id')
       }
     },
     watch:{
