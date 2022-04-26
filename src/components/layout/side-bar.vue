@@ -140,13 +140,14 @@ export default {
           this.userName = res.data.coun_name;
           this.userTel = res.data.coun_phone;
         }
+        this.getBindSupList();
       }).catch(err => this.$notify({
         type: 'error',
         message: err
       }))
     },
     handleSelectSupBtn() {
-      this.showDialog = true
+      this.showDialog = true;
     },
     handleConfirm() {
       if (this.selectSupID !== '@TIM#SYSTEM') {
