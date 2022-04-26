@@ -116,7 +116,8 @@ export default {
     console.warn("record");
   },
   mounted() {
-    this.update(), this.getSchedule();
+    this.update();
+    this.getSchedule();
   },
   methods: {
     reLogin() {
