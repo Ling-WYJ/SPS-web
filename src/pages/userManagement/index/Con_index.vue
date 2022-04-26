@@ -35,27 +35,6 @@
           <div class="title" style="margin-top: 20px">累计完成时长</div>
           <div class="num">{{ all_minitus }}</div>
         </div>
-<<<<<<< HEAD
-    </el-col>
-    <el-col :span="10" style="position:absolute;left:0;top:320px;height:">
-      <div class="home-time" style="height:340px">
-       <div class="div">
-         <p class="p1">今日咨询数</p>
-         <p class="p2">{{today_num}}</p>
-       </div>
-       <div class="div">
-         <p class="p1">今日咨询时长</p>
-         <p class="p2">{{today_time}}</p>
-       </div>
-        <div class="div">
-         <p class="p1">当前会话数</p>
-         <p class="p2">{{conversation_num}}</p>
-       </div>
-      </div>
-    </el-col >
-    <el-col :span="14" >
-     <el-calendar v-model="choseDay">
-=======
       </el-col>
       <el-col
         :span="10"
@@ -70,11 +49,14 @@
             <p class="p1">今日咨询时长</p>
             <p class="p2">{{ today_time }}</p>
           </div>
+          <div class="div">
+            <p class="p1">当前会话数</p>
+            <p class="p2">{{ conversation_num }}</p>
+          </div>
         </div>
       </el-col>
       <el-col :span="14">
         <el-calendar v-model="choseDay">
->>>>>>> main
           <!-- <template
             slot="dateCell"
             slot-scope="{date, data}">
@@ -112,35 +94,7 @@
 import DataTable from "./components/DataTablePart";
 
 export default {
-<<<<<<< HEAD
-    name:'home',
-
-    data() {
-        return {
-          user_id:sessionStorage.getItem('user_id'),
-          user_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
-          score: [],
-          scheduleData:[],
-          today_num:0,
-          today_time:0,
-          all_num:0,
-          all_minitus:0,
-          conversation_num:0
-          // rate:0
-        }
-    },
-    components:{
-      DataTable
-    },
-    created() {
-    console.warn('record')
-    },
-    mounted () {
-      this.update(),
-      this.getSchedule()
-=======
   name: "home",
->>>>>>> main
 
   data() {
     return {
@@ -152,6 +106,7 @@ export default {
       today_time: 0,
       all_num: 0,
       all_minitus: 0,
+      conversation_num: 0,
       // rate:0
     };
   },
@@ -162,9 +117,7 @@ export default {
     console.warn("record");
   },
   mounted() {
-    this.reLogin();
-    this.update();
-    this.getSchedule();
+    this.update(), this.getSchedule();
   },
   methods: {
     reLogin() {
@@ -197,22 +150,17 @@ export default {
             this.today_num = res.data[0].today_num;
             console.log(this.today_num, 111);
           }
-<<<<<<< HEAD
-        })
-      },
-       // 获取当前会话数
-      getConversationNum(user_id) {
-        this.$ajax.get('/counsellor/getConversationNum',{params: {user_id}}).then((res) => {
+        });
+    },
+    // 获取当前会话数
+    getConversationNum(user_id) {
+      this.$ajax
+        .get("/counsellor/getConversationNum", { params: { user_id } })
+        .then((res) => {
           if (res.data) {
-            this.conversation_num = res.data[0].conversation_num
-                      console.log(this.conversation_num)
+            this.conversation_num = res.data[0].conversation_num;
+            console.log(this.conversation_num);
           }
-        })
-      },
-      // 获取今日咨询时长
-      getTodayTime(user_id) {
-        this.$ajax.get('/record/todayTime',{params: {user_id}}).then((res) => {
-=======
         });
     },
     // 获取今日咨询时长
@@ -220,7 +168,6 @@ export default {
       this.$ajax
         .get("/record/todayTime", { params: { user_id } })
         .then((res) => {
->>>>>>> main
           if (res.data) {
             this.today_time = res.data[0].today_time;
           }
