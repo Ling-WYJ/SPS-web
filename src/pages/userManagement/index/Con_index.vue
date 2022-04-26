@@ -116,10 +116,7 @@ export default {
     console.warn("record");
   },
   mounted() {
-<<<<<<< HEAD
     this.reLogin();
-=======
->>>>>>> b9040729c7963b27c0593878a5bc5a758ce3df25
     this.update();
     this.getSchedule();
   },
