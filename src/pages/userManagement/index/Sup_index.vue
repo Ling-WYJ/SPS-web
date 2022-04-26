@@ -1,79 +1,10 @@
 <template>
-<<<<<<< HEAD
 <div>
-
   <el-row class="card" :gutter="20" type="flex">
-
     <el-col :span="5" class="user_card">
       <el-card :body-style="{ padding: '0px' }" >
         <div class="name" style="height:240px;padding:20px">
           <div class="name" style="margin:12px 0">督导：{{user_name}}</div>
-=======
-  <div>
-    <el-row class="card" :gutter="20" type="flex">
-      <el-col :span="5" class="user_card">
-        <el-card :body-style="{ padding: '0px' }">
-          <div class="name" style="height: 240px; padding: 20px">
-            <div class="name" style="margin: 12px 0">督导：{{ user_name }}</div>
-            <div class="title" style="margin-bottom: 15px">我的综合评价</div>
-            <el-rate
-              v-model="rate"
-              disabled
-              show-score
-              text-color="#ff9900"
-              score-template="{value}"
-            >
-            </el-rate>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="10">
-        <div class="home-time">
-          <div class="div">
-            <p class="p1">今日咨询数</p>
-            <p class="p2">{{ today_num }}</p>
-          </div>
-          <div class="div">
-            <p class="p1">今日咨询时长</p>
-            <p class="p2">{{ today_time }}</p>
-          </div>
-        </div>
-      </el-col>
-      <el-col
-        style="
-          background: #fff;
-          position: absolute;
-          top: 260px;
-          left: 10px;
-          height: 400px;
-        "
-        :span="9"
-      >
-        <div
-          style="
-            padding: 10px 20px;
-            border-bottom: 1px solid #f4f4f5;
-            line-height: 28px;
-          "
-        >
-          在线咨询师
-          <el-pagination
-            style="float: right"
-            background
-            :page-size="9"
-            layout="prev, pager, next"
-            :total="countList.length"
-          >
-          </el-pagination>
-        </div>
-        <div class="content">
-          <div v-for="item in countList" :key="item.name" class="item-box">
-            <span>{{ item.coun_name }}</span>
-            <el-tag type="success" style="float: right">{{
-              item.coun_status
-            }}</el-tag>
-          </div>
->>>>>>> main
         </div>
       </el-col>
       <el-col
