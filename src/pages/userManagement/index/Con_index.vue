@@ -40,6 +40,10 @@
          <p class="p1">今日咨询时长</p>
          <p class="p2">{{today_time}}</p>
        </div>
+        <div class="div">
+         <p class="p1">当前会话数</p>
+         <p class="p2">{{conversation_num}}</p>
+       </div>
       </div>
     </el-col >
     <el-col :span="14" >
@@ -100,7 +104,8 @@ export default {
           today_num:0,
           today_time:0,
           all_num:0,
-          all_minitus:0
+          all_minitus:0,
+          conversation_num:0
           // rate:0
         }
     },
@@ -122,6 +127,15 @@ export default {
           if (res.data) {
             this.today_num = res.data[0].today_num
                       console.log(this.today_num,111)
+          }
+        })
+      },
+       // 获取当前会话数
+      getConversationNum(user_id) {
+        this.$ajax.get('/counsellor/getConversationNum',{params: {user_id}}).then((res) => {
+          if (res.data) {
+            this.conversation_num = res.data[0].conversation_num
+                      console.log(this.conversation_num)
           }
         })
       },

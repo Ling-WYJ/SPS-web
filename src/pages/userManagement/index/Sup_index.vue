@@ -7,14 +7,6 @@
       <el-card :body-style="{ padding: '0px' }" >
         <div class="name" style="height:240px;padding:20px">
           <div class="name" style="margin:12px 0">督导：{{user_name}}</div>
-        <div class="title" style="margin-bottom:15px">我的综合评价</div>
-        <el-rate
-          v-model="rate"
-          disabled
-          show-score
-          text-color="#ff9900"
-          score-template="{value}">
-</el-rate>
         </div>
       </el-card>
       </el-col>
