@@ -35,25 +35,28 @@
           <div class="title" style="margin-top: 20px">累计完成时长</div>
           <div class="num">{{ all_minitus }}</div>
         </div>
-    </el-col>
-    <el-col :span="10" style="position:absolute;left:0;top:320px;height:">
-      <div class="home-time" style="height:340px">
-       <div class="div">
-         <p class="p1">今日咨询数</p>
-         <p class="p2">{{today_num}}</p>
-       </div>
-       <div class="div">
-         <p class="p1">今日咨询时长</p>
-         <p class="p2">{{today_time}}</p>
-       </div>
-        <div class="div">
-         <p class="p1">当前会话数</p>
-         <p class="p2">{{conversation_num}}</p>
-       </div>
-      </div>
-    </el-col >
-    <el-col :span="14" >
-     <el-calendar v-model="choseDay">
+      </el-col>
+      <el-col
+        :span="10"
+        style="position: absolute; left: 0; top: 320px; height: "
+      >
+        <div class="home-time" style="height: 340px">
+          <div class="div">
+            <p class="p1">今日咨询数</p>
+            <p class="p2">{{ today_num }}</p>
+          </div>
+          <div class="div">
+            <p class="p1">今日咨询时长</p>
+            <p class="p2">{{ today_time }}</p>
+          </div>
+          <div class="div">
+            <p class="p1">当前会话数</p>
+            <p class="p2">{{ conversation_num }}</p>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="14">
+        <el-calendar v-model="choseDay">
           <!-- <template
             slot="dateCell"
             slot-scope="{date, data}">
@@ -107,11 +110,11 @@ export default {
           // rate:0
         }
     },
-    components:{
+    components: {
       DataTable
     },
     created() {
-    console.warn('record')
+      console.warn('record')
     },
     // 获取今日咨询数
     getTodayNum(user_id) {
@@ -133,8 +136,7 @@ export default {
             this.conversation_num = res.data[0].conversation_num;
             console.log(this.conversation_num);
           }
-        })
-      },
+        },
        // 获取当前会话数
       getConversationNum(user_id) {
         this.$ajax.get('/counsellor/getConversationNum',{params: {user_id}}).then((res) => {
@@ -143,7 +145,7 @@ export default {
                       console.log(this.conversation_num)
           }
         })
-      },
+      };
       // 获取今日咨询时长
       getTodayTime(user_id) {
         this.$ajax.get('/record/todayTime',{params: {user_id}}).then((res) => {
