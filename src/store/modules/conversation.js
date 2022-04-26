@@ -163,7 +163,7 @@ const conversationModules = {
      */
     pushCurrentMessageList(state, data) {
       // 还没当前会话，则跳过
-      if (!state.currentConversation.conversationID) {
+      if (!state.currentConversation.conversationID || state.currentMessageList.indexOf(data[0]) > -1) {
         return
       }
       if (Array.isArray(data)) {
