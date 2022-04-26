@@ -95,7 +95,6 @@ import DataTable from "./components/DataTablePart";
 
 export default {
   name: "home",
-
   data() {
     return {
       user_id: sessionStorage.getItem("user_id"),
