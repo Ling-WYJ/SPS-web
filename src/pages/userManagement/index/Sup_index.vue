@@ -275,25 +275,24 @@ export default {
           }
         });
     },
-    getScore(user_id) {
-      console.log(this.user_id);
-      this.$ajax
-        .get("/feedback/score", { params: { coun_id: user_id } })
-        .then((res) => {
-          // console.log(res);
+    //督导评分
+    // getScore(user_id) {
+    //   console.log(this.user_id);
+    //   this.$ajax
+    //     .get("/feedback/score", { params: { coun_id: user_id } })
+    //     .then((res) => {
+    //       console.log(res);
+    //       if (res.data) {
+    //         this.score = res.data.score;
+    //       }
+    //     });
+    // },
+   // 获取当前会话数
+    getConversationNum_sup(sup_id) {
+      this.$ajax.get("/supervisor/getConversationNum", { params: {sup_id}}).then((res) => {
           if (res.data) {
-            this.score = res.data.score;
-          }
-        });
-    },
-    // 获取当前会话数
-    getConversationNum(user_id) {
-      this.$ajax
-        .get("/supervisor/getConversationNum", { params: { user_id } })
-        .then((res) => {
-          if (res.data) {
-            this.conversation_num = res.data[0].conversation_num;
-            // console.log(this.conversation_num);
+            this.conversation_num = res.data.conversation_num;
+            console.log(this.conversation_num,222,sup_id);
           }
         });
     },
