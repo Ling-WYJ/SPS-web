@@ -6,7 +6,7 @@
           :body-style="{ padding: '0px' }"
           style="height: 300px; padding: 30px"
         >
-          <div class="name" style="margin: 12px 0">咨询师：{{ user_name }}</div>
+          <div class="name" style="margin: 12px 0">咨询师：{{ coun_name }}</div>
           <div class="name" style="margin: 12px 0">状态：{{ status }}</div>
           <div class="title" style="margin-bottom: 15px">我的综合评价</div>
           <!-- <ul class="star" style="padding:0;margin:12px 0"> -->
@@ -91,7 +91,7 @@
 // import * as echarts from 'echarts'
 import { mapState } from 'vuex'
 // import Echart from '../../src/components/ECharts'
-import DataTable from "./components/DataTablePart";
+import DataTable from "./components/DataTablePartCon";
 
 export default {
   name: "home",
@@ -289,12 +289,21 @@ export default {
         .then((res) => {
           if (res.data) {
             this.data = res.data 
+            this.coun_name=res.data.coun_name
             this.getScore(this.user_id)
             this.getTodayNum(this.user_id)
             this.getTodayTime(this.user_id)
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
             this.status= res.data.coun_status
+            if(this.status=="free")
+            {
+              this.status="空闲"
+            }
+            else(this.status=="busy")
+            {
+              this.status="忙碌"
+            }
           
           }
         });
