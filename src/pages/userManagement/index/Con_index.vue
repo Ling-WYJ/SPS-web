@@ -44,7 +44,7 @@
           </div>
           <div class="div">
             <p class="p1">当前会话数</p>
-            <p class="p2">{{ conversation_num }}</p>
+            <p class="p2">{{conversation_num}}</p>
           </div>
         </div>
       </el-col>
@@ -149,12 +149,10 @@ export default {
     },
     // 获取当前会话数
     getConversationNum(user_id) {
-      this.$ajax
-          .get("/counsellor/getConversationNum", {params: {user_id}})
-          .then((res) => {
+      this.$ajax.get("/counsellor/getConversationNum", {params: {user_id}}).then((res) => {
             if (res.data) {
-              this.conversation_num = res.data[0].conversation_num;
-              console.log(this.conversation_num);
+              this.conversation_num = res.data.conversation_num;
+              console.log(this.conversation_num,456);
             }
           })},
       // 获取今日咨询时长
@@ -206,6 +204,7 @@ export default {
             this.getTodayNum(this.user_id)
             this.getTodayTime(this.user_id)
             this.getSum(this.user_id)
+            this.getConversationNum(this.user_id)
           }
         })
       }
