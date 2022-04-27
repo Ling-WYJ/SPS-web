@@ -48,7 +48,7 @@
           </div>
           <div class="div">
             <p class="p1">当前会话数</p>
-            <p class="p2">{{conversation_num}}</p>
+            <p class="p2">{{ conversation_num }}</p>
           </div>
         </div>
       </el-col>

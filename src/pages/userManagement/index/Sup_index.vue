@@ -70,7 +70,7 @@
       >
         <div class="sun-static">
           <div class="title">正在进行会话</div>
-          <div class="num">{{conversation_num }}</div>
+          <div class="num">{{ conversation_num }}</div>
         </div>
       </el-col>
       <el-col :span="14">
@@ -121,15 +121,13 @@ export default {
     return {
       countList: [],
       scheduleData: [],
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID, 
-      user_id: sessionStorage.getItem("user_id"),
-
+      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
       rate: "",
       data: [],
-    
+      user_id: sessionStorage.getItem("user_id"),
       today_num: 0,
       today_time: 0,
-      all_num:0,
+      all_num: 0,
       all_minitus: 0,
       conversation_num: 0,
     };
@@ -270,11 +268,10 @@ export default {
             this.data = res.data;
             // this.user_id=this.data.user_id
             // this.user_name=this.data.user_name
-            // this.getScore(this.user_id);
+            this.getScore(this.user_id);
             this.getTodayNum(this.user_id);
             this.getTodayTime(this.user_id);
             this.getSum(this.user_id);
-            this.getConversationNum_sup(this.user_id);
           }
         });
     },
