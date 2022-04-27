@@ -122,9 +122,27 @@ export default{
   methods: {
     update() {
       this.$ajax.get('/admin/supervisorList', {params: {user_id: this.user_id}}).then((res) => {
-        console.log(res)
+        console.log(res.data)
         if (res.data) {
           this.data = res.data
+          for(var i = 0;i <this.data.length ; i++) {
+
+            //处理时分秒转换
+            var hour = parseInt(this.data[i].total_time / 3600) < 10 ? '0' + parseInt(this.data[i].total_time / 3600) : parseInt(this.data[i].total_time / 3600)
+            var min = parseInt(this.data[i].total_time % 3600 / 60) < 10 ? '0' + parseInt(this.data[i].total_time % 3600 / 60) : parseInt(this.data[i].total_time % 3600 / 60)
+            var sec = parseInt(this.data[i].total_time % 3600 % 60) < 10 ? '0' + parseInt(this.data[i].total_time % 3600 % 60) : parseInt(this.data[i].total_time % 3600 % 60)
+            this.data[i].total_time = hour + ':' + min + ':' + sec
+
+            if(this.data[i].sup_gender == 'Male')
+            {
+              this.data[i].sup_gender = '男'
+            }
+            else
+            {
+              if(this.data[i].sup_gender == 'Female')
+                this.data[i].sup_gender = '女'
+            }
+          }
         }
       }).catch(err => this.$notify({
         type: 'error',

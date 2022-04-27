@@ -71,6 +71,28 @@ export default {
         console.log(res)
         if (res.data) {
           this.visitorList = res.data
+          for(var i = 0;i <this.visitorList.length ; i++) {
+            //性别转换
+            if(this.visitorList[i].visitor_gender == 'Male')
+            {
+              this.visitorList[i].visitor_gender = '男'
+            }
+            else
+            {
+              if(this.visitorList[i].visitor_gender == 'Female')
+                this.visitorList[i].visitor_gender = '女'
+            }
+            //状态转换
+            if(this.visitorList[i].visitor_status == 'normal')
+            {
+              this.visitorList[i].visitor_status = '正常'
+            }
+            else
+            {
+              if(this.visitorList[i].visitor_status == 'banned')
+                this.visitorList[i].visitor_status = '禁用'
+            }
+          }
         }
       }).catch(err => this.$notify({
         type: 'error',
