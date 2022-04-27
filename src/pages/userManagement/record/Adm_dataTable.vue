@@ -50,24 +50,29 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-view" plain></el-button>
+          <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-view" @click="view(scope.row)" plain></el-button>
           <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-download" @click="download(scope.row)" plain></el-button>
         </template>
       </el-table-column>
     </el-table>
+    <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" ></record-dialog>
   </view-page>
 </template>
 
 <script>
   import ViewPage from './ViewPage'
   import json2csv from 'json2csv'
+  import recordDialog from "@/pages/userManagement/record/recordDialog";
   export default {
   components: {
-    ViewPage
+    ViewPage,
+    recordDialog,
   },
   data() {
     return{
       data: [],
+      recordView: [],//record
+      recordShow: false,//record的dialog
       filterType: '',
       filterDates: null,
       searchStr:'',
@@ -124,7 +129,7 @@
                 //使用a标签的download属性实现下载功能
                 var link = document.createElement("a");
                 link.href = encodeURI(csvContent);
-                link.download = `test.csv`;
+                link.download = `record.csv`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -137,6 +142,17 @@
         }
     )
   },
+    view(row){
+      this.recordShow = true
+      this.$ajax.get('/record/content',{params: {record_id: row.record_id}}).then((res) => {
+        console.log(res.data)
+        this.recordView = res.data
+      })
+      },
+    closeRecordDialog() {
+      this.recordShow = false
+      this.activeName='first'
+    },
   },
   computed: {
   filtedData() {
