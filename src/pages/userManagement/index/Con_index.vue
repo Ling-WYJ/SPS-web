@@ -48,7 +48,7 @@
           </div>
           <div class="div">
             <p class="p1">当前会话数</p>
-            <p class="p2">{{ conversation_num }}</p>
+            <p class="p2">{{conversation_num}}</p>
           </div>
         </div>
       </el-col>
@@ -196,6 +196,7 @@ export default {
         });
     },
     // 获取当前会话数
+<<<<<<< HEAD
     getConversationNum(user_id) {
       this.$ajax
         .get("/counsellor/getConversationNum", { params: { user_id } })
@@ -211,6 +212,19 @@ export default {
       this.$ajax
         .get("/record/todayTime", { params: { user_id } })
         .then((res) => {
+=======
+    getConversationNum(coun_id) {
+      this.$ajax.get("/counsellor/getConversationNum", {params: {coun_id}}).then((res) => {
+            if (res.data) {
+              this.conversation_num = res.data.conversation_num;
+              console.log(this.conversation_num,456);
+            }
+          })},
+      // 获取今日咨询时长
+      getTodayTime(user_id)
+      {
+        this.$ajax.get('/record/todayTime', {params: {user_id}}).then((res) => {
+>>>>>>> Dev_zth
           if (res.data) {
             this.today_time = res.data[0].today_time;
           }
@@ -255,11 +269,20 @@ export default {
         .get("/auth/getInfo", { params: { user_name: this.user_name } })
         .then((res) => {
           if (res.data) {
+<<<<<<< HEAD
             this.data = res.data;
             this.getScore(this.user_id);
             this.getTodayNum(this.user_id);
             this.getTodayTime(this.user_id);
             this.getSum(this.user_id);
+=======
+            this.data = res.data
+            this.getScore(this.user_id)
+            this.getTodayNum(this.user_id)
+            this.getTodayTime(this.user_id)
+            this.getSum(this.user_id)
+            this.getConversationNum(this.user_id)
+>>>>>>> Dev_zth
           }
         });
     },
