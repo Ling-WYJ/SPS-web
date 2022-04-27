@@ -10,6 +10,11 @@
     </template>
     <!-- 表格区 -->
     <el-table :data="filtedData">
+      <el-table-column label="id" prop="id">
+        <template slot-scope="scope">
+          {{scope.row.coun_id}}
+        </template>
+      </el-table-column>
       <el-table-column label="姓名" prop="name">
         <template slot-scope="scope">
           {{scope.row.coun_name}}
