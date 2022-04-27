@@ -123,17 +123,39 @@ const routes = [
 					title:'督导管理'
 				},
 			},
-			// {
-			// 	//个人信息
-			// 	path: '/userManagement/profile',
-			// 	name: 'profile',
-			// 	role:'all',
-			// 	component: ()=>import('@/pages/userManagement/profile/index'),
-			// 	meta: {
-			// 		type: 'profile',
-			// 		title:'个人信息'
-			// 	},
-			// },
+			{
+				//管理员个人信息修改
+				path: '/userManagement/Adm_profile',
+				name: 'profile',
+				role:'admin',
+				component: ()=>import('@/pages/userManagement/profile/Adm_dataTable'),
+				meta: {
+					type: 'profile',
+					title:'个人信息'
+				},
+			},
+			{
+				//咨询师个人信息修改
+				path: '/userManagement/Coun_profile',
+				name: 'profile',
+				role:'counsellor',
+				component: ()=>import('@/pages/userManagement/profile/Coun_dataTable'),
+				meta: {
+					type: 'profile',
+					title:'个人信息'
+				},
+			},
+			{
+				//督导个人信息修改
+				path: '/userManagement/Sup_profile',
+				name: 'profile',
+				role:'supervisor',
+				component: ()=>import('@/pages/userManagement/profile/Sup_dataTable'),
+				meta: {
+					type: 'profile',
+					title:'个人信息'
+				},
+			},
 			{
 				//排班表
 				path: '/userManagement/schedule',
