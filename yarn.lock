@@ -8263,10 +8263,10 @@
   "resolved" "https://registry.npmjs.org/thunky/-/thunky-1.1.0.tgz"
   "version" "1.1.0"
 
-"tim-js-sdk@^2.14.0":
-  "integrity" "sha512-42kBFtv7PmZJivGyLfCAtHr7gqCvae45VGTchOu+Yri9IQf/+wyPfJ0RsXm7guzg/l5KB8mTcyZFLfs4b/xFgA=="
-  "resolved" "https://registry.npmjs.org/tim-js-sdk/-/tim-js-sdk-2.17.0.tgz"
-  "version" "2.17.0"
+"tim-js-sdk@^2.18.2":
+  "integrity" "sha512-g7JKkqZssnPzNHVAjwgKTYAL3OLvUHKrcmuG0tEmAmBzjb4nfFDQNiKyQwSH5MJglU4HhnsGEwKwyBY1DOb/3A=="
+  "resolved" "https://registry.npmjs.org/tim-js-sdk/-/tim-js-sdk-2.18.2.tgz"
+  "version" "2.18.2"
 
 "tim-upload-plugin@^1.0.4":
   "integrity" "sha512-Ib/Ql5vdKoLg2wSFBQ34nzBnaUFa6IxiV8060BF+RnWVlhBZSd3MpBXT32wWcmPj/Sl2yOSCM+dC4fn1sm+y/w=="

@@ -22,7 +22,7 @@
             text-color="#ff9900"
             score-template="{value}"
           >
-          
+
           </el-rate>
 
         </el-card>
@@ -255,14 +255,14 @@ export default {
         .get("/auth/getInfo", { params: { user_name: this.user_name } })
         .then((res) => {
           if (res.data) {
-            this.data = res.data 
+            this.data = res.data
             this.status= res.data.coun_status
             this.getScore(this.user_id)
             this.getTodayNum(this.user_id)
             this.getTodayTime(this.user_id)
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
-           
+
           }
         });
     },
@@ -299,17 +299,12 @@ export default {
       let integer = Math.floor(score);
       // console.log(integer);
       for (let i = 0; i < integer; i++) {
-        // result.push('on')
         result++;
       }
       // console.log(result);
       if (hasDecimal) {
-        // result.push('half')
         result = result + 0.5;
       }
-      /* while(result.length < 5) {
-        // result.push('off')
-      }*/
       return result;
     },
     userName() {
