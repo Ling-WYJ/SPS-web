@@ -5,6 +5,7 @@
         <el-card :body-style="{ padding: '0px' }">
           <div class="name" style="height: 240px; padding: 20px">
             <div class="name" style="margin: 12px 0">督导：{{ user_name }}</div>
+             <div class="name" style="margin: 12px 0">状态：{{ status }}</div>
           </div>
         </el-card>
       </el-col>
@@ -125,12 +126,12 @@ export default {
       user_id: sessionStorage.getItem("user_id"),
       rate: "",
       data: [],
-      user_id: sessionStorage.getItem("user_id"),
       today_num: 0,
       today_time: 0,
       all_num: 0,
       all_minitus: 0,
       conversation_num: 0,
+      status: [],
     };
   },
   computed: {
@@ -274,6 +275,7 @@ export default {
             this.getTodayTime(this.user_id);
             this.getSum(this.user_id);
             this.getConversationNum_sup(this.user_id);
+            this.status= res.data.sup_status
           }
         });
     },
@@ -295,9 +297,41 @@ export default {
           if (res.data) {
             this.conversation_num = res.data.conversation_num;
             console.log(this.conversation_num,222,sup_id);
+               if(this.conversation_num > 1)
+              {
+                
+                this.changeStatusBusy(sup_id);
+              }
+              else
+              {
+                this.changeStatusFree(sup_id);
+              }
           }
         });
     },
+    //置为free
+         changeStatusFree(sup_id) {
+          var Statuslist ={ sup_id: sup_id,sup_status: "free" }
+          this.$ajax.put("/supervisor/changeStatus", Statuslist).then((res) => {
+            if (res.data) {
+              this.message = res.data.message;
+              console.log(this.message, 111);
+            }
+          });
+       },
+    //置为busy
+      changeStatusBusy(sup_id) {
+          var Statuslist ={ sup_id: sup_id,sup_status: "busy" }
+          this.$ajax.put("/supervisor/changeStatus", Statuslist).then((res) => {
+            if (res.data) {
+              this.message = res.data.message;
+              console.log(this.message, 111);
+            }
+          });
+    },
+
+
+
     // 获取今日咨询数
     getTodayNum(user_id) {
       this.$ajax
