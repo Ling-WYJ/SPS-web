@@ -7,11 +7,28 @@
   >
     <div class="chat-wrapper">
       <el-row>
-        <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
+        <el-col :xs="10" :sm="8" :md="8" :lg="6" :xl="6">
           <side-bar-sup />
         </el-col>
-        <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="17">
+        <el-col :xs="7" :sm="8" :md="8" :lg="9" :xl="9">
           <current-conversation />
+        </el-col>
+        <el-col :xs="7" :sm="8" :md="8" :lg="9" :xl="9">
+          <!-- <current-conversation /> -->
+          <div class="syncChat" v-if="showCurrentConversation">
+            <div class="synChat-title">{{coun}}和{{visitor}}的会话</div>
+            <div class="synChat-dialog-section" ref="sync-list" @scroll="this.onScroll">
+              <div :label="m.message_key" v-for="m in message" :key="m.message_key">
+                <div class="synChat-message-box">
+                  <div class="synChat-message-box-top">
+                    <div class="synChat-message-box-name">{{m.from_name}}</div>
+                    <div class="synChat-message-box-time">{{new Date(m.msg_time).toLocaleString()}}</div>
+                  </div>
+                  <div class="synChat-message-box-bottom">{{m.text}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -36,7 +53,30 @@ import { ACTION } from "@/utils/trtcCustomMessageMap";
 export default {
   name: "chat",
   data() {
-    return {};
+    return {
+      message: [
+        {
+          "message_key": '1',
+          "from_user": "zhqtest",
+          "to_user": "coun",
+          "msg_time": "2022-04-27T06:40:10.000Z",
+          "text": "test3",
+          "from_name": "张好奇",
+          "to_name": "欧豪"
+        },
+        {
+          "message_key": '2',
+          "from_user": "zhqtest",
+          "to_user": "coun",
+          "msg_time": "2022-04-27T06:41:41.000Z",
+          "text": "[访客给出评价]",
+          "from_name": "张好奇",
+          "to_name": "欧豪"
+        }
+    ],
+      coun: "欧豪",
+      visitor: "张好奇",
+    };
   },
   components: {
     SideBarSup,
@@ -60,6 +100,9 @@ export default {
     // 是否显示 Loading 状态
     showLoading() {
       return !this.isSDKReady;
+    },
+    showCurrentConversation() {
+      return !!this.currentConversation.conversationID
     },
   },
   mounted() {
@@ -128,6 +171,15 @@ export default {
         this.TIM.EVENT.FRIEND_GROUP_LIST_UPDATED,
         this.onFriendGroupListUpdated
       );
+    },
+    onScroll({ target: { scrollTop } }) {
+      let messageListNode = this.$refs['sync-list']
+      if (!messageListNode) {
+        return
+      }
+      if (this.preScrollHeight - messageListNode.clientHeight - scrollTop < 20) {
+        this.isShowScrollButtomTips = false
+      }
     },
     onFriendApplicationListUpdated(data) {
       this.$store.commit(
@@ -397,4 +449,50 @@ export default {
   width: calc(100vw - 240px);
   height: calc(100vh - 90px);
 }
+
+.syncChat {
+  border-left: 1px solid #ccc !important;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.synChat-title {
+  padding: 0 20px;
+  color: #1c2438;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 50px;
+  text-shadow: #76828c 0 0 0.1em;
+  border-bottom: 1px solid #e7e7e7;
+  height: 50px;
+}
+
+.synChat-dialog-section {
+  height: calc(80vh - 50px);
+  display: flex;
+  flex-direction: column;
+}
+
+.synChat-message-box {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.synChat-message-box-top {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+.synChat-message-box-name {
+  color: #222;
+  margin-right: 2rem;
+}
+.synChat-message-box-bottom {
+  margin-left: 1rem;
+}
+
 </style>
