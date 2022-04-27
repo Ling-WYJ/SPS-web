@@ -183,6 +183,18 @@ export default {
             console.log(res);
             window.sessionStorage.setItem('record_id', res.data.record_id);
           })
+        } else {
+          const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+          const coun = this.conversation.userProfile.userID;
+          this.$ajax.get('/record/endOrNot', {
+            params: {
+              sup,
+              coun,
+            }
+          }).then((res) => {
+            console.log(res);
+            window.sessionStorage.setItem('record_id', res.data.record_id);
+          })
         }
       }
     },

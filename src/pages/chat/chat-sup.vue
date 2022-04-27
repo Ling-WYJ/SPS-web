@@ -57,6 +57,7 @@ export default {
       message: [],
       user1: 'xx',
       user2: 'xx',
+      // isEnd: '',
     };
   },
   components: {
@@ -83,7 +84,8 @@ export default {
       return !this.isSDKReady;
     },
     showSyncConversation() {
-      return !!this.currentConversation.conversationID;
+      let isInChatSup = window.sessionStorage.getItem('isInChatSup');
+      return isInChatSup && !!this.currentConversation.conversationID;
     },
   },
   mounted() {
@@ -427,6 +429,7 @@ export default {
     },
     getSyncRecord() {
       let firstGet = true;
+      // let that = this;
       if (this.showSyncConversation) {
         const coun = this.currentConversation.userProfile.userID;
         const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
@@ -447,7 +450,25 @@ export default {
           },1000)
         })
       }
-    }
+    },
+    // getIsEnd() {
+    //   let that = this;
+    //   if (this.showSyncConversation) {
+    //     const coun = this.currentConversation.userProfile.userID;
+    //     const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+    //     this.$ajax.get('/record/endOrNot', {
+    //       params: {
+    //         coun,
+    //         sup
+    //       },
+    //     }).then((res) => {
+    //       that.isEnd = res.data.isEnd;
+    //       console.log(that.isEnd);
+    //     }).catch((err) => {
+    //       console.log(err)
+    //     })
+    //   }
+    // }
   },
 };
 </script>

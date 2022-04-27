@@ -56,11 +56,16 @@ export default {
     },
   },
   created() {
-    console.log(this.url, "ppppp");
+    // console.log(this.url, "ppppp");
     this.$router.push(this.list[0].path);
   },
   methods: {
     handleClick(data) {
+      if (data.name === "chat-sup") {
+        window.sessionStorage.setItem("isInChatSup", true);
+      } else {
+        window.sessionStorage.setItem("isInChatSup", false);
+      }
       this.$router.push(data.path);
     },
     logout() {
