@@ -17,7 +17,7 @@
           <!-- <current-conversation /> -->
           <div class="syncChat" v-if="showSyncConversation">
             <div class="synChat-title">{{user1}}和{{user2}}的会话</div>
-            <div class="synChat-dialog-section" ref="sync-list" @scroll="this.onScroll">
+            <div class="synChat-dialog-section" ref="sync-list" style="overflow:scroll">
               <div :label="m.message_key" v-for="m in message" :key="m.message_key">
                 <div class="synChat-message-box">
                   <div class="synChat-message-box-top">
@@ -98,6 +98,13 @@ export default {
   watch: {
     showSyncConversation() {
       this.getSyncRecord();
+    },
+    message: function() {
+      let messageListNode = this.$refs['sync-list'];
+      if (!messageListNode) {
+        return
+      }
+      messageListNode.scrollTop = messageListNode.scrollHeight;
     }
   },
 
@@ -158,15 +165,6 @@ export default {
         this.TIM.EVENT.FRIEND_GROUP_LIST_UPDATED,
         this.onFriendGroupListUpdated
       );
-    },
-    onScroll({ target: { scrollTop } }) {
-      let messageListNode = this.$refs['sync-list']
-      if (!messageListNode) {
-        return
-      }
-      if (this.preScrollHeight - messageListNode.clientHeight - scrollTop < 20) {
-        this.isShowScrollButtomTips = false
-      }
     },
     onFriendApplicationListUpdated(data) {
       this.$store.commit(

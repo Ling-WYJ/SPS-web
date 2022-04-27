@@ -4,7 +4,7 @@
       <el-col :span="5" class="user_card">
         <el-card :body-style="{ padding: '0px' }">
           <div class="name" style="height: 240px; padding: 20px">
-            <div class="name" style="margin: 12px 0">督导：{{ user_name }}</div>
+            <div class="name" style="margin: 12px 0">督导：{{ sup_name }}</div>
              <div class="name" style="margin: 12px 0">状态：{{ status }}</div>
           </div>
         </el-card>
@@ -51,9 +51,7 @@
         <div class="content">
           <div v-for="item in countList" :key="item.name" class="item-box">
             <span>{{ item.coun_name }}</span>
-            <el-tag type="success" style="float: right">{{
-              item.coun_status
-            }}</el-tag>
+            <el-tag type="success" style="float: right">{{item.coun_status}}</el-tag>
           </div>
         </div>
       </el-col>
@@ -245,9 +243,20 @@ export default {
         })
         .then((res) => {
           // console.log(res.data, 222);
-          if (res.data) {
-            this.countList = res.data;
+          this.countList = res.data;
+          for(var i = 0;i <this.countList.length ; i++)
+          {
+                       
+              if(this.countList[i].coun_status=="free")
+              {
+                this.countList[i].coun_status="空闲"
+              }
+              else if(this.countList[i].coun_status=="busy")
+              {
+                this.countList[i].coun_status="忙碌"
+              }
           }
+         
         });
     },
     getSchedule() {
@@ -268,7 +277,7 @@ export default {
           console.log(res);
           if (res.data) {
             this.data = res.data;
-            // this.user_id=this.data.user_id
+            this.sup_name=this.data.sup_name
             // this.user_name=this.data.user_name
             // this.getScore(this.user_id);
             this.getTodayNum(this.user_id);
@@ -276,6 +285,14 @@ export default {
             this.getSum(this.user_id);
             this.getConversationNum_sup(this.user_id);
             this.status= res.data.sup_status
+            if(this.status=="free")
+            {
+              this.status="空闲"
+            }
+            else(this.status=="busy")
+            {
+              this.status="忙碌"
+            }
           }
         });
     },
