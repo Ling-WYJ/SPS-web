@@ -175,7 +175,7 @@ export default {
         coun: coun,
         sup: this.selectSupID,
       })
-      this.selectSupID = ''
+      // this.selectSupID = ''
       this.showBottonBtn = false
     },
     logout() {
