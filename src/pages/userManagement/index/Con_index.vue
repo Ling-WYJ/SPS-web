@@ -7,7 +7,7 @@
           style="height: 300px; padding: 30px"
         >
           <div class="name" style="margin: 12px 0">咨询师：{{ user_name }}</div>
-          <div class="name" style="margin: 12px 0">咨询师状态：{{ status }}</div>
+          <div class="name" style="margin: 12px 0">状态：{{ status }}</div>
           <div class="title" style="margin-bottom: 15px">我的综合评价</div>
           <!-- <ul class="star" style="padding:0;margin:12px 0"> -->
           <!-- eslint-disable-next-line -->
@@ -188,10 +188,11 @@ export default {
         this.$router.push({ path: "/login" });
       }
     },
+
     // 获取今日咨询数
     getTodayNum(user_id) {
       this.$ajax
-        .get("/record/todayNum", { params: { user_id } })
+        .get("/record/todayNum",{params: {user_id}})
         .then((res) => {
           if (res.data) {
             this.today_num = res.data[0].today_num;
@@ -205,8 +206,37 @@ export default {
             if (res.data) {
               this.conversation_num = res.data.conversation_num;
               console.log(this.conversation_num,456);
+              if(this.conversation_num > 1)
+              {
+                
+                this.changeStatusBusy(coun_id);
+              }
+              else
+              {
+                this.changeStatusFree(coun_id);
+              }
             }
           })},
+
+      changeStatusFree(coun_id) {
+          var Statuslist ={ coun_id: coun_id,coun_status: "free" }
+          this.$ajax.put("/counsellor/changeStatus", Statuslist).then((res) => {
+            if (res.data) {
+              this.message = res.data.message;
+              console.log(this.message, 111);
+            }
+          });
+       },
+      
+      changeStatusBusy(coun_id) {
+          var Statuslist ={ coun_id: coun_id,coun_status: "busy" }
+          this.$ajax.put("/counsellor/changeStatus", Statuslist).then((res) => {
+            if (res.data) {
+              this.message = res.data.message;
+              console.log(this.message, 111);
+            }
+          });
+    },
       // 获取今日咨询时长
       getTodayTime(user_id)
       {
@@ -255,14 +285,13 @@ export default {
         .get("/auth/getInfo", { params: { user_name: this.user_name } })
         .then((res) => {
           if (res.data) {
-            this.data = res.data
-            this.status= res.data.coun_status
+            this.data = res.data 
             this.getScore(this.user_id)
             this.getTodayNum(this.user_id)
             this.getTodayTime(this.user_id)
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
-
+            this.status= res.data.coun_status
           }
         });
     },
