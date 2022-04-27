@@ -110,7 +110,7 @@ export default {
   filtedData() {
     return this.data.filter((item) => {
       var reg = new RegExp(this.searchStr, 'i')
-      return !this.searchStr || reg.test(item.visitor_name)
+      return !this.searchStr || reg.test(item.visitor_name) || reg.test(item.sup_name) || reg.test(item.begin_time)
     })
   },
 }
