@@ -227,7 +227,7 @@ export default {
               console.log(this.message, 111);
             }
           });
-           setTimeout(() => {this.reload()}, 1500)
+          
        },
       
       changeStatusBusy(coun_id) {
@@ -238,7 +238,7 @@ export default {
               console.log(this.message, 111);
             }
           });
-           setTimeout(() => {this.reload()}, 1500)
+           
     },
       // 获取今日咨询时长
       getTodayTime(user_id)
@@ -295,8 +295,7 @@ export default {
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
             this.status= res.data.coun_status
-            setTimeout(() => {this.reload()}, 1500)
-           
+          
           }
         });
     },
