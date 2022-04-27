@@ -368,8 +368,18 @@ MonthSumChart
       getCounList() {
         this.$ajax.get('/admin/onlineCounsellorList',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
-          if(res.data) {
-            this.countList=res.data
+            this.countList = res.data;
+          for(var i = 0;i <this.countList.length ; i++)
+          {
+                       
+              if(this.countList[i].coun_status=="free")
+              {
+                this.countList[i].coun_status="空闲"
+              }
+              else if(this.countList[i].coun_status=="busy")
+              {
+                this.countList[i].coun_status="忙碌"
+              }
           }
         })
       },
@@ -377,8 +387,18 @@ MonthSumChart
       getSupList() {
         this.$ajax.get('/admin/onlineSupervisorList',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
-          if(res.data) {
-            this.superList=res.data
+            this.superList = res.data;
+          for(var i = 0;i <this.superList.length ; i++)
+          {
+                       
+              if(this.superList[i].sup_status=="free")
+              {
+                this.superList[i].sup_status="空闲"
+              }
+              else if(this.superList[i].sup_status=="busy")
+              {
+                this.superList[i].sup_status="忙碌"
+              }
           }
         })
       },
@@ -480,7 +500,7 @@ MonthSumChart
   content:'4';
   font-size:16px;
   font-weight: 700;
-  color:#f4f4f5;;
+  color:black;;
    margin-right: 10px;
 }
 

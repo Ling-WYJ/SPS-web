@@ -295,6 +295,14 @@ export default {
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
             this.status= res.data.coun_status
+            if(this.status=="free")
+            {
+              this.status="空闲"
+            }
+            else(this.status=="busy")
+            {
+              this.status="忙碌"
+            }
           
           }
         });
