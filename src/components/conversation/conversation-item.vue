@@ -171,7 +171,7 @@ export default {
           this.conversation.conversationID
         )
         // 获取record_id
-        if (this.conversation.userProfile.role != 1) {
+        if (this.conversation.userProfile.role != 1 && this.conversation.userProfile.role != 0) {
           const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
           var visitor = this.conversation.userProfile.userID;
           this.$ajax.get('/record/recordID', {
@@ -183,7 +183,7 @@ export default {
             console.log(res);
             window.sessionStorage.setItem('record_id', res.data.record_id);
           })
-        } else {
+        } else if (this.conversation.userProfile.role == 0) {
           const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
           const coun = this.conversation.userProfile.userID;
           this.$ajax.get('/record/endOrNot', {
