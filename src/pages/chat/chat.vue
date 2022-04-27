@@ -87,7 +87,6 @@ export default {
             this.$store.commit("toggleIsLogin", true);
             this.$store.commit("startComputeCurrent");
           });
-        this.loading = false
       } else {
         this.$router.push({path: '/login'})
       }
@@ -165,7 +164,7 @@ export default {
               message: error.message
             })
           });
-        this.loading = false;
+        // this.loading = false;
         this.$store.dispatch('getBlacklist')
         // 登录trtc calling
         this.trtcCalling.login({
@@ -213,6 +212,7 @@ export default {
     },
     onUpdateConversationList(event) {
       this.$store.commit('updateConversationList', event.data)
+      // this.loading = false;
     },
 
     onUpdateGroupList(event) {
