@@ -125,7 +125,6 @@ export default {
       user_id: sessionStorage.getItem("user_id"),
       rate: "",
       data: [],
-      user_id: sessionStorage.getItem("user_id"),
       today_num: 0,
       today_time: 0,
       all_num: 0,

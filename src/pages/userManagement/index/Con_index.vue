@@ -188,17 +188,6 @@ export default {
         this.$router.push({ path: "/login" });
       }
     },
-    // 咨询师状态
-    getTodayNum(user_id) {
-      this.$ajax
-          .get("/record/todayNum", {params: {user_id}})
-          .then((res) => {
-            if (res.data) {
-              this.today_num = res.data[0].today_num;
-              console.log(this.today_num, 111);
-            }
-          });
-    },
     // 获取今日咨询数
     getTodayNum(user_id) {
       this.$ajax

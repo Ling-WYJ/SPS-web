@@ -12,7 +12,7 @@
     <div class="bar-middle">
       <conversation-list v-show="showConversationList" />
     </div>
-    <div class="bar-down">
+    <div class="bar-down" v-show="showBottonBtn">
       <button class="stop-btn">结束咨询</button>
     </div>
     <!-- <div class="bar-left">
@@ -117,6 +117,9 @@ export default {
     // showBlackList() {
     //   return this.active === activeName.BLACK_LIST
     // },
+    showBottonBtn() {
+      return this.currentConversation.conversationID != undefined;
+    },
     showAddButton() {
       return [activeName.CONVERSATION_LIST, activeName.GROUP_LIST].includes(
         this.active
