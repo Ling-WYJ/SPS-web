@@ -440,8 +440,8 @@ export default {
           this.message = res.data;
           if (firstGet) {
             firstGet = false;
-            this.user1 = res.data[0].from_user;
-            this.user2 = res.data[0].to_user;
+            this.user1 = res.data[0].from_name;
+            this.user2 = res.data[0].to_name;
           }
           setTimeout(() => {
             this.getSyncRecord();
