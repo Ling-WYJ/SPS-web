@@ -16,7 +16,7 @@
           {{scope.row.coun_name}}
         </template>
       </el-table-column>
-      <el-table-column label="咨询时长(分钟)">
+      <el-table-column label="咨询时长">
         <template slot-scope="scope">
           {{scope.row.period}}
         </template>
