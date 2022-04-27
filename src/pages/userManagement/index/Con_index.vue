@@ -22,7 +22,7 @@
             text-color="#ff9900"
             score-template="{value}"
           >
-
+          
           </el-rate>
 
         </el-card>
@@ -95,7 +95,7 @@ import DataTable from "./components/DataTablePart";
 
 export default {
   name: "home",
-
+ inject: ['reload'],
   data() {
     return {
       user_id: sessionStorage.getItem("user_id"),
@@ -116,6 +116,7 @@ export default {
   },
   created() {
     // console.warn('record')
+    this.update();
   },
   mounted() {
     // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
@@ -127,7 +128,7 @@ export default {
     if (!this.isSDKReady) {
       this.reLogin();
     }
-    this.update();
+    
     this.getSchedule();
   },
   methods: {
@@ -188,7 +189,6 @@ export default {
         this.$router.push({ path: "/login" });
       }
     },
-
     // 获取今日咨询数
     getTodayNum(user_id) {
       this.$ajax
@@ -215,6 +215,7 @@ export default {
               {
                 this.changeStatusFree(coun_id);
               }
+             
             }
           })},
 
@@ -226,6 +227,7 @@ export default {
               console.log(this.message, 111);
             }
           });
+           setTimeout(() => {this.reload()}, 1500)
        },
       
       changeStatusBusy(coun_id) {
@@ -236,6 +238,7 @@ export default {
               console.log(this.message, 111);
             }
           });
+           setTimeout(() => {this.reload()}, 1500)
     },
       // 获取今日咨询时长
       getTodayTime(user_id)
@@ -292,6 +295,8 @@ export default {
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
             this.status= res.data.coun_status
+            setTimeout(() => {this.reload()}, 1500)
+           
           }
         });
     },
@@ -328,12 +333,17 @@ export default {
       let integer = Math.floor(score);
       // console.log(integer);
       for (let i = 0; i < integer; i++) {
+        // result.push('on')
         result++;
       }
       // console.log(result);
       if (hasDecimal) {
+        // result.push('half')
         result = result + 0.5;
       }
+      /* while(result.length < 5) {
+        // result.push('off')
+      }*/
       return result;
     },
     userName() {

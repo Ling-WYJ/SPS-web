@@ -25,7 +25,14 @@
 <script>
 
 
+
 export default {
+  data() {
+    return {
+      user_id: sessionStorage.getItem("user_id"),
+      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+    };
+  },
   components: {},
   computed: {
   
@@ -45,6 +52,9 @@ export default {
         type: 'warning',
       })
         .then(() => {
+          ///offline
+          this.getform( )
+         
           this.$store.dispatch('logout')
           window.sessionStorage.clear()
           window.localStorage.clear()
@@ -52,6 +62,43 @@ export default {
         })
         .catch(() => {})
     },
+      getform(){
+        this.$ajax
+        .get("/auth/getInfo", { params: { user_name: this.user_name } })
+        .then((res) => {
+          if (res.data) {
+            this.data = res.data 
+            this.role=res.data.role
+            // this.status= res.data.coun_status
+          }
+          if(this.role=="supervisor")
+          {
+              this.offline_sup()
+          }
+          else if(this.role=="counsellor")
+          {
+              this.offline_con()
+          }
+        });
+      },
+      offline_sup(){
+        var Statuslist ={ sup_id: this.user_id,sup_status: "offline" }
+          this.$ajax.put("/supervisor/changeStatus", Statuslist).then((res) => {
+            if (res.data) {
+              this.message = res.data.message;
+              console.log(this.message, 111);
+            }
+          });
+      },
+      offline_con(){
+        var Statuslist ={ coun_id: this.user_id,coun_status: "offline" }
+          this.$ajax.put("/counsellor/changeStatus", Statuslist).then((res) => {
+            if (res.data) {
+              this.message = res.data.message;
+              console.log(this.message, 111);
+            }
+          });
+      },
   },
 }
 </script>
