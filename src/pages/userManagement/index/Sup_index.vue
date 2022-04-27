@@ -122,6 +122,7 @@ export default {
       countList: [],
       scheduleData: [],
       user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      user_id: sessionStorage.getItem("user_id"),
       rate: "",
       data: [],
       user_id: sessionStorage.getItem("user_id"),
@@ -268,10 +269,11 @@ export default {
             this.data = res.data;
             // this.user_id=this.data.user_id
             // this.user_name=this.data.user_name
-            this.getScore(this.user_id);
+            // this.getScore(this.user_id);
             this.getTodayNum(this.user_id);
             this.getTodayTime(this.user_id);
             this.getSum(this.user_id);
+            this.getConversationNum_sup(this.user_id);
           }
         });
     },
