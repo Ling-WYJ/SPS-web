@@ -22,7 +22,7 @@
             text-color="#ff9900"
             score-template="{value}"
           >
-          
+
           </el-rate>
 
         </el-card>
@@ -292,7 +292,6 @@ export default {
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
             this.status= res.data.coun_status
-           
           }
         });
     },
@@ -329,17 +328,12 @@ export default {
       let integer = Math.floor(score);
       // console.log(integer);
       for (let i = 0; i < integer; i++) {
-        // result.push('on')
         result++;
       }
       // console.log(result);
       if (hasDecimal) {
-        // result.push('half')
         result = result + 0.5;
       }
-      /* while(result.length < 5) {
-        // result.push('off')
-      }*/
       return result;
     },
     userName() {
