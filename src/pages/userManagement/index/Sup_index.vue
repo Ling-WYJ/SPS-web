@@ -70,7 +70,7 @@
       >
         <div class="sun-static">
           <div class="title">正在进行会话</div>
-          <div class="num">{{ conversation_num }}</div>
+          <div class="num">{{conversation_num }}</div>
         </div>
       </el-col>
       <el-col :span="14">
@@ -121,13 +121,15 @@ export default {
     return {
       countList: [],
       scheduleData: [],
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID, 
+      user_id: sessionStorage.getItem("user_id"),
+
       rate: "",
       data: [],
-      user_id: sessionStorage.getItem("user_id"),
+    
       today_num: 0,
       today_time: 0,
-      all_num: 0,
+      all_num:0,
       all_minitus: 0,
       conversation_num: 0,
     };
@@ -216,32 +218,32 @@ export default {
             this.data = res.data;
             // this.user_id=this.data.user_id
             // this.user_name=this.data.user_name
-            this.getScore(this.user_id);
+            // this.getScore(this.user_id);
             this.getTodayNum(this.user_id);
             this.getTodayTime(this.user_id);
             this.getSum(this.user_id);
+            this.getConversationNum_sup(this.user_id);
           }
         });
     },
-    getScore(user_id) {
-      console.log(this.user_id);
-      this.$ajax
-        .get("/feedback/score", { params: { coun_id: user_id } })
-        .then((res) => {
-          console.log(res);
+    //督导评分
+    // getScore(user_id) {
+    //   console.log(this.user_id);
+    //   this.$ajax
+    //     .get("/feedback/score", { params: { coun_id: user_id } })
+    //     .then((res) => {
+    //       console.log(res);
+    //       if (res.data) {
+    //         this.score = res.data.score;
+    //       }
+    //     });
+    // },
+   // 获取当前会话数
+    getConversationNum_sup(sup_id) {
+      this.$ajax.get("/supervisor/getConversationNum", { params: {sup_id}}).then((res) => {
           if (res.data) {
-            this.score = res.data.score;
-          }
-        });
-    },
-    // 获取当前会话数
-    getConversationNum(user_id) {
-      this.$ajax
-        .get("/supervisor/getConversationNum", { params: { user_id } })
-        .then((res) => {
-          if (res.data) {
-            this.conversation_num = res.data[0].conversation_num;
-            console.log(this.conversation_num);
+            this.conversation_num = res.data.conversation_num;
+            console.log(this.conversation_num,222,sup_id);
           }
         });
     },

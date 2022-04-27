@@ -148,8 +148,8 @@ export default {
           });
     },
     // 获取当前会话数
-    getConversationNum(user_id) {
-      this.$ajax.get("/counsellor/getConversationNum", {params: {user_id}}).then((res) => {
+    getConversationNum(coun_id) {
+      this.$ajax.get("/counsellor/getConversationNum", {params: {coun_id}}).then((res) => {
             if (res.data) {
               this.conversation_num = res.data.conversation_num;
               console.log(this.conversation_num,456);
