@@ -91,7 +91,7 @@
 // import * as echarts from 'echarts'
 import { mapState } from 'vuex'
 // import Echart from '../../src/components/ECharts'
-import DataTable from "./components/DataTablePart";
+import DataTable from "./components/DataTablePartCon";
 
 export default {
   name: "home",

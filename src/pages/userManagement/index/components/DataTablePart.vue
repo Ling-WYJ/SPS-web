@@ -82,7 +82,9 @@
       filterDates: null,
       searchStr:'',
       fields: ['msg_time','from_name','to_name','text'],
-      currentPage: 2,
+      sup_id:sessionStorage.getItem('user_id'),
+      sup_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
+      currentPage: 1,
       currentPageSize: 4
     }
   },
@@ -97,7 +99,7 @@
         this.currentPage = page
     },
     update() {
-      this.$ajax.get('/record/all').then((res) => {
+      this.$ajax.get('/record/supAndBind',{params: {sup_id: this.sup_id}}).then((res) => {
         console.log(res)
         if (res.data) {
           this.data = res.data.RecordList
@@ -111,14 +113,13 @@
 
             this.data[i].begin_time = new Date(this.data[i].begin_time).toLocaleString()
 
-            if(this.data[i].help_or_not == '0')
+             if(this.data[i].help_or_not == '0')
             {
-              this.data[i].sup_name = '无'
+              this.data[i].help_or_not = '否'
             }
             else
             {
-              if(this.data[i].sup_name == '无求助督导')
-                this.data[i].sup_name = '无'
+              this.data[i].help_or_not = '是'
             }
             //评分转换
             let result = 0;

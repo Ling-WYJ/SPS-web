@@ -5,10 +5,15 @@
       <el-input v-model="searchStr" suffix-icon="el-icon-search" placeholder="请输入搜索内容" ></el-input>
     </template>
     <!-- 表格区 -->
-      <el-table :data="filtedData">
+    <el-table :data="filtedData">
       <el-table-column label="咨询人" prop="visitor_name">
         <template slot-scope="scope">
           {{scope.row.visitor_name}}
+        </template>
+      </el-table-column>
+      <el-table-column label="咨询师" prop="coun_name">
+        <template slot-scope="scope">
+          {{scope.row.coun_name}}
         </template>
       </el-table-column>
       <el-table-column label="咨询时长">
@@ -21,7 +26,7 @@
           {{ scope.row.begin_time}}
         </template>
       </el-table-column>
-        <el-table-column label="咨询评级">
+      <el-table-column label="咨询评级">
           <template slot-scope="scope">
           <el-rate
               v-model="scope.row.score"
@@ -55,15 +60,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" ></record-dialog>
+     <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" ></record-dialog>
   </view-page>
 </template>
 
 <script>
-  import ViewPage from './ViewPage'
-  import json2csv from 'json2csv'
-  import recordDialog from "@/pages/userManagement/record/recordDialog";
-  export default {
+import ViewPage from './ViewPage'
+import json2csv from 'json2csv'
+import recordDialog from "@/pages/userManagement/record/recordDialog";
+export default {
   components: {
     ViewPage,
     recordDialog,
@@ -73,26 +78,24 @@
       data: [],
       recordView: [],//record
       recordShow: false,//record的dialog
+      coun_id:sessionStorage.getItem('user_id'),
+      coun_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
       filterType: '',
       filterDates: null,
       searchStr:'',
-      fields: ['msg_time','from_name','to_name','text'],
-      user_id: sessionStorage.getItem("user_id"),
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      fields: ['msg_time','from_name','to_name','text']
     }
   },
   mounted() {
-
+    this.update()
   },
   methods: {
     update() {
-      
-      this.$ajax.get('/record/list',{params: {coun_id:this.user_id}}).then((res) => {
-        console.log(res.data)
+      this.$ajax.get('/record/list',{params: {coun_id: this.coun_id}}).then((res) => {
+        console.log(res)
         if (res.data) {
           this.data = res.data.RecordList
           for(var i = 0;i <this.data.length ; i++) {
-
             //处理时分秒转换
             var hour = parseInt(this.data[i].period / 3600) < 10 ? '0' + parseInt(this.data[i].period / 3600) : parseInt(this.data[i].period / 3600)
             var min = parseInt(this.data[i].period % 3600 / 60) < 10 ? '0' + parseInt(this.data[i].period % 3600 / 60) : parseInt(this.data[i].period % 3600 / 60)
@@ -100,17 +103,15 @@
             this.data[i].period = hour + ':' + min + ':' + sec
 
             this.data[i].begin_time = new Date(this.data[i].begin_time).toLocaleString()
-
             if(this.data[i].help_or_not == '0')
             {
-              this.data[i].sup_name = '无'
+              this.data[i].help_or_not = '否'
             }
             else
             {
-              if(this.data[i].sup_name == '无求助督导')
-                this.data[i].sup_name = '无'
+              this.data[i].help_or_not = '是'
             }
-            //评分转换
+                //评分转换
             let result = 0;
             let score = Math.floor(this.data[i].score * 2) / 2;
             let hasDecimal = score % 1 !== 0;
@@ -171,14 +172,15 @@
       this.activeName='first'
     },
   },
+  
   computed: {
-  filtedData() {
-    return this.data.filter((item) => {
-      var reg = new RegExp(this.searchStr, 'i')
-      return !this.searchStr || reg.test(item.visitor_name) || reg.test(item.sup_name) || reg.test(item.begin_time)
-    })
-  },
-}
+    filtedData() {
+      return this.data.filter((item) => {
+        var reg = new RegExp(this.searchStr, 'i')
+        return !this.searchStr || reg.test(item.visitor_name) || reg.test(item.sup_name) || reg.test(item.begin_time)
+      })
+    },
+  }
 }
 </script>
 
