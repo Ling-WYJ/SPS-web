@@ -96,6 +96,8 @@
             var sec = parseInt(this.data[i].period % 3600 % 60) < 10 ? '0' + parseInt(this.data[i].period % 3600 % 60) : parseInt(this.data[i].period % 3600 % 60)
             this.data[i].period = hour + ':' + min + ':' + sec
 
+            this.data[i].begin_time = new Date(this.data[i].begin_time).toLocaleString()
+
             if(this.data[i].help_or_not == '0')
             {
               this.data[i].sup_name = '无'
