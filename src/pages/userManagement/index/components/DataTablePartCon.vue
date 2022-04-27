@@ -1,11 +1,16 @@
 <template>
   <view-page>
     <!-- 搜索框 -->
-    <template slot="search-field">
+    <!-- <template slot="search-field">
       <el-input v-model="searchStr" suffix-icon="el-icon-search" placeholder="请输入搜索内容" ></el-input>
-    </template>
+    </template> -->
     <!-- 表格区 -->
-      <el-table :data="filtedData">
+       <el-table :data="pagedData">
+      <el-pagination :total="total" :current-page="currentPage" 
+         :page-size="currentPageSize" :page-sizes="[3, 5]"
+         layout="total, sizes, prev, pager, next, jumper"
+         @size-change="pageSizeChange" @current-change="pageChange">
+      </el-pagination>
       <el-table-column label="咨询人" prop="visitor_name">
         <template slot-scope="scope">
           {{scope.row.visitor_name}}
@@ -60,7 +65,7 @@
 </template>
 
 <script>
-  import ViewPage from './ViewPage'
+  import ViewPage from './ViewPagePart'
   import json2csv from 'json2csv'
   import recordDialog from "@/pages/userManagement/record/recordDialog";
   export default {
@@ -77,18 +82,23 @@
       filterDates: null,
       searchStr:'',
       fields: ['msg_time','from_name','to_name','text'],
-      user_id: sessionStorage.getItem("user_id"),
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      currentPage: 2,
+      currentPageSize: 4
     }
   },
   mounted() {
-
+    this.update()
   },
   methods: {
+    pageSizeChange(size) {
+        this.currentPageSize = size
+    },
+    pageChange(page) {
+        this.currentPage = page
+    },
     update() {
-      
-      this.$ajax.get('/record/list',{params: {coun_id:this.user_id}}).then((res) => {
-        console.log(res.data)
+      this.$ajax.get('/record/all').then((res) => {
+        console.log(res)
         if (res.data) {
           this.data = res.data.RecordList
           for(var i = 0;i <this.data.length ; i++) {
@@ -178,6 +188,12 @@
       return !this.searchStr || reg.test(item.visitor_name) || reg.test(item.sup_name) || reg.test(item.begin_time)
     })
   },
+  total() {
+        return this.filtedData.length
+    },
+  pagedData() {
+        return this.filtedData.slice((this.currentPage - 1) * this.currentPageSize, this.currentPage * this.currentPageSize)
+    }
 }
 }
 </script>
