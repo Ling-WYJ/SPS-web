@@ -51,9 +51,7 @@
         <div class="content">
           <div v-for="item in countList" :key="item.name" class="item-box">
             <span>{{ item.coun_name }}</span>
-            <el-tag type="success" style="float: right">{{
-              item.coun_status
-            }}</el-tag>
+            <el-tag type="success" style="float: right">{{item.coun_status}}</el-tag>
           </div>
         </div>
       </el-col>
@@ -245,9 +243,21 @@ export default {
         })
         .then((res) => {
           // console.log(res.data, 222);
-          if (res.data) {
-            this.countList = res.data;
+          this.countList = res.data;
+          for(var i = 0;i <this.countList.length ; i++)
+          {
+           
+              
+              if(this.countList[i].coun_status=="free")
+              {
+                this.countList[i].coun_status="空闲"
+              }
+              else if(this.countList[i].coun_status=="busy")
+              {
+                this.countList[i].coun_status="忙碌"
+              }
           }
+         
         });
     },
     getSchedule() {
@@ -276,6 +286,14 @@ export default {
             this.getSum(this.user_id);
             this.getConversationNum_sup(this.user_id);
             this.status= res.data.sup_status
+            if(this.status=="free")
+            {
+              this.status="空闲"
+            }
+            else(this.status=="busy")
+            {
+              this.status="忙碌"
+            }
           }
         });
     },
