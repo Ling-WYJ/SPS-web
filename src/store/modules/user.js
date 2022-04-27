@@ -53,7 +53,56 @@ const user = {
     //       }
     //     })
     // },
+    getform(){
+      const user_name=JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID;
+      let role = '';
+      this.$ajax
+      .get("/auth/getInfo", { params: { user_name } })
+      .then((res) => {
+        if (res.data) {
+          this.data = res.data 
+          role=res.data.role
+          // this.status= res.data.coun_status
+        }
+        if(role=="supervisor")
+        {
+            this.offline_sup()
+        }
+        else if(role=="counsellor")
+        {
+            this.offline_con()
+        }
+      });
+    },
+    offline_sup(){
+      var Statuslist ={
+        sup_id: sessionStorage.getItem("user_id"),
+        sup_status: "offline"
+      }
+        this.$ajax.put("/supervisor/changeStatus", Statuslist).then((res) => {
+          if (res.data) {
+            this.message = res.data.message;
+            console.log(this.message, 111);
+          }
+        });
+    },
+    offline_con(){
+      var Statuslist ={
+        coun_id: sessionStorage.getItem("user_id"),
+        coun_status: "offline"
+      }
+        this.$ajax.put("/counsellor/changeStatus", Statuslist).then((res) => {
+          if (res.data) {
+            this.message = res.data.message;
+            console.log(this.message, 111);
+          }
+        });
+    },
     logout(context) {
+
+      //offline
+
+
       // 若有当前会话，在退出登录时已读上报
       if (context.rootState.conversation.currentConversation.conversationID) {
         tim.setMessageRead({ conversationID: context.rootState.conversation.currentConversation.conversationID })
@@ -62,6 +111,8 @@ const user = {
         context.commit('toggleIsLogin')
         context.commit('stopComputeCurrent')
         context.commit('reset')
+        window.sessionStorage.clear();
+        window.localStorage.clear();
       })
     }
   }
