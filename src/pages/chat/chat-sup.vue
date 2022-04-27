@@ -15,8 +15,8 @@
         </el-col>
         <el-col :xs="7" :sm="8" :md="8" :lg="9" :xl="9">
           <!-- <current-conversation /> -->
-          <div class="syncChat" v-if="showCurrentConversation">
-            <div class="synChat-title">{{coun}}和{{visitor}}的会话</div>
+          <div class="syncChat" v-if="showSyncConversation">
+            <div class="synChat-title">{{user1}}和{{user2}}的会话</div>
             <div class="synChat-dialog-section" ref="sync-list" @scroll="this.onScroll">
               <div :label="m.message_key" v-for="m in message" :key="m.message_key">
                 <div class="synChat-message-box">
@@ -54,28 +54,9 @@ export default {
   name: "chat",
   data() {
     return {
-      message: [
-        {
-          "message_key": '1',
-          "from_user": "zhqtest",
-          "to_user": "coun",
-          "msg_time": "2022-04-27T06:40:10.000Z",
-          "text": "test3",
-          "from_name": "张好奇",
-          "to_name": "欧豪"
-        },
-        {
-          "message_key": '2',
-          "from_user": "zhqtest",
-          "to_user": "coun",
-          "msg_time": "2022-04-27T06:41:41.000Z",
-          "text": "[访客给出评价]",
-          "from_name": "张好奇",
-          "to_name": "欧豪"
-        }
-    ],
-      coun: "欧豪",
-      visitor: "张好奇",
+      message: [],
+      user1: 'xx',
+      user2: 'xx',
     };
   },
   components: {
@@ -101,18 +82,22 @@ export default {
     showLoading() {
       return !this.isSDKReady;
     },
-    showCurrentConversation() {
-      return !!this.currentConversation.conversationID
+    showSyncConversation() {
+      return !!this.currentConversation.conversationID;
     },
   },
   mounted() {
     // 初始化监听器
     this.initListener()
     if (!this.isSDKReady){
-      this.reLogin()
+      this.reLogin();
     }
   },
-  watch: {},
+  watch: {
+    showSyncConversation() {
+      this.getSyncRecord();
+    }
+  },
 
   methods: {
     reLogin() {
@@ -440,6 +425,29 @@ export default {
         }
       });
     },
+    getSyncRecord() {
+      let firstGet = true;
+      if (this.showSyncConversation) {
+        const coun = this.currentConversation.userProfile.userID;
+        const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+        this.$ajax.get('/record/sync', {
+          params: {
+            coun,
+            sup
+          },
+        }).then((res) => {
+          this.message = res.data;
+          if (firstGet) {
+            firstGet = false;
+            this.user1 = res.data[0].from_user;
+            this.user2 = res.data[0].to_user;
+          }
+          setTimeout(() => {
+            this.getSyncRecord();
+          },1000)
+        })
+      }
+    }
   },
 };
 </script>
