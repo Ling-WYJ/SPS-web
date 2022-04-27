@@ -639,6 +639,7 @@
      async sendMessage(userId,callEnd,callText) {
         let call_text= ''
        userId = Array.isArray(userId) ? userId.join(',') : userId
+       const record_id = window.sessionStorage.getItem('record_id');
         let messageData = {
           to: this.toAccount,
           from:userId,
@@ -647,7 +648,8 @@
             data: '',
             description: '',
             extension: ''
-          }
+          },
+          cloudCustomData: `${record_id}`,
         }
 
         const message = await this.tim.createCustomMessage(messageData)

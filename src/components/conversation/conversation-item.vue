@@ -170,6 +170,20 @@ export default {
           'checkoutConversation',
           this.conversation.conversationID
         )
+        // 获取record_id
+        if (this.conversation.userProfile.role != 1) {
+          const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+          var visitor = this.conversation.userProfile.userID;
+          this.$ajax.get('/record/recordID', {
+            params: {
+              visitor: visitor,
+              coun: coun
+            }
+          }).then((res) => {
+            console.log(res);
+            window.sessionStorage.setItem('record_id', res.data.record_id);
+          })
+        }
       }
     },
     deleteConversation(event) {

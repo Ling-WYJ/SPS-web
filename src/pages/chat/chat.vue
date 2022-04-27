@@ -64,10 +64,11 @@ export default {
     }
   },
   mounted() {
-    this.reLogin()
-    // window.location.reload()
-    // // 初始化监听器
-    // this.initListener()
+    // 初始化监听器
+    this.initListener()
+    if (!this.isSDKReady){
+      this.reLogin()
+    }
   },
   watch: {
   },
@@ -77,13 +78,16 @@ export default {
       const user_name = JSON.parse(window.sessionStorage.GET_USER_INFO).userID || ''
       const userSig = JSON.parse(window.sessionStorage.GET_USER_INFO).userSig || ''
       if (user_name != '' && userSig != '') {
-        this.tim.login({
-          userID: user_name,
-          userSig
-        })
+        this.tim
+          .login({
+            userID: user_name,
+            userSig,
+          })
+          .then(async () => {
+            this.$store.commit("toggleIsLogin", true);
+            this.$store.commit("startComputeCurrent");
+          });
         this.loading = false
-        // 初始化监听器
-        this.initListener()
       } else {
         this.$router.push({path: '/login'})
       }
@@ -160,7 +164,8 @@ export default {
               type: 'error',
               message: error.message
             })
-          })
+          });
+        this.loading = false;
         this.$store.dispatch('getBlacklist')
         // 登录trtc calling
         this.trtcCalling.login({

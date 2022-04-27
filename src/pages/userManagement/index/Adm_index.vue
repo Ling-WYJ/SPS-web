@@ -41,7 +41,7 @@
       <div class="title">在线咨询师会话</div>
       <div class="num">{{onlineCoun_conversation_num}}</div>
       <!-- <div class="num">{{countList.length}}</div> -->
-      <!-- 在线咨询师个数 -->
+      <!-- //在线咨询师个数 -->
     </div>
   </el-col>
   <el-col style="background: #fff;height:300px"  :span="8" >
@@ -136,7 +136,7 @@ MonthSumChart
           //  userImg:require('../../../assets/image/user.png'),
           onlineCoun_conversation_num:0,
           onlineSup_conversation_num:0,
-//之前测试数据
+
         tableData0: [{
             name: '咨询师A',
             state: '忙碌'
@@ -311,7 +311,7 @@ MonthSumChart
       this.getSupList()
       this.getTodayNum()
       this.getTodayTime()
-      this. getOnlineCounConversationNum()
+      this.getOnlineCounConversationNum()
       this.getOnlineSupConversationNum()
     },
     methods: {
@@ -330,22 +330,22 @@ MonthSumChart
           }
         })
       },
-       // 获取当前咨询师会话数
-    getOnlineCounConversationNum() {
-      this.$ajax.get("/admin/getOnlineCounConversationNum", {params: {user_id: this.user_id}}).then((res) => {
-            if (res.data) {
-              this. onlineCoun_conversation_num = res.data.onlineCoun_conversation_num;
-              console.log(this. onlineCoun_conversation_num);
-            }
-          })},
-      // 获取当前督导会话数
-    getOnlineSupConversationNum() {
-      this.$ajax.get("/admin/getOnlineSupConversationNum", {params: {user_id: this.user_id}}).then((res) => {
-            if (res.data) {
-              this. onlineSup_conversation_num = res.data.onlineSup_conversation_num;
-              console.log(this. onlineSup_conversation_num);
-            }
-          })},
+      // 获取当前咨询师会话数
+      getOnlineCounConversationNum() {
+        this.$ajax.get("/admin/getOnlineCounConversationNum", {params: {user_id: this.user_id}}).then((res) => {
+              if (res.data) {
+                this. onlineCoun_conversation_num = res.data.onlineCoun_conversation_num;
+                console.log(this. onlineCoun_conversation_num);
+              }
+            })},
+        // 获取当前督导会话数
+      getOnlineSupConversationNum() {
+        this.$ajax.get("/admin/getOnlineSupConversationNum", {params: {user_id: this.user_id}}).then((res) => {
+              if (res.data) {
+                this. onlineSup_conversation_num = res.data.onlineSup_conversation_num;
+                console.log(this. onlineSup_conversation_num);
+              }
+            })},
       // 获取所有咨询师评分排行
       getCounRecordNum() {
         this.$ajax.get('/admin/counsellorScoreRank',{params: {user_id: this.user_id}}).then(res=>{

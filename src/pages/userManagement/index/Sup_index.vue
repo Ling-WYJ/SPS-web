@@ -70,7 +70,7 @@
       >
         <div class="sun-static">
           <div class="title">正在进行会话</div>
-          <div class="num">{{conversation_num }}</div>
+          <div class="num">{{ conversation_num }}</div>
         </div>
       </el-col>
       <el-col :span="14">
@@ -110,7 +110,7 @@
 <script>
 //import {getData} from '../../api/data.js'
 // import * as echarts from 'echarts'
-
+import { mapState } from 'vuex'
 // import Echart from '../../src/components/ECharts'
 import DataTable from "./components/DataTablePart";
 
@@ -121,21 +121,36 @@ export default {
     return {
       countList: [],
       scheduleData: [],
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID, 
+      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
       user_id: sessionStorage.getItem("user_id"),
-
       rate: "",
       data: [],
-    
+      user_id: sessionStorage.getItem("user_id"),
       today_num: 0,
       today_time: 0,
-      all_num:0,
+      all_num: 0,
       all_minitus: 0,
       conversation_num: 0,
     };
   },
+  computed: {
+    ...mapState({
+      isSDKReady: (state) => state.user.isSDKReady,
+      userID: (state) => state.user.userID,
+      userSig: (state) => state.user.userSig,
+      sdkAppID: (state) => state.user.sdkAppID,
+    }),
+  },
   mounted() {
-    this.reLogin();
+    // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
+    this.tim.on(this.TIM.EVENT.SDK_READY, this.onReadyStateUpdate, this);
+    // SDK NOT READT
+    this.tim.on(this.TIM.EVENT.SDK_NOT_READY, this.onReadyStateUpdate, this);
+    // SDK内部出错
+    this.tim.on(this.TIM.EVENT.ERROR, this.onError);
+    if (!this.isSDKReady) {
+      this.reLogin();
+    }
     this.getCounList();
     this.getSchedule();
     this.update();
@@ -147,34 +162,70 @@ export default {
     console.warn("record");
   },
   methods: {
+    onError({ data }) {
+      if (data.message !== "Network Error") {
+        this.$store.commit("showMessage", {
+          message: data.message,
+          type: "error",
+        });
+      }
+    },
+    onReadyStateUpdate({ name }) {
+      const isSDKReady = name === this.TIM.EVENT.SDK_READY ? true : false;
+      this.$store.commit("toggleIsSDKReady", isSDKReady);
+      if (isSDKReady) {
+        this.tim
+          .getMyProfile()
+          .then(({ data }) => {
+            this.$store.commit("updateCurrentUserProfile", data);
+          })
+          .catch((error) => {
+            this.$store.commit("showMessage", {
+              type: "error",
+              message: error.message,
+            });
+          });
+        this.tim.updateMyProfile({
+          role: 1,
+        }).then(function () {
+          console.log("身份信息已更新");
+        });
+        this.$store.dispatch("getBlacklist");
+        // 登录trtc calling
+        this.trtcCalling.login({
+          sdkAppID: this.sdkAppID,
+          userID: this.userID,
+          userSig: this.userSig,
+        });
+      }
+    },
     reLogin() {
       const user_name =
         JSON.parse(window.sessionStorage.GET_USER_INFO).userID || "";
       const userSig =
         JSON.parse(window.sessionStorage.GET_USER_INFO).userSig || "";
       if (user_name != "" && userSig != "") {
-        this.tim.login({
-          userID: user_name,
-          userSig,
-        });
+        this.tim
+          .login({
+            userID: user_name,
+            userSig,
+          })
+          .then(async () => {
+            this.$store.commit("toggleIsLogin", true);
+            this.$store.commit("startComputeCurrent");
+          });
         this.loading = false;
-        let promise = this.tim.updateMyProfile({
-          role: 1,
-        });
-        promise.then(function() {
-          console.log("身份信息已更新");
-        })
       } else {
         this.$router.push({ path: "/login" });
       }
     },
     // 日期转换
     processDate(date) {
-      console.log(
-        new Date(new Date(date).getTime() - 86400000)
-          .toISOString()
-          .split("T")[0]
-      );
+      // console.log(
+      //   new Date(new Date(date).getTime() - 86400000)
+      //     .toISOString()
+      //     .split("T")[0]
+      // );
       // return new Date(date).toISOString().split('T')[0]
       return new Date(new Date(date).getTime() + 86400000)
         .toISOString()
@@ -192,7 +243,7 @@ export default {
           params: { user_id: this.user_id },
         })
         .then((res) => {
-          console.log(res.data, 222);
+          // console.log(res.data, 222);
           if (res.data) {
             this.countList = res.data;
           }
@@ -202,10 +253,10 @@ export default {
       this.$ajax
         .get("/schedule/list", { params: { user_id: this.user_id } })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.data) {
             this.scheduleData = res.data;
-            console.log(res.data);
+            // console.log(res.data);
           }
         });
     },
@@ -254,7 +305,7 @@ export default {
         .then((res) => {
           if (res.data) {
             this.today_num = res.data[0].today_num;
-            console.log(this.today_num, 111);
+            // console.log(this.today_num, 111);
           }
         });
     },

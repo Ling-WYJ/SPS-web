@@ -121,6 +121,7 @@ export default {
         end_time,
       }).then((res) => {
         if (res.status === 200) {
+          window.sessionStorage.removeItem('record_id');
           this.$notify({
             type: 'success',
             message: '已结束与该访客的对话。'
@@ -174,7 +175,7 @@ export default {
         coun: coun,
         sup: this.selectSupID,
       })
-      this.selectSupID = ''
+      // this.selectSupID = ''
       this.showBottonBtn = false
     },
     logout() {
