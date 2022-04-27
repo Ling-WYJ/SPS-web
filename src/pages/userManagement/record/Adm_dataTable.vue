@@ -51,7 +51,7 @@
       <el-table-column label="操作">
         <template>
           <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-view" plain></el-button>
-          <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-download" plain></el-button>
+          <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-download" @click="download(scope.row)" plain></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import ViewPage from './ViewPage'
-export default {
+  import ViewPage from './ViewPage'
+  export default {
   components: {
     ViewPage
   },
@@ -100,11 +100,14 @@ export default {
             }
           }
         }
-      }).catch(err => this.$notify({
-        type: 'error',
-        message: err
-      }))
-    }
+      })
+    },
+    download(row){
+        this.$ajax.get('/record/content',{params: {record_id: row.record_id}}).then((res) => {
+          console.log(res)
+        }
+    )
+  },
   },
   computed: {
   filtedData() {

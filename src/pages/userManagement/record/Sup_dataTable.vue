@@ -79,10 +79,7 @@ export default {
             }
           }
         }
-      }).catch(err => this.$notify({
-        type: 'error',
-        message: err
-      }))
+      })
     }
   },
   computed: {
