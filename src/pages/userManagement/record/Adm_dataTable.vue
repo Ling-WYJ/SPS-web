@@ -55,7 +55,19 @@
         </template>
       </el-table-column>
     </el-table>
-    <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" ></record-dialog>
+    <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" >
+      <div class="synChat-dialog-section" ref="sync-list" style="overflow:scroll">
+        <div :label="m.message_key" v-for="m in recordView" :key="m.message_key">
+          <div class="synChat-message-box">
+            <div class="synChat-message-box-top">
+              <div class="synChat-message-box-name">{{m.from_name}}</div>
+              <div class="synChat-message-box-time">{{new Date(m.msg_time).toLocaleString()}}</div>
+            </div>
+            <div class="synChat-message-box-bottom">{{m.text}}</div>
+          </div>
+        </div>
+      </div>
+    </record-dialog>
   </view-page>
 </template>
 
@@ -180,5 +192,32 @@
 </script>
 
 <style scoped>
+
+.synChat-dialog-section {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.synChat-message-box {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.synChat-message-box-top {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+.synChat-message-box-name {
+  color: #222;
+  margin-right: 2rem;
+}
+.synChat-message-box-bottom {
+  margin-left: 1rem;
+}
 
 </style>
