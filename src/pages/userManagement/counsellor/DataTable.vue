@@ -27,7 +27,14 @@
       </el-table-column>
       <el-table-column label="评分">
         <template slot-scope="scope">
-          {{scope.row.score}}
+          <el-rate
+              v-model="scope.row.score"
+              disabled
+              show-score
+              text-color="#ff9900"
+              score-template="{value}"
+          >
+          </el-rate>
         </template>
       </el-table-column>
       <el-table-column label="咨询总时长">
@@ -143,9 +150,37 @@ export default{
         console.log(res)
         if (res.data) {
           this.data = res.data
+          for(var i = 0;i <this.data.length ; i++) {
+
+            //处理时分秒转换
+            var hour = parseInt(this.data[i].total_time / 3600) < 10 ? '0' + parseInt(this.data[i].total_time / 3600) : parseInt(this.data[i].total_time / 3600)
+            var min = parseInt(this.data[i].total_time % 3600 / 60) < 10 ? '0' + parseInt(this.data[i].total_time % 3600 / 60) : parseInt(this.data[i].total_time % 3600 / 60)
+            var sec = parseInt(this.data[i].total_time % 3600 % 60) < 10 ? '0' + parseInt(this.data[i].total_time % 3600 % 60) : parseInt(this.data[i].total_time % 3600 % 60)
+            this.data[i].total_time = hour + ':' + min + ':' + sec
+            //性别转换
+            if(this.data[i].coun_gender == 'Male')
+            {
+              this.data[i].coun_gender = '男'
+            }
+            else
+            {
+              if(this.data[i].coun_gender == 'Female')
+                this.data[i].coun_gender = '女'
+            }
+            //评分转换
+            let result = 0;
+            let score = Math.floor(this.data[i].score * 2) / 2;
+            let hasDecimal = score % 1 !== 0;
+            let integer = Math.floor(score);
+            for (let i = 0; i < integer; i++) {
+              result++;
+            }
+            if (hasDecimal) {
+              result = result + 0.5;
+            }
+            this.data[i].score = result
+          }
         }
-        for(var i = 0;i <this.data.length ; i++)
-              this.data[i].score = Math.floor(this.data[i].score )
       }).catch(err => this.$notify({
         type: 'error',
         message: err

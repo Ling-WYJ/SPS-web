@@ -105,6 +105,18 @@
               if(this.data[i].sup_name == '无求助督导')
                 this.data[i].sup_name = '无'
             }
+            //评分转换
+            let result = 0;
+            let score = Math.floor(this.data[i].score * 2) / 2;
+            let hasDecimal = score % 1 !== 0;
+            let integer = Math.floor(score);
+            for (let i = 0; i < integer; i++) {
+              result++;
+            }
+            if (hasDecimal) {
+              result = result + 0.5;
+            }
+            this.data[i].score = result
           }
         }
       })
