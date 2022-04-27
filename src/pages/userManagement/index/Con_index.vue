@@ -7,6 +7,7 @@
           style="height: 300px; padding: 30px"
         >
           <div class="name" style="margin: 12px 0">咨询师：{{ user_name }}</div>
+          <div class="name" style="margin: 12px 0">咨询师状态：{{ status }}</div>
           <div class="title" style="margin-bottom: 15px">我的综合评价</div>
           <!-- <ul class="star" style="padding:0;margin:12px 0"> -->
           <!-- eslint-disable-next-line -->
@@ -21,7 +22,9 @@
             text-color="#ff9900"
             score-template="{value}"
           >
+          
           </el-rate>
+
         </el-card>
       </el-col>
       <el-col style="background: #304156; height: 100%" :span="3" class="user_card">
@@ -99,7 +102,8 @@ export default {
           today_time:0,
           all_num:0,
           all_minitus:0,
-          conversation_num:0
+          conversation_num:0,
+          status:[]
           // rate:0
         }
     },
@@ -135,6 +139,17 @@ export default {
       } else {
         this.$router.push({ path: "/login" });
       }
+    },
+    // 咨询师状态
+    getTodayNum(user_id) {
+      this.$ajax
+          .get("/record/todayNum", {params: {user_id}})
+          .then((res) => {
+            if (res.data) {
+              this.today_num = res.data[0].today_num;
+              console.log(this.today_num, 111);
+            }
+          });
     },
     // 获取今日咨询数
     getTodayNum(user_id) {
@@ -199,12 +214,14 @@ export default {
       {
         this.$ajax.get('/auth/getInfo', {params: {user_name: this.user_name}}).then((res) => {
           if (res.data) {
-            this.data = res.data
+            this.data = res.data 
+            this.status= res.data.coun_status
             this.getScore(this.user_id)
             this.getTodayNum(this.user_id)
             this.getTodayTime(this.user_id)
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
+           
           }
         })
       }

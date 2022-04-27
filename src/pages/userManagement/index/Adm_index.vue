@@ -41,7 +41,7 @@
       <div class="title">在线咨询师会话</div>
       <div class="num">{{onlineCoun_conversation_num}}</div>
       <!-- <div class="num">{{countList.length}}</div> -->
-      //在线咨询师个数
+      <!-- 在线咨询师个数 -->
     </div>
   </el-col>
   <el-col style="background: #fff;height:300px"  :span="8" >
