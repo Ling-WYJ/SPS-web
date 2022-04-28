@@ -124,10 +124,10 @@
 import LineChart from './components/line-chart.vue'
 import MonthSumChart from './components/MonthSumChart.vue'
 export default {
-    name:'home',
+  name:'home',
 components:{
-LineChart,
-MonthSumChart
+  LineChart,
+  MonthSumChart
 },
     data() {
         return {
