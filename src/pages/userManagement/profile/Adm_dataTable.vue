@@ -55,8 +55,8 @@ export default{
           {required: true, message: '请输入手机号', trigger: 'blur'},
           {len: 11, message: '手机号长度应为11位', trigger: 'blur'}
         ],
-        user_password: [
-          {required: true, message: '请输入用户密码', trigger: 'blur'}
+        user_name: [
+          {required: true, message: '请输入用户名', trigger: 'blur'}
         ],
       }
     }
