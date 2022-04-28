@@ -43,11 +43,6 @@
           {{scope.row.vis_to_coun_comment}}
         </template>
       </el-table-column>
-        <el-table-column label="咨询师反馈">
-          <template slot-scope="scope">
-            {{scope.row.coun_to_vis_comment}}
-          </template>
-        </el-table-column>
       <el-table-column label="督导求助">
         <template slot-scope="scope">
           {{scope.row.sup_name}}
@@ -184,7 +179,7 @@ export default {
       this.activeName='first'
     },
   },
-  
+
   computed: {
     filtedData() {
       return this.data.filter((item) => {
