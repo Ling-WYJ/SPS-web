@@ -640,6 +640,13 @@
         let call_text= ''
        userId = Array.isArray(userId) ? userId.join(',') : userId
        const record_id = window.sessionStorage.getItem('record_id');
+       if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
         let messageData = {
           to: this.toAccount,
           from:userId,
