@@ -382,10 +382,10 @@ export default {
         .then((res) => {
           if (res.data) {
             this.today_time = res.data[0].today_time;
-            var hour = parseInt(this.todayTime / 3600) < 10 ? '0' + parseInt(this.todayTime / 3600) : parseInt(this.todayTime / 3600)
-            var min = parseInt(this.todayTime% 3600 / 60) < 10 ? '0' + parseInt(this.todayTime % 3600 / 60) : parseInt(this.todayTime % 3600 / 60)
-            var sec = parseInt(this.todayTime % 3600 % 60) < 10 ? '0' + parseInt(this.todayTime % 3600 % 60) : parseInt(this.todayTime % 3600 % 60)
-            this.todayTime = hour + ':' + min + ':' + sec
+            var hour = parseInt(this.today_time/ 3600) < 10 ? '0' + parseInt(this.today_time / 3600) : parseInt(this.today_time / 3600)
+            var min = parseInt(this.today_time% 3600 / 60) < 10 ? '0' + parseInt(this.today_time % 3600 / 60) : parseInt(this.today_time % 3600 / 60)
+            var sec = parseInt(this.today_time % 3600 % 60) < 10 ? '0' + parseInt(this.today_time % 3600 % 60) : parseInt(this.today_time % 3600 % 60)
+            this.today_time = hour + ':' + min + ':' + sec
           }
         });
     },
