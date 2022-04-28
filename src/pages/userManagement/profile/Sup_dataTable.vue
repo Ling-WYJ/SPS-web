@@ -8,7 +8,11 @@
               <el-input v-model="currentTodo.sup_name"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="sup_gender" required>
-              <el-input v-model="currentTodo.sup_gender"></el-input>
+              <el-select v-model="currentTodo.sup_gender">
+                <el-option label="男" value="Male"></el-option>
+                <el-option label="女" value="Female"></el-option>
+                <el-option label="其他" value="Other"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="年龄" prop="sup_age" required>
               <el-input v-model="currentTodo.sup_age"></el-input>

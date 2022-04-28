@@ -6,7 +6,11 @@
             <el-input v-model="currentTodo.admin_name"></el-input>
           </el-form-item>
           <el-form-item label="性别" prop="admin_gender" required>
-            <el-input v-model="currentTodo.admin_gender"></el-input>
+            <el-select v-model="currentTodo.admin_gender">
+              <el-option label="男" value="Male"></el-option>
+              <el-option label="女" value="Female"></el-option>
+              <el-option label="其他" value="Other"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="手机号" prop="admin_phone" required>
             <el-input v-model="currentTodo.admin_phone"></el-input>
