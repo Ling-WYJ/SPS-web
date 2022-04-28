@@ -84,7 +84,7 @@
           <el-input v-model="currentTodo.user_name"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="user_password" required>
-          <el-input v-model="currentTodo.user_password"></el-input>
+          <el-input v-model="currentTodo.user_password" show-password class="pwd-input"></el-input>
         </el-form-item>
         <el-form-item label="工作单位" prop="coun_company" required>
           <el-input v-model="currentTodo.coun_company"></el-input>
@@ -322,3 +322,9 @@ export default{
 
 }
 </script>
+
+<style>
+.pwd-input .el-input--suffix .el-input__inner {
+  padding-right: 15px!important;
+}
+</style>

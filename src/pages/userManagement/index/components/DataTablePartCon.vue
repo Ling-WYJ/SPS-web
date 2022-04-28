@@ -1,19 +1,19 @@
 <template>
   <view-page>
     <!-- 搜索框 -->
-    <template slot="search-field">
+    <!-- <template slot="search-field">
       <el-input v-model="searchStr" suffix-icon="el-icon-search" placeholder="请输入搜索内容" ></el-input>
-    </template>
+    </template> -->
     <!-- 表格区 -->
-    <el-table :data="filtedData">
+       <el-table :data="pagedData">
+      <el-pagination :total="total" :current-page="currentPage" 
+         :page-size="currentPageSize" :page-sizes="[3, 5]"
+         layout="total, sizes, prev, pager, next, jumper"
+         @size-change="pageSizeChange" @current-change="pageChange">
+      </el-pagination>
       <el-table-column label="咨询人" prop="visitor_name">
         <template slot-scope="scope">
           {{scope.row.visitor_name}}
-        </template>
-      </el-table-column>
-      <el-table-column label="咨询师" prop="coun_name">
-        <template slot-scope="scope">
-          {{scope.row.coun_name}}
         </template>
       </el-table-column>
       <el-table-column label="咨询时长">
@@ -26,7 +26,7 @@
           {{ scope.row.begin_time}}
         </template>
       </el-table-column>
-      <el-table-column label="咨询评级">
+        <el-table-column label="咨询评级">
           <template slot-scope="scope">
           <el-rate
               v-model="scope.row.score"
@@ -60,27 +60,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" >
-      <div class="synChat-dialog-section" ref="sync-list" style="overflow:scroll">
-        <div :label="m.message_key" v-for="m in recordView" :key="m.message_key">
-          <div class="synChat-message-box">
-            <div class="synChat-message-box-top">
-              <div class="synChat-message-box-name">{{m.from_name}}</div>
-              <div class="synChat-message-box-time">{{new Date(m.msg_time).toLocaleString()}}</div>
-            </div>
-            <div class="synChat-message-box-bottom">{{m.text}}</div>
-          </div>
-        </div>
-      </div>
-    </record-dialog>
+    <record-dialog :show="recordShow" title="查看咨询记录" @close="closeRecordDialog" ></record-dialog>
   </view-page>
 </template>
 
 <script>
-import ViewPage from './ViewPage'
-import json2csv from 'json2csv'
-import recordDialog from "@/pages/userManagement/record/recordDialog";
-export default {
+  import ViewPage from './ViewPagePart'
+  import json2csv from 'json2csv'
+  import recordDialog from "@/pages/userManagement/record/recordDialog";
+  export default {
   components: {
     ViewPage,
     recordDialog,
@@ -90,24 +78,35 @@ export default {
       data: [],
       recordView: [],//record
       recordShow: false,//record的dialog
-      coun_id:sessionStorage.getItem('user_id'),
-      coun_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
       filterType: '',
       filterDates: null,
       searchStr:'',
-      fields: ['msg_time','from_name','to_name','text']
+      fields: ['msg_time','from_name','to_name','text'],
+      sup_id:sessionStorage.getItem('user_id'),
+      sup_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
+      currentPage: 1,
+      currentPageSize: 4,
+       coun_id:sessionStorage.getItem('user_id'),
+      coun_name:JSON.parse(sessionStorage.getItem('GET_USER_INFO')).userID,
     }
   },
   mounted() {
     this.update()
   },
   methods: {
+    pageSizeChange(size) {
+        this.currentPageSize = size
+    },
+    pageChange(page) {
+        this.currentPage = page
+    },
     update() {
       this.$ajax.get('/record/list',{params: {coun_id: this.coun_id}}).then((res) => {
         console.log(res)
         if (res.data) {
           this.data = res.data.RecordList
           for(var i = 0;i <this.data.length ; i++) {
+
             //处理时分秒转换
             var hour = parseInt(this.data[i].period / 3600) < 10 ? '0' + parseInt(this.data[i].period / 3600) : parseInt(this.data[i].period / 3600)
             var min = parseInt(this.data[i].period % 3600 / 60) < 10 ? '0' + parseInt(this.data[i].period % 3600 / 60) : parseInt(this.data[i].period % 3600 / 60)
@@ -115,7 +114,8 @@ export default {
             this.data[i].period = hour + ':' + min + ':' + sec
 
             this.data[i].begin_time = new Date(this.data[i].begin_time).toLocaleString()
-            if(this.data[i].help_or_not == '0')
+
+             if(this.data[i].help_or_not == '0')
             {
               this.data[i].help_or_not = '否'
             }
@@ -123,7 +123,7 @@ export default {
             {
               this.data[i].help_or_not = '是'
             }
-                //评分转换
+            //评分转换
             let result = 0;
             let score = Math.floor(this.data[i].score * 2) / 2;
             let hasDecimal = score % 1 !== 0;
@@ -184,45 +184,23 @@ export default {
       this.activeName='first'
     },
   },
-  
   computed: {
-    filtedData() {
-      return this.data.filter((item) => {
-        var reg = new RegExp(this.searchStr, 'i')
-        return !this.searchStr || reg.test(item.visitor_name) || reg.test(item.sup_name) || reg.test(item.begin_time)
-      })
+  filtedData() {
+    return this.data.filter((item) => {
+      var reg = new RegExp(this.searchStr, 'i')
+      return !this.searchStr || reg.test(item.visitor_name) || reg.test(item.sup_name) || reg.test(item.begin_time)
+    })
+  },
+  total() {
+        return this.filtedData.length
     },
-  }
+  pagedData() {
+        return this.filtedData.slice((this.currentPage - 1) * this.currentPageSize, this.currentPage * this.currentPageSize)
+    }
+}
 }
 </script>
 
 <style scoped>
-
-.synChat-dialog-section {
-  height: 50vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.synChat-message-box {
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
-  border-bottom: 1px solid #ccc;
-}
-
-.synChat-message-box-top {
-  display: flex;
-  flex-direction: row;
-  margin-left: 1rem;
-  margin-bottom: 0.5rem;
-}
-.synChat-message-box-name {
-  color: #222;
-  margin-right: 2rem;
-}
-.synChat-message-box-bottom {
-  margin-left: 1rem;
-}
 
 </style>

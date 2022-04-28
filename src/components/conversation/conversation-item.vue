@@ -171,31 +171,31 @@ export default {
           this.conversation.conversationID
         )
         // 获取record_id
-        if (this.conversation.userProfile.role != 1) {
-          const coun = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
-          var visitor = this.conversation.userProfile.userID;
-          this.$ajax.get('/record/recordID', {
-            params: {
-              visitor: visitor,
-              coun: coun
-            }
-          }).then((res) => {
-            console.log(res);
-            window.sessionStorage.setItem('record_id', res.data.record_id);
-          })
-        } else {
-          const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
-          const coun = this.conversation.userProfile.userID;
-          this.$ajax.get('/record/endOrNot', {
-            params: {
-              sup,
-              coun,
-            }
-          }).then((res) => {
-            console.log(res);
-            window.sessionStorage.setItem('record_id', res.data.record_id);
-          })
-        }
+        // if (this.conversation.userProfile.role != 1 && this.conversation.userProfile.role != 0) {
+        const from_user = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+        var to_user = this.conversation.userProfile.userID;
+        this.$ajax.get('/record/recordID', {
+          params: {
+            from_user,
+            to_user
+          }
+        }).then((res) => {
+          console.log(res);
+          window.sessionStorage.setItem('record_id', res.data.record_id);
+        })
+        // } else if (this.conversation.userProfile.role == 0) {
+        //   const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+        //   const coun = this.conversation.userProfile.userID;
+        //   this.$ajax.get('/record/endOrNot', {
+        //     params: {
+        //       sup,
+        //       coun,
+        //     }
+        //   }).then((res) => {
+        //     console.log(res);
+        //     window.sessionStorage.setItem('record_id', res.data.record_id);
+        //   })
+        // }
       }
     },
     deleteConversation(event) {
