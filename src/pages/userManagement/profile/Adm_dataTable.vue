@@ -1,21 +1,21 @@
 <template>
   <view-page>
     <!-- 学习内容表单 -->
-    <el-form :model="currentTodo" ref="todoEditForm" inline label-width="100px">
-          <el-form-item label="姓名" prop="admin_name" required>
+    <el-form :model="currentTodo" ref="todoEditForm" inline label-width="100px" :rules="rules">
+          <el-form-item label="姓名" prop="admin_name" >
             <el-input v-model="currentTodo.admin_name"></el-input>
           </el-form-item>
-          <el-form-item label="性别" prop="admin_gender" required>
+          <el-form-item label="性别" prop="admin_gender" >
             <el-select v-model="currentTodo.admin_gender">
               <el-option label="男" value="Male"></el-option>
               <el-option label="女" value="Female"></el-option>
               <el-option label="其他" value="Other"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="手机号" prop="admin_phone" required>
+          <el-form-item label="手机号" prop="admin_phone" >
             <el-input v-model="currentTodo.admin_phone"></el-input>
           </el-form-item>
-          <el-form-item label="用户名" prop="user_name" required>
+          <el-form-item label="用户名" prop="user_name" >
             <el-input v-model="currentTodo.user_name"></el-input>
           </el-form-item>
     </el-form>
@@ -44,6 +44,21 @@ export default{
       searchStr: '',
       user_id: sessionStorage.getItem("user_id"),
       user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      rules: {
+        admin_name: [
+          {required: true, message: '请输入姓名', trigger: 'blur'}
+        ],
+        admin_gender: [
+          {required: true, message: '请选择性别', trigger: 'blur'}
+        ],
+        admin_phone: [
+          {required: true, message: '请输入手机号', trigger: 'blur'},
+          {len: 11, message: '手机号长度应为11位', trigger: 'blur'}
+        ],
+        user_password: [
+          {required: true, message: '请输入用户密码', trigger: 'blur'}
+        ],
+      }
     }
   },
   mounted () {
