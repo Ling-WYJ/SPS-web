@@ -51,7 +51,8 @@
         <div class="content">
           <div v-for="item in countList" :key="item.name" class="item-box">
             <span>{{ item.coun_name }}</span>
-            <el-tag type="success" style="float: right">{{item.coun_status}}</el-tag>
+            <el-tag v-if="item.coun_status ==='忙碌'"  type="danger" style="float:right">{{item.coun_status}}</el-tag>
+            <el-tag v-if="item.coun_status ==='空闲'"  type="success" style="float:right">{{item.coun_status}}</el-tag>
           </div>
         </div>
       </el-col>
@@ -130,6 +131,7 @@ export default {
       all_minitus: 0,
       conversation_num: 0,
       status: [],
+      sup_name:[],
     };
   },
   computed: {
@@ -246,12 +248,14 @@ export default {
           this.countList = res.data;
           for(var i = 0;i <this.countList.length ; i++)
           {
-                       
-              if(this.countList[i].coun_status=="free")
+
+              // if(this.countList[i].coun_name.length>4)
+              //       this.countList[i].coun_name= countList[i].coun_name.slice(0,10) 
+              if(this.countList[i].coun_status==="free")
               {
                 this.countList[i].coun_status="空闲"
               }
-              else if(this.countList[i].coun_status=="busy")
+              else if(this.countList[i].coun_status==="busy")
               {
                 this.countList[i].coun_status="忙碌"
               }
@@ -285,11 +289,11 @@ export default {
             this.getSum(this.user_id);
             this.getConversationNum_sup(this.user_id);
             this.status= res.data.sup_status
-            if(this.status=="free")
+            if(this.status==="free")
             {
               this.status="空闲"
             }
-            else(this.status=="busy")
+            else if(this.status==="busy")
             {
               this.status="忙碌"
             }
@@ -367,6 +371,10 @@ export default {
         .then((res) => {
           if (res.data) {
             this.today_time = res.data[0].today_time;
+            var hour = parseInt(this.todayTime / 3600) < 10 ? '0' + parseInt(this.todayTime / 3600) : parseInt(this.todayTime / 3600)
+            var min = parseInt(this.todayTime% 3600 / 60) < 10 ? '0' + parseInt(this.todayTime % 3600 / 60) : parseInt(this.todayTime % 3600 / 60)
+            var sec = parseInt(this.todayTime % 3600 % 60) < 10 ? '0' + parseInt(this.todayTime % 3600 % 60) : parseInt(this.todayTime % 3600 % 60)
+            this.todayTime = hour + ':' + min + ':' + sec
           }
         });
     },
