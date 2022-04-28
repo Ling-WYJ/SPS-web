@@ -122,8 +122,8 @@ export default {
     return {
       countList: [],
       scheduleData: [],
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
-      user_id: sessionStorage.getItem("user_id"),
+      user_name: null,
+      user_id: null,
       rate: "",
       data: "空闲",
       today_num: 0,
@@ -156,6 +156,8 @@ export default {
     if (!this.isSDKReady) {
       this.reLogin();
     }
+    this.user_name = JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+    this.user_id = sessionStorage.getItem("user_id"),
     this.getCounList();
     this.getSchedule();
     this.update();
@@ -264,7 +266,7 @@ export default {
                 this.countList[i].coun_status="忙碌"
               }
           }
-         
+        this.getPageDataCoun();
         });
     },
     getSchedule() {
