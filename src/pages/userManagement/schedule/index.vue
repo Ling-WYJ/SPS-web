@@ -93,6 +93,8 @@ export default {
     watch:{
       choseDay() {
           this.getTableData()
+          this.getSupNum()
+          this.getCounNum()
         },
       type() {
         this.getTableData()
@@ -260,13 +262,25 @@ export default {
       },
       // 获取排班咨询师人数
       getCounNum() {
-        this.$ajax.get('/admin/TodayCounOnDuty',{params: {user_id: this.user_id}}).then(res=>{
+        
+        const datetime = new Date(this.choseDay);
+        const Nyear = datetime.getFullYear();
+        const Nmonth = datetime.getMonth() + 1 < 10 ? `0${datetime.getMonth() + 1}` : datetime.getMonth() + 1;
+        const Ndate = datetime.getDate() < 10 ? `0${datetime.getDate()}` : datetime.getDate();
+        const result = `${Nyear}-${Nmonth}-${Ndate}`;
+
+        this.$ajax.get('/admin/MonthCounOnDuty',{params: {user_id: this.user_id,date:result}}).then(res=>{
           this.counNumData=res.data
           console.log(this.counNumData,'counNumData')
         })
       },
       getSupNum() {
-        this.$ajax.get('/admin/TodaySupOnDuty',{params: {user_id: this.user_id}}).then(res=>{
+        const datetime = new Date(this.choseDay);
+        const Nyear = datetime.getFullYear();
+        const Nmonth = datetime.getMonth() + 1 < 10 ? `0${datetime.getMonth() + 1}` : datetime.getMonth() + 1;
+        const Ndate = datetime.getDate() < 10 ? `0${datetime.getDate()}` : datetime.getDate();
+        const result = `${Nyear}-${Nmonth}-${Ndate}`;
+        this.$ajax.get('/admin/MonthSupOnDuty',{params: {user_id: this.user_id,date:result}}).then(res=>{
           this.superNumData=res.data
           console.log(this.superNumData,'this.sssss')
         })

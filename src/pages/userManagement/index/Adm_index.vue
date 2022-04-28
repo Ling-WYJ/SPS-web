@@ -57,6 +57,7 @@
       </el-pagination>
       <div class="content">
       <div v-for="item in superList" :key="item.name" class="item-box" style="width:100%">
+       
         <span>{{item.sup_name}}</span>
          <el-tag v-if="item.sup_status ==='忙碌'"  type="danger" style="float:right">{{item.sup_status}}</el-tag>
          <el-tag v-if="item.sup_status ==='空闲'"  type="success" style="float:right">{{item.sup_status}}</el-tag>
@@ -138,7 +139,7 @@ MonthSumChart
           //  userImg:require('../../../assets/image/user.png'),
           onlineCoun_conversation_num:0,
           onlineSup_conversation_num:0,
-
+          
         tableData0: [{
             name: '咨询师A',
             state: '忙碌'
