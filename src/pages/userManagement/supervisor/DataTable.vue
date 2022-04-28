@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" style="padding: 7px" icon="el-icon-delete" plain @click="removeSupAjax(scope.row)"></el-button>
+          <el-button size="mini" type="info" icon="el-icon-delete" style="padding: 7px" plain @click="removeSupAjax(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>

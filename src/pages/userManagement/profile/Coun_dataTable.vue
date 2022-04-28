@@ -1,39 +1,40 @@
 <template>
   <view-page>
     <!-- 学习内容表单 -->
-    <el-form :model="currentTodo" ref="todoEditForm" inline label-width="100px">
+    <el-form :model="currentTodo" ref="todoEditForm" inline label-width="100px" :rules="rules">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="个人信息" name="first">
-          <el-form-item label="姓名" prop="coun_name" required>
+          <el-form-item label="姓名" prop="coun_name" >
             <el-input v-model="currentTodo.coun_name"></el-input>
           </el-form-item>
-          <el-form-item label="性别" prop="coun_gender" required>
-            <el-input v-model="currentTodo.coun_gender"></el-input>
+          <el-form-item label="性别" prop="coun_gender" >
+            <el-select v-model="currentTodo.coun_gender">
+              <el-option label="男" value="Male"></el-option>
+              <el-option label="女" value="Female"></el-option>
+              <el-option label="其他" value="Other"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="年龄" prop="coun_age" required>
+          <el-form-item label="年龄" prop="coun_age" >
             <el-input v-model="currentTodo.coun_age"></el-input>
           </el-form-item>
-          <el-form-item label="身份证号" prop="coun_identity" required>
+          <el-form-item label="身份证号" prop="coun_identity" >
             <el-input v-model="currentTodo.coun_identity"></el-input>
           </el-form-item>
-          <el-form-item label="电话" prop="coun_phone" required>
+          <el-form-item label="电话" prop="coun_phone" >
             <el-input v-model="currentTodo.coun_phone" ></el-input>
           </el-form-item>
-          <el-form-item label="邮箱" prop="coun_email" required>
+          <el-form-item label="邮箱" prop="coun_email" >
             <el-input v-model="currentTodo.coun_email"></el-input>
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="工作信息" name="second">
-          <el-form-item label="用户名" prop="user_name" required>
+          <el-form-item label="用户名" prop="user_name" >
             <el-input v-model="currentTodo.user_name"></el-input>
           </el-form-item>
-          <!--            <el-form-item label="密码" prop="user_password" required>
-                        <el-input v-model="currentTodo.user_password"></el-input>
-                      </el-form-item>-->
-          <el-form-item label="工作单位" prop="coun_company" required>
+          <el-form-item label="工作单位" prop="coun_company" >
             <el-input v-model="currentTodo.coun_company"></el-input>
           </el-form-item>
-          <el-form-item label="职称" prop="coun_title" required>
+          <el-form-item label="职称" prop="coun_title">
             <el-input v-model="currentTodo.coun_title"></el-input>
           </el-form-item>
         </el-tab-pane>
@@ -71,6 +72,37 @@ export default{
       sup_id: [],
       user_id: sessionStorage.getItem("user_id"),
       user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      rules: {
+        coun_name: [
+          { required: true, message: '请输入姓名', trigger: 'blur' }
+        ],
+        coun_gender: [
+          { required: true, message: '请选择性别',trigger: 'blur' }
+        ],
+        coun_age: [
+          { required: true, message: '请输入年龄', trigger: 'blur' }
+        ],
+        coun_identity: [
+          { required: true, message: '请输入身份证号', trigger: 'blur' }
+        ],
+        coun_phone: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { len:11, message: '手机号长度应为11位', trigger: 'blur' }
+        ],
+        coun_email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' }
+        ],
+        user_name: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        coun_company: [
+          { required: true, message: '请输入工作单位', trigger: 'blur' }
+        ],
+        coun_title: [
+          { required: true, message: '请输入职称', trigger: 'blur' }
+        ]
+
+      }
     }
   },
   mounted () {
