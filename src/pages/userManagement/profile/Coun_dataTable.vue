@@ -52,6 +52,7 @@ export default{
   },
   data() {
     return{
+      activeName:'first',
       data: [],
       filterType: '',
       currentTodo: {

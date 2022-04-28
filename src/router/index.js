@@ -32,9 +32,20 @@ const routes = [
 	{
 		path: '/userManagement',
 		name: 'userManagement',
-		//redirect: '/userManagement/Adm_index',
+		redirect: '/home',
 		component: ()=>import('@/pages/userManagement/index'),
 		children:[
+			{
+				//欢迎页
+				path: '/home',
+				name: 'welcome',
+				role:'admin,counsellor,supervisor',
+				component: ()=>import('@/pages/welcome'),
+				meta: {
+					type: 'home',
+					title:''
+				},
+			},
 			{
 				//管理员首页
 				path: '/userManagement/Adm_index',
