@@ -51,12 +51,14 @@
       <el-pagination
         style="float:right"
         background
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
         :page-size="3"
         layout="prev, pager, next"
         :total="superList.length">
       </el-pagination>
       <div class="content">
-      <div v-for="item in superList" :key="item.name" class="item-box" style="width:100%">
+      <div v-for="item in pageData" :key="item.name" class="item-box" style="width:100%">
         <span>{{item.sup_name}}</span>
          <el-tag v-if="item.sup_status ==='忙碌'"  type="danger" style="float:right">{{item.sup_status}}</el-tag>
          <el-tag v-if="item.sup_status ==='空闲'"  type="success" style="float:right">{{item.sup_status}}</el-tag>
@@ -138,140 +140,7 @@ components:{
           //  userImg:require('../../../assets/image/user.png'),
           onlineCoun_conversation_num:0,
           onlineSup_conversation_num:0,
-
-        tableData0: [{
-            name: '咨询师A',
-            state: '忙碌'
-          }, {
-            name: '咨询师B',
-            state: '空闲'
-          },{
-            name: '咨询师C',
-            state: '空闲'
-          },{
-            name: '咨询师D',
-            state: '空闲'
-          },{
-            name: '咨询师E',
-            state: '忙碌'
-          },{
-            name: '咨询师F',
-            state: '空闲'
-          }, {
-            name: '咨询师G',
-            state: '空闲'
-          }],
-        tableData1: [{
-            rank: '1',
-            name: '咨询师A',
-            num: '4444'
-          }, {
-            rank: '2',
-            name: '咨询师B',
-            num: '3333'
-          },{
-            rank: '3',
-            name: '咨询师C',
-            num: '2222'
-          },{
-            rank: '4',
-            name: '咨询师D',
-            num: '1111'
-          }],
-          tableData2: [{
-            rank: '1',
-            name: '咨询师A',
-            num: '5555'
-          }, {
-            rank: '2',
-            name: '咨询师B',
-            num: '3333'
-          },{
-            rank: '3',
-            name: '咨询师C',
-            num: '2222'
-          },{
-            rank: '4',
-            name: '咨询师D',
-            num: '1111'
-          }],
-          tableData3: [{
-            name: '督导A',
-            state: '忙碌'
-          }, {
-            name: '督导B',
-            state: '空闲'
-          },{
-            name: '督导C',
-            state: '空闲'
-          },{
-            name: '督导D',
-            state: '空闲'
-          }],
-        tableData4: [{
-            month: '1月',
-            num: '222'
-          }, {
-            month: '2月',
-            num: '222'
-          },{
-            month: '3月',
-            num: '222'
-          },{
-            month: '4月',
-            num: '222'
-          },{
-            month: '5月',
-            num: '222'
-          },{
-            month: '6月',
-            num: '222'
-          },{
-            month: '7月',
-            num: '222'
-          },{
-            month: '8月',
-            num: '222'
-          },{
-            month: '9月',
-            num: '222'
-          }],
-        tableData5: [{
-            period: '8:00-9:00',
-            num: '222'
-          },{
-            period: '9:00-10:00',
-            num: '222'
-          },{
-            period: '10:00-11:00',
-            num: '222'
-          },{
-            period: '1:00-2:00',
-            num: '222'
-          },{
-            period: '2:00-3:00',
-            num: '222'
-          },{
-            period: '3:00-4:00',
-            num: '222'
-          },{
-            period: '4:00-5:00',
-            num: '222'
-          },{
-            period: '5:00-6:00',
-            num: '222'
-          },{
-            period: '6:00-7:00',
-            num: '222'
-          }],
-            tableData6: [{
-            today: '2',
-            month: '12',
-
-            talk:'2',
-            time:'12:12:12'
-            }],
-        echartData:{
+          echartData:{
             order:{
                 xData:[],
                 series:[]
@@ -283,23 +152,11 @@ components:{
             video:{
                 series:[]
             }
-        },
-        // 测试排行
-        counRankData:[
-          {name:'咨询师1',num:10},
-          {name:'咨询师1',num:10},
-          {name:'咨询师1',num:10},
-          {name:'咨询师1',num:10},
-        ],
-        MonthRankData:[
-          {name:'咨询师1',num:10},
-          {name:'咨询师1',num:10},
-          {name:'咨询师1',num:10},
-          {name:'咨询师1',num:10},
-        ],
-        countList:[],
-        superList:[]
-
+          },
+          countList:[],
+          superList:[],
+          pageData: [],
+          currentPage: 1,
         }
     },
     mounted() {
@@ -391,19 +248,24 @@ components:{
         this.$ajax.get('/admin/onlineSupervisorList',{params: {user_id: this.user_id}}).then(res=>{
           console.log(res.data,222)
             this.superList = res.data;
-          for(var i = 0;i <this.superList.length ; i++)
-          {
-                       
-              if(this.superList[i].sup_status=="free")
-              {
+          for(var i = 0;i <this.superList.length ; i++) {
+              if(this.superList[i].sup_status=="free") {
                 this.superList[i].sup_status="空闲"
               }
-              else if(this.superList[i].sup_status=="busy")
-              {
+              else if(this.superList[i].sup_status=="busy") {
                 this.superList[i].sup_status="忙碌"
               }
           }
+          this.getPageData();
         })
+      },
+      getPageData() {
+        let start = (this.currentPage - 1) * 3;
+        let end = start + 3;
+        this.pageData = this.superList.slice(start, end);
+      },
+      handleCurrentChange() {
+        this.getPageData();
       },
       // 获取今日咨询数
       getTodayNum() {
