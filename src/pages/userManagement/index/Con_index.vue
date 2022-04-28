@@ -310,7 +310,7 @@ export default {
             {
               this.status="空闲"
             }
-            else(this.status=="busy")
+            else if(this.status=="busy")
             {
               this.status="忙碌"
             }

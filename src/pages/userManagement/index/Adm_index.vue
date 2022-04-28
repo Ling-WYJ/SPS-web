@@ -373,12 +373,13 @@ MonthSumChart
             this.countList = res.data;
           for(var i = 0;i <this.countList.length ; i++)
           {
-                       
-              if(this.countList[i].coun_status=="free")
+              // if(this.countList[i].coun_name.length>4)
+              //     this.countList[i].coun_name= countList[i].coun_name.slice(0,4)    
+              if(this.countList[i].coun_status==="free")
               {
                 this.countList[i].coun_status="空闲"
               }
-              else if(this.countList[i].coun_status=="busy")
+              else if(this.countList[i].coun_status==="busy")
               {
                 this.countList[i].coun_status="忙碌"
               }
