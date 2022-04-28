@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="card" :gutter="20" type="flex">
-      <el-col :span="7" class="user_card">
+      <el-col :span="6" class="user_card">
         <el-card
           :body-style="{ padding: '0px' }"
           style="height: 300px; padding: 30px"
@@ -29,13 +29,13 @@
       </el-col>
       <el-col
         style="background: #304156; height: 100%"
-        :span="3"
+        :span="4"
         class="user_card"
       >
         <div class="sun-static" style="height: 300px">
           <div class="title">累计完成咨询</div>
           <div class="num">{{ all_num }}</div>
-          <div class="title" style="margin-top: 20px">累计完成时长</div>
+          <div class="title" style="margin-top: 10px">累计完成时长</div>
           <div class="num">{{ all_minitus }}</div>
         </div>
       </el-col>
@@ -116,7 +116,7 @@ export default {
   },
   created() {
     // console.warn('record')
-    this.update();
+    
   },
   mounted() {
     // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
@@ -127,9 +127,11 @@ export default {
     this.tim.on(this.TIM.EVENT.ERROR, this.onError);
     if (!this.isSDKReady) {
       this.reLogin();
+      this.update();
     }
     
     this.getSchedule();
+    
   },
   methods: {
     onError({ data }) {
@@ -246,6 +248,10 @@ export default {
         this.$ajax.get('/record/todayTime', {params: {user_id}}).then((res) => {
           if (res.data) {
             this.today_time = res.data[0].today_time;
+            var hour = parseInt(this.todayTime / 3600) < 10 ? '0' + parseInt(this.todayTime / 3600) : parseInt(this.todayTime / 3600)
+            var min = parseInt(this.todayTime% 3600 / 60) < 10 ? '0' + parseInt(this.todayTime % 3600 / 60) : parseInt(this.todayTime % 3600 / 60)
+            var sec = parseInt(this.todayTime % 3600 % 60) < 10 ? '0' + parseInt(this.todayTime % 3600 % 60) : parseInt(this.todayTime % 3600 % 60)
+            this.todayTime = hour + ':' + min + ':' + sec
           }
         });
     },
@@ -256,7 +262,11 @@ export default {
         .then((res) => {
           if (res.data) {
             this.all_num = res.data[0].all_num;
-            this.all_minitus = res.data[0].all_minitus;
+            this.all_minitus = res.data[0].all_seconds;
+            var hour = parseInt(this.all_minitus / 3600) < 10 ? '0' + parseInt(this.all_minitus/ 3600) : parseInt(this.all_minitus / 3600)
+            var min = parseInt(this.all_minitus% 3600 / 60) < 10 ? '0' + parseInt(this.all_minitus % 3600 / 60) : parseInt(this.all_minitus % 3600 / 60)
+            var sec = parseInt(this.all_minitus % 3600 % 60) < 10 ? '0' + parseInt(this.all_minitus % 3600 % 60) : parseInt(this.all_minitus % 3600 % 60)
+            this.all_minitus = hour + ':' + min + ':' + sec
           }
         });
     },
@@ -403,7 +413,7 @@ export default {
 .sun-static .num {
   font-size: 30px;
   font-weight: 700;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 .rank-box {
   padding: 10px;
