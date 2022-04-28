@@ -6,7 +6,7 @@
     </template> -->
     <!-- 表格区 -->
        <el-table :data="pagedData">
-      <el-pagination :total="total" :current-page="currentPage" 
+      <el-pagination :total="total" :current-page="currentPage"
          :page-size="currentPageSize" :page-sizes="[3, 5]"
          layout="total, sizes, prev, pager, next, jumper"
          @size-change="pageSizeChange" @current-change="pageChange">
@@ -43,11 +43,6 @@
           {{scope.row.vis_to_coun_comment}}
         </template>
       </el-table-column>
-        <el-table-column label="咨询师反馈">
-          <template slot-scope="scope">
-            {{scope.row.coun_to_vis_comment}}
-          </template>
-        </el-table-column>
       <el-table-column label="督导求助">
         <template slot-scope="scope">
           {{scope.row.sup_name}}
