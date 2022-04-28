@@ -95,11 +95,12 @@ import DataTable from "./components/DataTablePartCon";
 
 export default {
   name: "home",
- inject: ['reload'],
+  inject: ['reload'],
   data() {
     return {
       user_id: sessionStorage.getItem("user_id"),
-      user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      // user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
+      user_name: null,
       score: [],
       scheduleData: [],
       today_num: 0,
@@ -107,7 +108,7 @@ export default {
       all_num: 0,
       all_minitus: 0,
       conversation_num: 0,
-      status: [],
+      status: "空闲",
       // rate:0
     };
   },
@@ -127,9 +128,8 @@ export default {
     this.tim.on(this.TIM.EVENT.ERROR, this.onError);
     if (!this.isSDKReady) {
       this.reLogin();
-      this.update();
     }
-    
+    this.update();
     this.getSchedule();
     
   },
@@ -229,7 +229,6 @@ export default {
               console.log(this.message, 111);
             }
           });
-          
        },
       
       changeStatusBusy(coun_id) {
@@ -240,18 +239,17 @@ export default {
               console.log(this.message, 111);
             }
           });
-           
     },
       // 获取今日咨询时长
       getTodayTime(user_id)
       {
         this.$ajax.get('/record/todayTime', {params: {user_id}}).then((res) => {
           if (res.data) {
-            this.today_time = res.data[0].today_time;
-            var hour = parseInt(this.todayTime / 3600) < 10 ? '0' + parseInt(this.todayTime / 3600) : parseInt(this.todayTime / 3600)
-            var min = parseInt(this.todayTime% 3600 / 60) < 10 ? '0' + parseInt(this.todayTime % 3600 / 60) : parseInt(this.todayTime % 3600 / 60)
-            var sec = parseInt(this.todayTime % 3600 % 60) < 10 ? '0' + parseInt(this.todayTime % 3600 % 60) : parseInt(this.todayTime % 3600 % 60)
-            this.todayTime = hour + ':' + min + ':' + sec
+            const { today_time } = res.data[0];
+            var hour = parseInt(today_time / 3600) < 10 ? '0' + parseInt(today_time / 3600) : parseInt(today_time / 3600)
+            var min = parseInt(today_time % 3600 / 60) < 10 ? '0' + parseInt(today_time % 3600 / 60) : parseInt(today_time % 3600 / 60)
+            var sec = parseInt(today_time % 3600 % 60) < 10 ? '0' + parseInt(today_time % 3600 % 60) : parseInt(today_time % 3600 % 60)
+            this.today_time = hour + ':' + min + ':' + sec
           }
         });
     },
@@ -294,8 +292,10 @@ export default {
         });
     },
     update() {
+      const user_name = JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID;
+      this.user_name = user_name;
       this.$ajax
-        .get("/auth/getInfo", { params: { user_name: this.user_name } })
+        .get("/auth/getInfo", { params: { user_name: user_name } })
         .then((res) => {
           if (res.data) {
             this.data = res.data 
@@ -305,16 +305,14 @@ export default {
             this.getTodayTime(this.user_id)
             this.getSum(this.user_id)
             this.getConversationNum(this.user_id)
-            this.status= res.data.coun_status
-            if(this.status=="free")
+            if(res.data.coun_status=="free")
             {
               this.status="空闲"
             }
-            else if(this.status=="busy")
+            else if(res.data.coun_status=="busy")
             {
               this.status="忙碌"
             }
-          
           }
         });
     },

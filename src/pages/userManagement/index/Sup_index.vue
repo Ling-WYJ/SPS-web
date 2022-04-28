@@ -125,7 +125,7 @@ export default {
       user_name: JSON.parse(sessionStorage.getItem("GET_USER_INFO")).userID,
       user_id: sessionStorage.getItem("user_id"),
       rate: "",
-      data: [],
+      data: "空闲",
       today_num: 0,
       today_time: 0,
       all_num: 0,
@@ -292,12 +292,11 @@ export default {
             this.getTodayTime(this.user_id);
             this.getSum(this.user_id);
             this.getConversationNum_sup(this.user_id);
-            this.status= res.data.sup_status
-            if(this.status==="free")
+            if(res.data.sup_status==="free")
             {
               this.status="空闲"
             }
-            else if(this.status==="busy")
+            else if(res.data.sup_status==="busy")
             {
               this.status="忙碌"
             }
@@ -381,11 +380,11 @@ export default {
         .get("/record/todayTime", { params: { user_id } })
         .then((res) => {
           if (res.data) {
-            this.today_time = res.data[0].today_time;
-            var hour = parseInt(this.todayTime / 3600) < 10 ? '0' + parseInt(this.todayTime / 3600) : parseInt(this.todayTime / 3600)
-            var min = parseInt(this.todayTime% 3600 / 60) < 10 ? '0' + parseInt(this.todayTime % 3600 / 60) : parseInt(this.todayTime % 3600 / 60)
-            var sec = parseInt(this.todayTime % 3600 % 60) < 10 ? '0' + parseInt(this.todayTime % 3600 % 60) : parseInt(this.todayTime % 3600 % 60)
-            this.todayTime = hour + ':' + min + ':' + sec
+            const { today_time } = res.data[0];
+            var hour = parseInt(today_time / 3600) < 10 ? '0' + parseInt(today_time / 3600) : parseInt(today_time / 3600)
+            var min = parseInt(today_time % 3600 / 60) < 10 ? '0' + parseInt(today_time % 3600 / 60) : parseInt(today_time % 3600 / 60)
+            var sec = parseInt(today_time % 3600 % 60) < 10 ? '0' + parseInt(today_time % 3600 % 60) : parseInt(today_time % 3600 % 60)
+            this.today_time = hour + ':' + min + ':' + sec
           }
         });
     },
