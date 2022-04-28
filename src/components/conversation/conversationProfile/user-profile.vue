@@ -120,7 +120,7 @@ export default {
         case this.TIM.TYPES.GENDER_FEMALE:
           return '女'
         default:
-          return '未设置'
+          return '暂无'
       }
     },
     genderClass() {
