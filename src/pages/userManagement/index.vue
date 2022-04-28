@@ -57,7 +57,7 @@ export default {
   },
   created() {
     // console.log(this.url, "ppppp");
-    this.$router.push(this.list[0].path);
+    // this.$router.push(this.list[0].path);
   },
   methods: {
     handleClick(data) {

@@ -182,6 +182,8 @@ export default {
         }).then((res) => {
           console.log(res);
           window.sessionStorage.setItem('record_id', res.data.record_id);
+        }).catch(() => {
+          window.sessionStorage.setItem('record_id', -1);
         })
         // } else if (this.conversation.userProfile.role == 0) {
         //   const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;

@@ -294,6 +294,13 @@ export default {
     chooseBigEmoji(item) {
       this.popoverVisible = false
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       let message = this.tim.createFaceMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -334,7 +341,16 @@ export default {
       this.atUserID = this.memberList[index + 1].userID
     },
     handleEnter() {
-      this.sendTextMessage()
+      const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      } else {
+        this.sendTextMessage()
+      }
     },
     inputChange(value) {
       if (this.currentConversationType === this.TIM.TYPES.CONV_GROUP && value.data === '@') {
@@ -366,6 +382,13 @@ export default {
         return
       }
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       // 1. 创建消息实例，接口返回的实例可以上屏
       let message = this.tim.createImageMessage({
         to: this.toAccount,
@@ -395,6 +418,13 @@ export default {
       let message = {}
       if (file.type === 'video/mp4') {
         const record_id = window.sessionStorage.getItem('record_id');
+        if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
         message = this.tim.createVideoMessage({
           to: this.toAccount,
           conversationType: this.currentConversationType,
@@ -408,6 +438,13 @@ export default {
         })
       } else {
         const record_id = window.sessionStorage.getItem('record_id');
+        if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
         message = this.tim.createFileMessage({
           to: this.toAccount,
           conversationType: this.currentConversationType,
@@ -447,6 +484,13 @@ export default {
       }
       if (this.currentConversationType === this.TIM.TYPES.CONV_GROUP && this.groupAt) {
         const record_id = window.sessionStorage.getItem('record_id');
+        if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
         let message = this.tim.createTextAtMessage({
           to: this.toAccount,
           conversationType: this.TIM.TYPES.CONV_GROUP,
@@ -469,6 +513,13 @@ export default {
         return
       }
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       const message = this.tim.createTextMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -498,6 +549,13 @@ export default {
         return
       }
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       const message = this.tim.createCustomMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -527,6 +585,13 @@ export default {
     },
     sendSurvey() {
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       const message = this.tim.createCustomMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -580,6 +645,13 @@ export default {
     },
     sendImage() {
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       const message = this.tim.createImageMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -606,6 +678,13 @@ export default {
     },
     sendFile() {
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       const message = this.tim.createFileMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,
@@ -632,6 +711,13 @@ export default {
     },
     sendVideo() {
       const record_id = window.sessionStorage.getItem('record_id');
+      if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
       const message = this.tim.createVideoMessage({
         to: this.toAccount,
         conversationType: this.currentConversationType,

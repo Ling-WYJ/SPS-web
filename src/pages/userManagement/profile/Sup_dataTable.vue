@@ -59,6 +59,7 @@ export default{
   data() {
     return{
       data: [],
+      activeName:'first',
       filterType: '',
       currentTodo: {
         sup_name:'',

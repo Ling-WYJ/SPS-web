@@ -59,6 +59,13 @@
       },
       sendSingleMessage(to, type, message) {
         const record_id = window.sessionStorage.getItem('record_id');
+        if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
         const _message = this.tim.createForwardMessage({
           to: to,
           conversationType: type,
@@ -87,6 +94,13 @@
         }
         _title = this.selectedMessageList[0].conversationType === 'GROUP' ? '群聊的聊天记录' : `${this.selectedMessageList[0].nick || this.selectedMessageList[0].from} 和 ${this.selectedMessageList[0].to} 的聊天记录`
         const record_id = window.sessionStorage.getItem('record_id');
+        if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
         let message = this.tim.createMergerMessage({
           to: to,
           conversationType: type,
