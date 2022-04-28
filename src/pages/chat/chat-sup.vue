@@ -107,7 +107,7 @@ export default {
         return
       }
       messageListNode.scrollTop = messageListNode.scrollHeight;
-    }
+    },
   },
 
   methods: {
@@ -521,6 +521,7 @@ export default {
   flex-direction: row;
   margin-left: 1rem;
   margin-bottom: 0.5rem;
+  justify-content: space-between!important;
 }
 .synChat-message-box-name {
   color: #222;
