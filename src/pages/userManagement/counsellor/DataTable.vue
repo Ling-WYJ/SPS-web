@@ -241,13 +241,17 @@ export default{
         this.closeEditDialog()
         this.update()
       }).catch((err) => {
+        console.log(err.response.data.msg)
         var errmsg = []
         if (err.response) {
+          if(err.response.data.msg)
+            errmsg.push( err.response.data.msg)
+          else
           for(var i = 0; i < err.response.data.errors.length; i++) {
             errmsg.push( err.response.data.errors[i].msg)
           }
           // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-          console.log(err.response)
+          //console.log(err.response)
           //console.log(err.response.data.errors)
           //console.log(errmsg)
           this.$store.commit('showMessage', {
