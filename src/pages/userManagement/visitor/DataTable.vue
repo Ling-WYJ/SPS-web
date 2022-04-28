@@ -104,10 +104,11 @@ export default {
     //   }, 2000)
     // },
     banned(row) {
-      if (row.visitor_status == 'banned')
+      if (row.visitor_status == '禁用')
         this.status = 'normal'
-      else
+      else if (row.visitor_status == '正常')
         this.status = 'banned'
+      console.log(row.visitor_status)
       this.$ajax.post('admin/changeVisitorStatus',{
         'user_id': row.visitor_id,
         'status': this.status
