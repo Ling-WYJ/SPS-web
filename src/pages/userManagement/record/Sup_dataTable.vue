@@ -66,7 +66,7 @@
           <div class="synChat-message-box">
             <div class="synChat-message-box-top">
               <div class="synChat-message-box-name">{{m.from_name}}</div>
-              <div class="synChat-message-box-time">{{new Date(m.msg_time).toLocaleString()}}</div>
+              <div class="synChat-message-box-time">{{m.msg_time}}</div>
             </div>
             <div class="synChat-message-box-bottom">{{m.text}}</div>
           </div>
