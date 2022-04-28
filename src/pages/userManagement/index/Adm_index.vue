@@ -24,13 +24,15 @@
       <el-pagination
         style="float:right"
         background
-        :page-size="9"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPageCoun"
+        :page-size="pageSizeCoun"
         layout="prev, pager, next"
         :total="countList.length">
       </el-pagination>
     </div>
     <div class="content">
-      <div v-for="item in countList" :key="item.name" class="item-box">
+      <div v-for="item in pageDataCoun" :key="item.name" class="item-box">
         <span>{{item.coun_name}}</span>
         <el-tag v-if="item.coun_status ==='忙碌'"  type="danger" style="float:right">{{item.coun_status}}</el-tag>
          <el-tag v-if="item.coun_status ==='空闲'"  type="success" style="float:right">{{item.coun_status}}</el-tag>
@@ -52,13 +54,13 @@
         style="float:right"
         background
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="3"
+        :current-page.sync="currentPageSup"
+        :page-size="pageSizeSup"
         layout="prev, pager, next"
         :total="superList.length">
       </el-pagination>
       <div class="content">
-      <div v-for="item in pageData" :key="item.name" class="item-box" style="width:100%">
+      <div v-for="item in pageDataSup" :key="item.name" class="item-box" style="width:100%">
         <span>{{item.sup_name}}</span>
          <el-tag v-if="item.sup_status ==='忙碌'"  type="danger" style="float:right">{{item.sup_status}}</el-tag>
          <el-tag v-if="item.sup_status ==='空闲'"  type="success" style="float:right">{{item.sup_status}}</el-tag>
@@ -85,7 +87,7 @@
   </el-col>
   <el-col :span="7" >
     <div style="background: #fff;height:288px" >
-      <div style="padding:10px 20px;line-height:28px">当前咨询数排行榜
+      <div style="padding:10px 20px;line-height:28px">当月咨询数排行榜
     </div>
     <div class="rank-box">
       <div v-for="(item,index) in MonthRankData.slice(0,4)" :key="index" class="rank-item">
@@ -98,7 +100,7 @@
   </el-col>
   <el-col :span="7"  style="background: #fff;">
     <div style="background: #fff;height:288px" >
-      <div style="padding:10px 20px;line-height:28px">当前好评数排行榜
+      <div style="padding:10px 20px;line-height:28px">咨询师评分排行榜
     </div>
     <div class="rank-box">
         <div v-for="(item,index) in counRankData.slice(0,4)" :key="index"  class="rank-item">
@@ -155,8 +157,12 @@ components:{
           },
           countList:[],
           superList:[],
-          pageData: [],
-          currentPage: 1,
+          pageSizeCoun: 9,
+          pageSizeSup: 3,
+          pageDataCoun: [],
+          pageDataSup: [],
+          currentPageCoun: 1,
+          currentPageSup: 1,
         }
     },
     mounted() {
@@ -241,6 +247,7 @@ components:{
                 this.countList[i].coun_status="忙碌"
               }
           }
+          this.getPageDataCoun()
         })
       },
       // 获取当前督导在线列表
@@ -256,16 +263,22 @@ components:{
                 this.superList[i].sup_status="忙碌"
               }
           }
-          this.getPageData();
+          this.getPageDataSup();
         })
       },
-      getPageData() {
-        let start = (this.currentPage - 1) * 3;
-        let end = start + 3;
-        this.pageData = this.superList.slice(start, end);
+      getPageDataSup() {
+        let start = (this.currentPageSup - 1) * this.pageSizeSup;
+        let end = start + this.pageSizeSup;
+        this.pageDataSup = this.superList.slice(start, end);
+      },
+      getPageDataCoun() {
+        let start = (this.currentPageCoun - 1) * this.pageSizeCoun;
+        let end = start + this.pageSizeCoun;
+        this.pageDataCoun = this.countList.slice(start, end);
       },
       handleCurrentChange() {
-        this.getPageData();
+        this.getPageDataSup();
+        this.getPageDataCoun();
       },
       // 获取今日咨询数
       getTodayNum() {
