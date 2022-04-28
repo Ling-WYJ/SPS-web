@@ -39,17 +39,18 @@
           "
         >
           在线咨询师
-          <el-pagination
-            style="float: right"
-            background
-            :page-size="9"
-            layout="prev, pager, next"
-            :total="countList.length"
-          >
-          </el-pagination>
-        </div>
-        <div class="content">
-          <div v-for="item in countList" :key="item.name" class="item-box">
+  <el-pagination
+        style="float:right"
+        background
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPageCoun"
+        :page-size="pageSizeCoun"
+        layout="prev, pager, next"
+        :total="countList.length">
+      </el-pagination>
+    </div>
+    <div class="content">
+      <div v-for="item in pageDataCoun" :key="item.name" class="item-box">
             <span>{{ item.coun_name }}</span>
             <el-tag v-if="item.coun_status ==='忙碌'"  type="danger" style="float:right">{{item.coun_status}}</el-tag>
             <el-tag v-if="item.coun_status ==='空闲'"  type="success" style="float:right">{{item.coun_status}}</el-tag>
@@ -132,6 +133,9 @@ export default {
       conversation_num: 0,
       status: [],
       sup_name:[],
+      pageDataCoun: [],
+      currentPageCoun: 1,
+      pageSizeCoun: 9,
     };
   },
   computed: {
@@ -351,7 +355,14 @@ export default {
           });
     },
 
-
+      getPageDataCoun() {
+        let start = (this.currentPageCoun - 1) * this.pageSizeCoun;
+        let end = start + this.pageSizeCoun;
+        this.pageDataCoun = this.countList.slice(start, end);
+      },
+      handleCurrentChange() {
+        this.getPageDataCoun();
+      },
 
     // 获取今日咨询数
     getTodayNum(user_id) {
