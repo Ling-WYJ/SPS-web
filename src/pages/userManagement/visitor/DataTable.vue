@@ -77,11 +77,10 @@ export default {
             {
               this.visitorList[i].visitor_gender = '男'
             }
-            else
-            {
-              if(this.visitorList[i].visitor_gender == 'Female')
+            else if(this.visitorList[i].visitor_gender == 'Female')
                 this.visitorList[i].visitor_gender = '女'
-            }
+            else
+              this.visitorList[i].visitor_gender = '其他'
             //状态转换
             if(this.visitorList[i].visitor_status == 'normal')
             {
@@ -113,7 +112,7 @@ export default {
         'user_id': row.visitor_id,
         'status': this.status
       }).then((res) => {
-        console.log(res)
+        console.log(res.data)
         if (res.data) {
           this.visitorList = res.data
         }

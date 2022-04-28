@@ -137,11 +137,10 @@ export default{
             {
               this.data[i].sup_gender = '男'
             }
-            else
-            {
-              if(this.data[i].sup_gender == 'Female')
+            else if(this.data[i].sup_gender == 'Female')
                 this.data[i].sup_gender = '女'
-            }
+            else
+              this.data[i].sup_gender = '其他'
           }
         }
       }).catch(err => this.$notify({

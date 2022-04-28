@@ -95,7 +95,6 @@
           </el-tab-pane>
         </el-tabs>
 
-
       </el-form>
     </edit-dialog>
     <bind-dialog :show="bindShow" title="绑定督导" @close="closeBindDialog" @save="saveBind">
@@ -162,11 +161,10 @@ export default{
             {
               this.data[i].coun_gender = '男'
             }
-            else
-            {
-              if(this.data[i].coun_gender == 'Female')
+            else if (this.data[i].coun_gender == 'Female')
                 this.data[i].coun_gender = '女'
-            }
+            else
+              this.data[i].coun_gender = '其他'
             //评分转换
             let result = 0;
             let score = Math.floor(this.data[i].score * 2) / 2;
@@ -211,8 +209,9 @@ export default{
             errmsg.push( err.response.data.errors[i].msg)
           }
           // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-          console.log(err.response.data.errors)
-          console.log(errmsg)
+          console.log(err.response)
+          //console.log(err.response.data.errors)
+          //console.log(errmsg)
           this.$store.commit('showMessage', {
             message: '添加失败：' + errmsg,
             type: 'error'
