@@ -252,7 +252,7 @@ export default{
     removeSupAjax(row) {
       this.$confirm('确定要删除?').then(() => {
         //获取不到user_id
-        var deleteSup ={ user_id: row.Sup_id,role: 'admin' }
+        var deleteSup ={ user_id: row.sup_id,role: 'admin' }
         console.log(deleteSup)
         this.$ajax.delete('/editUsers/supervisor',{data:deleteSup}).then((res) => {
           if (res.data) {

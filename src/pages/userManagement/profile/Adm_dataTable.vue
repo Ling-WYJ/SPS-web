@@ -55,8 +55,8 @@ export default{
           {required: true, message: '请输入手机号', trigger: 'blur'},
           {len: 11, message: '手机号长度应为11位', trigger: 'blur'}
         ],
-        user_password: [
-          {required: true, message: '请输入用户密码', trigger: 'blur'}
+        user_name: [
+          {required: true, message: '请输入用户名', trigger: 'blur'}
         ],
       }
     }
@@ -89,10 +89,25 @@ export default{
           })
         this.update()
       }).catch((err) => {
-        this.$store.commit('showMessage', {
-          message: '修改失败：' + err.message,
-          type: 'error'
-        })
+        console.log(err.response.data.msg)
+        var errmsg = []
+        if (err.response) {
+          if(err.response.data.msg)
+            errmsg.push( err.response.data.msg)
+          else
+            for(var i = 0; i < err.response.data.errors.length; i++) {
+              errmsg.push( err.response.data.errors[i].msg)
+            }
+          this.$store.commit('showMessage', {
+            message: '修改失败：' + errmsg,
+            type: 'error'
+          })
+        }
+        else
+          this.$store.commit('showMessage', {
+            message: '修改失败：' + err.message,
+            type: 'error'
+          })
       })
     },
 
