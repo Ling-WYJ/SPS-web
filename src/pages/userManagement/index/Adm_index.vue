@@ -32,7 +32,8 @@
     <div class="content">
       <div v-for="item in countList" :key="item.name" class="item-box">
         <span>{{item.coun_name}}</span>
-        <el-tag type="success" style="float:right">{{item.coun_status}}</el-tag>
+        <el-tag v-if="item.coun_status ==='忙碌'"  type="danger" style="float:right">{{item.coun_status}}</el-tag>
+         <el-tag v-if="item.coun_status ==='空闲'"  type="success" style="float:right">{{item.coun_status}}</el-tag>
       </div>
     </div>
   </el-col>
@@ -57,7 +58,8 @@
       <div class="content">
       <div v-for="item in superList" :key="item.name" class="item-box" style="width:100%">
         <span>{{item.sup_name}}</span>
-        <el-tag type="success" style="float:right">{{item.sup_status}}</el-tag>
+         <el-tag v-if="item.sup_status ==='忙碌'"  type="danger" style="float:right">{{item.sup_status}}</el-tag>
+         <el-tag v-if="item.sup_status ==='空闲'"  type="success" style="float:right">{{item.sup_status}}</el-tag>
       </div>
     </div>
     </div>
@@ -371,12 +373,13 @@ MonthSumChart
             this.countList = res.data;
           for(var i = 0;i <this.countList.length ; i++)
           {
-                       
-              if(this.countList[i].coun_status=="free")
+              // if(this.countList[i].coun_name.length>4)
+              //     this.countList[i].coun_name= countList[i].coun_name.slice(0,4)    
+              if(this.countList[i].coun_status==="free")
               {
                 this.countList[i].coun_status="空闲"
               }
-              else if(this.countList[i].coun_status=="busy")
+              else if(this.countList[i].coun_status==="busy")
               {
                 this.countList[i].coun_status="忙碌"
               }
@@ -415,6 +418,10 @@ MonthSumChart
         this.$ajax.get('/admin/todayTime',{params: {user_id: this.user_id}}).then(res=>{
           if(res.data) {
             this.todayTime=res.data[0].today_time
+            var hour = parseInt(this.todayTime / 3600) < 10 ? '0' + parseInt(this.todayTime / 3600) : parseInt(this.todayTime / 3600)
+            var min = parseInt(this.todayTime% 3600 / 60) < 10 ? '0' + parseInt(this.todayTime % 3600 / 60) : parseInt(this.todayTime % 3600 / 60)
+            var sec = parseInt(this.todayTime % 3600 % 60) < 10 ? '0' + parseInt(this.todayTime % 3600 % 60) : parseInt(this.todayTime % 3600 % 60)
+            this.todayTime = hour + ':' + min + ':' + sec
           }
         })
       }
