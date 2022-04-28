@@ -295,7 +295,7 @@ export default {
       if (conversationID !== this.currentConversation.conversationID) {
         this.$store.dispatch("checkoutConversation", conversationID);
       }
-      this.getIsEnd();
+      // this.getIsEnd();
     },
     isJsonStr(str) {
       try {
