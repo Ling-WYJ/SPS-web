@@ -273,6 +273,13 @@
             toUserId = item?item.substring(5,item.length):''
           }
           const record_id = window.sessionStorage.getItem('record_id');
+          if (record_id === "-1") {
+        this.$store.commit('showMessage', {
+          message: '当前会话已结束，无法发送消息',
+          type: 'info'
+        })
+        return
+      }
           const message = this.tim.createForwardMessage({
             to: toUserId,
             conversationType: type,
