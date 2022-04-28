@@ -11,7 +11,7 @@
           <side-bar-sup />
         </el-col>
         <el-col :xs="7" :sm="8" :md="8" :lg="9" :xl="9">
-          <current-conversation />
+          <current-conversation class="main-conv"/>
         </el-col>
         <el-col :xs="7" :sm="8" :md="8" :lg="9" :xl="9">
           <!-- <current-conversation /> -->
@@ -85,7 +85,9 @@ export default {
     },
     showSyncConversation() {
       let isInChatSup = window.sessionStorage.getItem('isInChatSup');
-      return isInChatSup && !!this.currentConversation.conversationID;
+      let record_id = window.sessionStorage.getItem('record_id');
+      let recordValid = record_id !== null && record_id !== "-1"
+      return isInChatSup && recordValid && !!this.currentConversation.conversationID;
     },
   },
   mounted() {
@@ -293,6 +295,7 @@ export default {
       if (conversationID !== this.currentConversation.conversationID) {
         this.$store.dispatch("checkoutConversation", conversationID);
       }
+      this.getIsEnd();
     },
     isJsonStr(str) {
       try {
@@ -449,24 +452,26 @@ export default {
         })
       }
     },
-    // getIsEnd() {
-    //   let that = this;
-    //   if (this.showSyncConversation) {
-    //     const coun = this.currentConversation.userProfile.userID;
-    //     const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
-    //     this.$ajax.get('/record/endOrNot', {
-    //       params: {
-    //         coun,
-    //         sup
-    //       },
-    //     }).then((res) => {
-    //       that.isEnd = res.data.isEnd;
-    //       console.log(that.isEnd);
-    //     }).catch((err) => {
-    //       console.log(err)
-    //     })
-    //   }
-    // }
+    getIsEnd() {
+      if (this.showSyncConversation) {
+        const coun = this.currentConversation.userProfile.userID;
+        const sup = JSON.parse(window.sessionStorage.GET_USER_INFO).userID;
+        this.$ajax.get('/record/endOrNot', {
+          params: {
+            coun,
+            sup
+          },
+        }).then((res) => {
+          if (res.data.isEnd === "true") {
+            window.sessionStorage.setItem('record_id', -1);
+          } else {
+            window.sessionStorage.setItem('record_id', res.data.record_id);
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+    }
   },
 };
 </script>
@@ -475,6 +480,9 @@ export default {
 .loading {
   width: calc(100vw - 240px);
   height: calc(100vh - 90px);
+}
+.main-conv {
+  border-right: 1px solid #ccc !important;
 }
 
 .syncChat {
