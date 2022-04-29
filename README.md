@@ -9,7 +9,7 @@ ECNU-SEI-COURSE-PROJECT
 社会心理服务热线平台-Web端
 
 ### Developed by:
-Web前端：周恬慧、吴宜珈、张灏琪
+Web前端：周恬慧、吴宜珈、张灏琪  
 Web后端：刘思琪、王睿珺
 
 ### Test Account:
