@@ -17,7 +17,7 @@
     <el-col style="background: #fff;" :span="14" >
         <div style=" "><LineChart/></div>
     </el-col>
-</el-row>
+  </el-row>
 <el-row style="margin-top:20px;height:245px;overflow:hidden" :gutter="20">
   <el-col style="background: #fff;height:300px" :span="10" >
     <div style="padding:10px 20px;border-bottom: 1px solid #f4f4f5;line-height:28px">在线咨询师
